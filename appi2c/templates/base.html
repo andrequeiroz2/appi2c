@@ -96,7 +96,9 @@
     {% block indexNavBar %}{% endblock indexNavBar %}
     {% block hero %} {% endblock hero %}
 
-    <div class="columns is-centered is-vcentered is-mobile">
+    <div class="container">
+        <div class="column is-half is-offset-one-quarter">
+            
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
         {% for category, message in messages %}
@@ -107,7 +109,7 @@
                 scrollToPreviousElementAnimate: false,
                 bgOpacity: 0.90,
                 boxWidth: '40%',
-                icon: 'fa fa-spinner fa-spin',
+                icon: 'far fa-laugh is-4x',
                 content: '{{ message }}',
                 type: 'blue',
                 buttons: {
@@ -129,7 +131,7 @@
                 scrollToPreviousElementAnimate: false,
                 bgOpacity: 0.90,
                 boxWidth: '40%',
-                icon: 'fa fa-spinner fa-spin',
+                icon: 'far fa-frown is-4x',
                 content: '{{ message }}',
                 type: 'red',
                 buttons: {
@@ -148,6 +150,8 @@
         {% endfor %}
         {% endif %}
         {% endwith %}
+            
+        </div>
     </div>
 
 
