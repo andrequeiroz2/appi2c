@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="columns is-centered is-vcentered is-mobile">
+
+        <section class="section">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <nav class="panel">
+                    <p class="panel-heading">
+                        {{ title }}
+                    </p>
+
+
+                    <section class="section">
+                        <div class="field">
+                            {{ form.username.label }}
+                            {% if form.username.errors %}
+                            {{ form.username(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.username(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="field">
+                            {{ form.email.label }}
+                            {% if form.email.errors %}
+                            {{ form.email(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.email(class="input is-info", type="email") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.password.label }}
+                            {% if form.password.errors %}
+                            {{ form.password(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.password(class="input is-info", type="password") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.confirm_password.label }}
+                            {% if form.confirm_password.errors %}
+                            {{ form.confirm_password(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.confirm_password.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.confirm_password(class="input is-info", type="password") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            <p class="control">
+                                {{ form.submit(class="button is-primary") }}
+                            </p>
+                        </div>
+
+                    </section>
+                </nav>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock main %}

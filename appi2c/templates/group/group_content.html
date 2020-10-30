@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+
+<div class="container">
+  <div class="section">
+    <h5 class="title is-4">Group Content</h5>
+    <p class="title is-4">
+      {{ group.name }}
+    </p>
+    <div id="app" class="row columns is-multiline">
+      {% for device in devices %}
+      <div v-for="card in cardData" key="card.id" class="column is-4">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{device.name}}
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
+          {% if device.type_device == 'DeviceSwitch' %}
+          <div class="card-content">
+            <div class="has-text-centered">
+              <div class="content">
+                {% if device.last_command == device.command_on %}
+                <section>
+                  <p><i class="fas fa-2x fa-bolt" color="#ff6600"></i></p>
+                  <a class="button is-medium is-primary"
+                    href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_off') }}">Off</a>
+                </section>
+                {% else %}
+                <section>
+                  <p><i class="fas fa-2x fa-bolt" color="#E9E2E0"></i></p>
+                  <a class="button is-medium is-primary"
+                    href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_on') }}">On</a>
+                </section>
+                {% endif %}
+              </div>
+            </div>
+            <div class="has-text-centered">
+              </br>
+              <span>Last Publish:</span>
+              <a> {{ device.last_date }} </a>
+            </div>
+          </div>
+          {% endif %}
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Dashboard</a>
+          </footer>
+        </div>
+        </br>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock main %}

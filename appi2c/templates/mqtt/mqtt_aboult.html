@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="container">
+  <div class="columns is-centered is-vcentered is-mobile">
+    <section class="section">
+
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <div class="tile is-child box">
+            <p class="title">MQTT</p>
+            <p>The Appi2c uses the Mqtt protocol to exchange messages between managed devices.</p>
+            <p>Flask-MQTT is a Flask extension meant to facilitate the integration of a devices MQTT client into web
+              application Appi2c.</p>
+            <p>More explanations see <a href="https://flask-mqtt.readthedocs.io/en/latest/">Flask-MQTT</a></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+{% endblock main %}

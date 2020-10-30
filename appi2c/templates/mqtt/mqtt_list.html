@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+        <nav class="panel">
+            <p class="panel-heading">
+                {{ title }}
+            </p>
+            <form method="POST" action="">
+                <div class="panel-block">
+                    <div class="table-container column is-12">
+                        <table class="table is-striped is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>URL</th>
+                                    <th>Port</th>
+                                    <th>Keep Alive</th>
+                                    <th>Activate?</th>
+                                </tr>
+                            </thead>
+                            {% for client in clients %}
+                            {% if client.status is sameas true %}
+                            <tbody>
+                                <tr class="is-selected">
+                                    <td>{{ client.name }}</td>
+                                    <td>{{ client.address_url }}</td>
+                                    <td>{{ client.port }}</td>
+                                    <td>{{ client.keep_alive }}</td>
+                                    <td>{{ client.status }}</td>
+                                </tr>
+                            </tbody>
+                            {% else %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ client.name }}</td>
+                                    <td>{{ client.address_url }}</td>
+                                    <td>{{ client.port }}</td>
+                                    <td>{{ client.keep_alive }}</td>
+                                    <td>{{ client.status }}</td>
+                                </tr>
+                            </tbody>
+                            {% endif %}
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </nav>
+    </div>
+</div>
+{% endblock main %}

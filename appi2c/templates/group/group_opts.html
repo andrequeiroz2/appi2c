@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="column is-mobile">
+<div class="column is-half is-offset-one-quarter">
+    <form method="POST" action="">
+        <nav class="panel">
+            <p class="panel-heading">
+                {{ title }}
+            </p>
+            <section class="section">
+                <p>
+                    <a href="{{ url_for('groups.register_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Add Group</a>
+                </p>
+                </br>       
+                <p>
+                    <a href="{{ url_for('groups.list_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">List Group</a>
+                </p>
+                
+                </br>
+                <p>
+                    <a href="{{ url_for('groups.admin_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Admin Group</a>
+                </p>
+                </br>
+                <p>
+                    <a href="{{ url_for('groups.aboult_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Aboult Group</a>
+                </p>
+            </section>
+        </nav>
+    </form>
+    
+</div>
+</div>
+{% endblock main %}

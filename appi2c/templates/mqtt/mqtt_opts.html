@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="column is-mobile">
+<div class="column is-half is-offset-one-quarter">
+    <form method="POST" action="">
+        <nav class="panel">
+            <p class="panel-heading">
+                {{ title }}
+            </p>
+            <section class="section">
+                <p>
+                    <a href="{{ url_for('mqtt.register_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Add Mqtt</a>
+                </p>
+                </br>       
+                <p>
+                    <a href="{{ url_for('mqtt.list_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">List Mqtt</a>
+                </p>
+                
+                </br>
+                <p>
+                    <a href="{{ url_for('mqtt.admin_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Admin Mqtt</a>
+                </p>
+                </br>
+                <p>
+                    <a href="{{ url_for('mqtt.aboult_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Aboult Mqtt</a>
+                </p>
+            </section>
+        </nav>
+    </form>
+    
+</div>
+</div>
+{% endblock main %}

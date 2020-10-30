@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block main %}
+
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+        {% if current_user.is_authenticated %}
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><a href="admin/" aria-current="page">Admin</a></li>
+            </ul>
+        </nav>
+        <section class="hero is-dark welcome is-small">
+            <div class="hero-body">
+                <div class="container">
+                    <h1 class="title">
+                        Hello, {{ user }}
+                    </h1>
+                    <h2 class="subtitle">
+                        I hope you are having a great day!
+                    </h2>
+                </div>
+            </div>
+        </section>
+        </br>
+        <section class="info-tiles">
+            <div class="tile is-ancestor has-text-centered">
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_group }}</p>
+                        <p class="subtitle">Total Groups</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_broker }}</p>
+                        <p class="subtitle">Total Brokers</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_device }}</p>
+                        <p class="subtitle">Total Devices</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        </br>
+            <section class="info-tiles">
+                <div class="card events-card">
+                    <header class="card-header">
+                        <p class="card-header-title">
+                            Groups
+                        </p>
+                    </header>
+                    <div class="card-table">
+                        <div class="content">
+                            <table class="table is-fullwidth is-striped">
+                                <tbody>
+                                    {% if groups|length > 0 %}
+                                    {% for group in groups %}
+                                    <tr>
+                                        <td width="5%">
+                                            <i class="fas fa-layer-group" aria-hidden="true"></i>
+                                        </td>
+                                        <td>{{ group.name }}</td>
+                                        <td class="level-right">
+                                            <a class="button is-small is-primary" href="{{ url_for('groups.content_group', id=group['id']) }}">Access</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td width="5%">
+                                            <i class="fas fa-layer-group" aria-hidden="true"></i>
+                                        </td>
+                                        <td>There are no registered groups</td>
+                                        <td class="level-right">
+                                            <a class="button is-small is-primary" href="{{ url_for('groups.register_group') }}">Add Group</a>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% else %}
+        <section class="hero is-dark welcome is-small">
+            <div class="hero-body">
+                <div class="container">
+                    <h4 class="title">
+                        Hello welcome to Appi2c
+                    </h4>
+                    <h4 class="subtitle">
+                        Make your Login or Sign up to start managing your mqtt devices
+                    </h4>
+                    <a href="https://github.com/andrequeiroz2/appi2c" target="_blank" class="button is-primary is-large">
+                        <span class="icon">
+                          <i class="fab fa-github"></i>
+                        </span>
+                        <span>Github</span>
+                      </a>
+                </div>
+            </div>
+        </section>
+        </br>
+        <section class="info-tiles">
+            <div class="tile is-ancestor has-text-centered">
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_user }}</p>
+                        <p class="subtitle">Total Users</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_group }}</p>
+                        <p class="subtitle">Total Groups</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_broker }}</p>
+                        <p class="subtitle">Total Brokers</p>
+                    </article>
+                </div>
+                <div class="tile is-parent">
+                    <article class="tile is-child box">
+                        <p class="title">{{ total_device }}</p>
+                        <p class="subtitle">Total Devices</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock main %}

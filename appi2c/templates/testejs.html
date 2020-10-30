@@ -1,0 +1,293 @@
+Bulma | Modal
+Last Updated: 01-07-2020
+Bulma is a free and open-source CSS framework based on Flexbox. It is component rich, compatible, and well documented.
+It is highly responsive in nature. It uses classes to implement its design.
+
+The Modal is a classic overlay in which one can include any content. The Modal component is a dialog box/popup window
+that is displayed on top of the current page once the trigger button is clicked. The ‘modal’ component includes several
+other components that can be added to design the content. These components are listed below:
+
+modal-background: It is the transparent overlay that acts as a click target to close the modal.
+modal-content: It is the container with a maximum width of ‘640px’. This container shows the content of the model class.
+modal-close: It is the ‘cross’ located in the top right corner which used to close the modal.
+Example 1:
+
+filter_none
+edit
+play_arrow
+
+brightness_4
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Bulma Modal</title>
+
+  <!-- Include Bulma CSS -->
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css'>
+
+  <!-- FontAwesome Library -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js'>
+  </script>
+
+  <!-- Custom CSS -->
+  <style>
+    div.columns {
+      margin-top: 50px;
+    }
+
+    .modal-content {
+      margin-top: 100px;
+      width: 450px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class='container has-text-centered'>
+    <div class='columns is-mobile is-centered'>
+      <div class='column is-4'>
+        <button class="button is-primary" id='btn'>Click to see modal</button>
+        <div class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content">
+
+            <div class='box'>
+              <h1 class='title' style='color:green'>
+                Geek for Geeks</h1>
+              <p class='is-family-monospace'>
+                'GeeksforGeeks' is a computer
+                science portal.it was created with
+                a goal in mind to provide well
+                written, well thought and
+                well explained solutions for
+                selected questions. The core team
+                of five super geeks constituting
+                of technology lovers and
+                computer science enthusiasts
+                have been constantly working
+                in this direction .
+              </p>
+              <div class='buttons'>
+                <button class='button is-fullwidth'>
+                  Know more about GfG
+                </button>
+              </div>
+            </div>
+          </div>
+          <button class="modal-close is-large" aria-label="close">
+            Model
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Bulma does not have JavaScript included, 
+    // hence custom JavaScript has to be 
+    // written to open or close the modal 
+    const modal =
+      document.querySelector('.modal');
+    const btn =
+      document.querySelector('#btn')
+    const close =
+      document.querySelector('.modal-close')
+
+    btn.addEventListener('click',
+      function () {
+        modal.style.display = 'block'
+      })
+
+    close.addEventListener('click',
+      function () {
+        modal.style.display = 'none'
+      })
+
+    window.addEventListener('click',
+      function (event) {
+        if (event.target.className ===
+          'modal-background') {
+          modal.style.display = 'none'
+        }
+      }) 
+  </script>
+</body>
+
+</html>
+Output:
+
+Video Player
+
+00:00
+00:11
+
+
+Example 2: Login form modal.
+
+
+
+filter_none
+edit
+play_arrow
+
+brightness_4
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Bulma Modal</title>
+
+  <!-- Include Bulma CSS -->
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css'>
+
+  <!-- FontAwesome Library -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js'>
+  </script>
+
+  <!-- Custom CSS -->
+  <style>
+    div.columns {
+      margin-top: 50px;
+    }
+
+    .modal-content {
+      margin-top: 100px;
+      width: 450px;
+    }
+
+    .buttons {
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class='container'>
+    <div class='columns is-mobile is-centered'>
+      <div class='column is-4'>
+        <div class='has-text-centered'>
+          <button class="button is-primary" id='btn'>
+            Login form modal
+          </button>
+        </div>
+        <div class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content">
+            <div class="box">
+              <div>
+                <h1 class='title has-text-centered'>
+                  Login
+                </h1>
+              </div>
+              <form action='#' method='post'>
+                <div class='field'>
+                  <label class='label' id='username'>
+                    Username
+                  </label>
+                  <div class='control has-icons-left'>
+                    <input class='input' type='text' for='username' placeholder='Username'>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-user"></i>
+                    </span>
+                  </div>
+                </div>
+
+                <div class='field'>
+                  <label class='label' id='password'>
+                    Password
+                  </label>
+                  <div class='control has-icons-left'>
+                    <input class='input' type='password' for='password' placeholder='Password'>
+                    <span class="icon is-small is-left">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </div>
+
+                  <div class='buttons'>
+                    <button class='button is-link'>
+                      Login
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <button class="modal-close is-large" aria-label="close">
+            Model
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Bulma does not have JavaScript included, 
+    // hence custom JavaScript has to be 
+    // written to open or close the modal 
+    const modal = document.querySelector('.modal');
+    const btn = document.querySelector('#btn')
+    const close = document.querySelector('.modal-close')
+
+    btn.addEventListener('click',
+      function () {
+        modal.style.display = 'block'
+      })
+
+    close.addEventListener('click',
+      function () {
+        modal.style.display = 'none'
+      })
+
+    window.addEventListener('click',
+      function (event) {
+        if (event.target.className ===
+          'modal-background') {
+          modal.style.display = 'none'
+        }
+      }) 
+  </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+<div class="container">
+  <div class="column is-half is-offset-one-quarter">
+      <section class="section">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+          {% for category, message in messages %}
+          {% if category != "error" %}
+          <article class="message is-primary">
+              <div class="message-header">
+                <p>Success</p>
+                <button class="delete" aria-label="delete"></button>
+              </div>
+              <div class="message-body">
+                  {{ message }}
+              </div>
+          </article>
+          {% else %}
+          <article class="message is-danger">
+              <div class="message-header">
+                <p>Error</p>
+                <button class="delete" aria-label="delete"></button>
+              </div>
+              <div class="message-body">
+                  {{ message }}
+              </div>
+          </article>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          {% endwith %}
+      </section>
+  </div>
+</div>

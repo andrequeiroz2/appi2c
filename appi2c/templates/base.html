@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>appi2c</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <script src="https://kit.fontawesome.com/b2b2e9464f.js" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+
+    {% endblock head %}
+
+
+    {% block script %}{% endblock script %}
+
+</head>
+
+
+<body {% block body %}{% endblock body %}>
+    {% block navbar %}
+    <nav class="navbar is-primary">
+        <div class="container">
+            <div class="navbar-brand">
+                <div class="navbar-burger burger" data-target="navMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            {% if current_user.is_authenticated %}
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="{{ url_for('site.index') }}">
+                            Home
+                        </a>
+                        <a class="navbar-item" href="{{ url_for('groups.group_opts') }}">
+                            Group
+                        </a>
+                        <a class="navbar-item" href="{{ url_for('mqtt.mqtt_opts') }}">
+                            Mqtt
+                        </a>
+                        <a class="navbar-item" href="{{ url_for('devices.device_opts') }}">
+                            Device
+                        </a>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-light" href="{{ url_for('login.edit_profile') }}">
+                                <i class="fab fa-2x fa-reddit-alien" color="#ff6600"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-light" href="{{ url_for('login.logout') }}">
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" href="{{ url_for('login.signup') }}">
+                                <strong>Sign up</strong>
+                            </a>
+                            <a class="button is-light" href="{{ url_for('login.login') }}">
+                                Log in
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
+    {% endblock navbar %}
+    {% block indexNavBar %}{% endblock indexNavBar %}
+    {% block hero %} {% endblock hero %}
+
+    <div class="columns is-centered is-vcentered is-mobile">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        {% if category != "error" %}
+        <script>
+            $.confirm({
+                useBootstrap: false,
+                scrollToPreviousElementAnimate: false,
+                bgOpacity: 0.90,
+                boxWidth: '40%',
+                icon: 'fa fa-spinner fa-spin',
+                content: '{{ message }}',
+                type: 'blue',
+                buttons: {
+                    cancel: {
+                        text: " Ok ",
+                        btnClass: 'btn-blue',
+                        keys: ['enter'],
+                        action: function () {
+
+                        }
+                    },
+                }
+            });
+        </script>
+        {% else %}
+        <script>
+            $.confirm({
+                useBootstrap: false,
+                scrollToPreviousElementAnimate: false,
+                bgOpacity: 0.90,
+                boxWidth: '40%',
+                icon: 'fa fa-spinner fa-spin',
+                content: '{{ message }}',
+                type: 'red',
+                buttons: {
+                    calcel: {
+                        text: " Ok ",
+                        btnClass: 'btn-red',
+                        keys: ['enter'],
+                        action: function () {
+
+                        }
+                    },
+                }
+            });
+        </script>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+
+
+
+    {% block main %} {% endblock main %}
+
+
+    {% block footer %}
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>
+                <strong>appi2c</strong> by <a href="https://github.com/andrequeiroz2/">Andre Queiroz</a>. The
+                source
+                code is licensed
+                <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+                is licensed <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+            </p>
+        </div>
+    </footer>
+    {% endblock footer %}
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="column is-mobile">
+  <div class="column is-half is-offset-one-quarter">
+
+    <nav class="panel">
+      <p class="panel-heading">
+        {{ title }}
+      </p>
+
+      <form method="POST" action="">
+
+        <div class="panel-block">
+          <div class="table-container column is-12">
+            <table class="table is-striped is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>URL</th>
+                  <th>Port</th>
+                  <th>Keep Alive</th>
+                  <th>Activate?</th>
+                  <th>Administration</th>
+                </tr>
+              </thead>
+
+              {% set counter = 0 -%}
+              {% for client in clients %}
+              {% if client.status is sameas true %}
+
+              <tbody>
+                <tr class="is-selected">
+                  <td>{{ client.name }}</td>
+                  <td>{{ client.address_url }}</td>
+                  <td>{{ client.port }}</td>
+                  <td>{{ client.keep_alive }}</td>
+                  <td>{{ client.status }}</td>
+                  <td>
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.edit_mqtt', id=client['id']) }}">
+                      Edit
+                    </a>
+
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.activate_mqtt', id=client['id']) }}">
+                      Activate
+                    </a>
+
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.deactivate_mqtt', id=client['id']) }}">
+                      Deactivate
+                    </a>
+
+                    <a class="js-delete-confirm button is-black is-small"
+                      href="{{ url_for('mqtt.delete_mqtt', id=client['id']) }}">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+              {% else %}
+              <tbody>
+                <tr>
+                  <td>{{ client.name }}</td>
+                  <td>{{ client.address_url }}</td>
+                  <td>{{ client.port }}</td>
+                  <td>{{ client.keep_alive }}</td>
+                  <td>{{ client.status }}</td>
+                  <td>
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.edit_mqtt', id=client['id']) }}">
+                      Edit
+                    </a>
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.activate_mqtt', id=client['id']) }}">
+                      Activate
+                    </a>
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.deactivate_mqtt', id=client['id']) }}">
+                      Deactivate
+                    </a>
+
+                    <a class="js-delete-confirm button is-black is-small"
+                      href="{{ url_for('mqtt.delete_mqtt', id=client['id']) }}">
+                      Delete
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+              {% endif %}
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </form>
+    </nav>
+  </div>
+</div>
+
+<script>
+  $(".js-delete-confirm").click(function (event) {
+    event.preventDefault();
+    let URL = $(this).attr('href');
+    $.confirm({
+      useBootstrap: false,
+      scrollToPreviousElementAnimate: true,
+      bgOpacity:0.90,
+      boxWidth: '40%',
+      title: 'Attention',
+      content: 'Do you confirm the deletion of the Broker?',
+      type: 'red',
+      buttons: {
+        ok: {
+          text: "Ok",
+          btnClass: 'btn-red',
+          keys: ['enter'],
+          action: function () {
+            window.location.href = URL
+          }
+        },
+        cancel: function () {
+
+        }
+      }
+    });
+  })
+</script>
+
+{% endblock main %}

@@ -1,0 +1,15 @@
+flask
+flask-sqlalchemy
+flask-migrate
+flask-admin
+flask-login
+flask-bcrypt
+flask-wtf
+email-validator
+flask-mqtt
+paho-mqtt
+wtforms-sqlalchemy
+WTForms
+click
+setuptools
+requests

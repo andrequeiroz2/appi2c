@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="container">
+    <div class="columns is-centered is-vcentered is-mobile">
+        
+        <section class="section">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }}
+                <nav class="panel">
+                    <p class="panel-heading">
+                        {{title}}
+                    </p>
+
+
+                    <section class="section">
+                        <div class="field">
+                            {{ form.name.label }}
+                            {% if form.name.errors %}
+                            {{ form.name(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.name.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.name(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="field">
+                            {{ form.address_url.label }}
+                            {% if form.address_url.errors %}
+                            {{ form.address_url(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.address_url.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.address_url(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.port.label }}
+                            {% if form.port.errors %}
+                            {{ form.port(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.port.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.port(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+
+                        <div class="field">
+                            {{ form.username.label }}
+                            {% if form.username.errors %}
+                            {{ form.username(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.username(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+
+
+                        <div class="field">
+                            {{ form.password.label }}
+                            {% if form.password.errors %}
+                            {{ form.password(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.password(class="input is-info", type="password") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.keep_alive.label }}
+                            {% if form.keep_alive.errors %}
+                            {{ form.keep_alive(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.keep_alive.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.keep_alive(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.last_will_topic.label }}
+                            {% if form.last_will_topic.errors %}
+                            {{ form.last_will_topic(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.last_will_topic.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.last_will_topic(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.last_will_message.label }}
+                            {% if form.last_will_message.errors %}
+                            {{ form.last_will_message(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.last_will_message.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            {{ form.last_will_message(class="input is-info", type="text") }}
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.last_will_qos.label }}
+                            {% if form.last_will_qos.errors %}
+                            {{ form.last_will_qos(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.last_will_qos.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p>
+                            <div class="select is-info">
+                                {{ form.last_will_qos(class="select is-primary", type="text") }}
+                            </div>
+                        </p>
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            {{ form.last_will_retain.label }}
+                            {% if form.last_will_retain.errors %}
+                            {{ form.last_will_retain(class="input is-info is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.last_will_retain.errors %}
+                                <p class="help is-danger">
+                                    <span>{{ error }}</span>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p>
+                            <div class="select is-info">
+                                {{ form.last_will_retain(class="input is-info", type="text") }}
+                            </div>
+                            </p>
+                            {% endif %}
+                        </div>
+
+                        <div class="field">
+                            <p class="control">
+                                {{ form.submit(class="button is-primary") }}
+                            </p>
+                        </div>
+
+                    </section>
+                </nav>
+            </form>
+        </section>
+    </div>
+</div>
+{% endblock main %}

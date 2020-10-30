@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+        <nav class="panel">
+            <p class="panel-heading">
+                {{ title }}
+            </p>
+            <form method="POST" action="">
+                <div class="panel-block">
+                    <div class="table-container column is-12">
+                        <table class="table is-striped is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Group</th>
+                                </tr>
+                            </thead>
+                            {% for device in devices %}
+                            <tbody>
+                                <tr>
+                                    <td>{{ device.name }}</td>
+                                    <td>{{ device.group.name }}</td>
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </nav>
+    </div>
+</div>
+{% endblock main %}

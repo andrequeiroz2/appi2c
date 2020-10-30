@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+
+        <nav class="panel">
+            <p class="panel-heading">
+                {{ title }}
+            </p>
+            <form method="POST" action="">
+
+                <div class="panel-block">
+                    <div class="table-container column is-12">
+                        <table class="table is-striped is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Administration</th>
+                                </tr>
+                            </thead>
+
+                            {% set counter = 0 -%}
+                            {% for group in groups %}
+
+                            <tbody>
+                                <tr>
+                                    <td>{{ group.name }}</td>
+                                    <td>{{ group.description }}</td>
+                                    <td>
+                                        <a class="button is-black is-small"
+                                            href="{{ url_for('groups.edit_group', id=group['id']) }}">
+                                             Edit 
+                                        </a>
+                                        <a class="js-delete-confirm button is-black is-small"
+                                            href="{{ url_for('groups.delete_group', id=group['id']) }}">
+                                             Delete 
+                                            {% set msg = group.name %}
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </nav>
+    </div>
+</div>
+
+<script>
+    $(".js-delete-confirm").click(function (event) {
+      event.preventDefault();
+      let URL = $(this).attr('href');
+      $.confirm({
+        useBootstrap: false,
+        scrollToPreviousElementAnimate: true,
+        bgOpacity:0.90,
+        boxWidth: '40%',
+        title: 'Attention',
+        content: 'Do you confirm the deletion of the Group?',
+        type: 'red',
+        buttons: {
+          ok: {
+            text: "Ok",
+            btnClass: 'btn-red',
+            keys: ['enter'],
+            action: function () {
+              window.location.href = URL
+            }
+          },
+          cancel: function () {
+  
+          }
+        }
+      });
+    })
+  </script>
+
+{% endblock main %}

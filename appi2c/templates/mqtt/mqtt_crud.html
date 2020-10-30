@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="container">
+    <div class="columns is-centered is-vcentered is-mobile">
+        <section class="section">
+            <form method="POST" action="">
+                <nav class="panel">
+                    <table class="table table is-narrow table is-hoverable">
+                        
+                        
+          
+                        
+                        <thead>
+                            <tr>
+                                <th>Pos</th>
+                                <th>Name</th>
+                                <th>URL</th>
+                                <th>Port</th>
+                                <th>Keep Alive</th>
+                                <th>Activate ?</th>
+                                <th>Administration</th>
+                            </tr>
+                        </thead>
+                        
+                        {% for client in clients %}
+                        {% if client.status is sameas true %}
+                        <tbody>
+                            <tr class="is-selected">
+                                <th>{{ client.id }}</th>
+                                <td>{{ client.name }}</td>
+                                <td>{{ client.address_url }}</td>
+                                <td>{{ client.port }}</td>
+                                <td>{{ client.keep_alive }}</td>
+                                <td>{{ client.status }}</td>
+                                <td>
+                                    <a
+                                        href="{{ url_for('mqtt.admin', id=client['id']) }}">Go!</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% else %}
+                        <tbody>
+                            <tr>
+                                <th>{{ client.id }}</th>
+                                <td>{{ client.name }}</td>
+                                <td>{{ client.address_url }}</td>
+                                <td>{{ client.port }}</td>
+                                <td>{{ client.keep_alive }}</td>
+                                <td>{{ client.status }}</td>
+                                <td>
+                                    <a
+                                        href="{{ url_for('mqtt.admin', id=client['id']) }}">Go!</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {% endif %}
+                        {% endfor %}
+                    </table>
+                </nav>
+            </form>
+        </section>
+    </div>
+</div>
+
+{% endblock main %}
+
+
+
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="container">
+  <div class="columns is-centered is-vcentered is-mobile">
+    <section class="section">
+
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">
+            {{ client.name }}
+          </p>
+        </header>
+        <div class="card-content">
+          <div class="content">
+            <p><strong>Address URL</strong></p>
+            <p style="color:#45C78F">{{ client.address_url }}</p>
+            <p><strong>Port</strong></p>
+            <p style="color:#45C78F">{{ client.port }}</p>
+            <p><strong>Keep Alive</strong></p>
+            <p style="color:#45C78F">{{ client.keep_alive }}</p>
+            <p><strong>Last Will Topic</strong></p>
+            <p style="color:#45C78F">{{ client.last_will_topic }}</p>
+            <p><strong>Last Will Message</strong></p>
+            <p style="color:#45C78F">{{ client.last_will_message }}</p>
+            <p><strong>Last Will Qos</strong></p>
+            <p style="color:#45C78F">{{ client.last_will_qos }}</p>
+            <p><strong>Last Will Retain</strong></p>
+            <p style="color:#45C78F">{{ client.last_will_retain }}</p>
+
+            <p><strong>Status</strong></p>
+            {% if client.status is sameas true %}
+            <p style="color:#45C78F">Activated</p>
+            {% else %}
+            <p style="color:#990a3a">Disabled</p>
+            {% endif %}
+          </div>
+        </div>
+        <footer class="card-footer">
+          
+
+          <a href="{{url_for('mqtt.activate_mqtt', id=client['id'])}}" class="card-footer-item">Activate</a>
+          <a href="{{url_for('mqtt.deactivate_mqtt', id=client['id'])}}" class="card-footer-item">Deactivate</a>
+          
+          
+          <a href="{{url_for('mqtt.edit_mqtt', id=client['id'])}}" class="card-footer-item">Edit</a>
+          <a href="#" class="card-footer-item">Delete</a>
+        </footer>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+{% endblock main %}
