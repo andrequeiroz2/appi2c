@@ -23,3 +23,9 @@ class DeviceTypeAdmin(ModelView):
     """Interface Admin DeviceType"""
     column_list = ('Id', 'Name')
     column_searchable_list = ['id', 'name']
+
+
+class IconAdmin(ModelView):
+    """Interface Admin Icon"""
+    column_list = ('Id', 'Html Class')
+    column_searchable_list = ['id', 'html_class']

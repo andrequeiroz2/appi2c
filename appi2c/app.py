@@ -11,8 +11,7 @@ from appi2c.ext import site
 from appi2c.ext import mqtt
 from appi2c.ext import group
 from appi2c.ext import device
-#from appi2c.ext.mqtt.mqtt_controller import
-#from appi2c.ext.mqtt import teste1
+from appi2c.ext import icon
 
 
 def create_app():
@@ -30,5 +29,6 @@ def create_app():
     mqtt.init_app(app)
     device.init_app(app)
     group.init_app(app)
+    icon.init_app(app)
     return app
 

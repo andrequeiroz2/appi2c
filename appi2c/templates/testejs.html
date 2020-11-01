@@ -285,3 +285,35 @@ brightness_4
               });
           })
 </script>
+
+
+
+
+@app.cli.command()
+def populate_type():
+    """Populate Table DeviceType"""
+    deviceType = DeviceType.query.all()
+    insertType = ['Switch', 'Sensor']
+    insertType_len = len(insertType)
+    if not deviceType:
+        for x in range(insertType_len):
+            name_type = insertType[x]
+            device = DeviceType(name=name_type)
+            db.session.add(device)
+            db.session.commit()
+    click.echo(click.style("Success", fg="green")+": Populate Table DeviceType")
+
+
+
+    def populate_table_devicetype():
+    """Populate Table DeviceType"""
+    deviceType = DeviceType.query.all()
+    insertType = ['Switch', 'Sensor']
+    insertType_len = len(insertType)
+    if not deviceType:
+        for x in range(insertType_len):
+            name_type = insertType[x]
+            device = DeviceType(name=name_type)
+            db.session.add(device)
+            db.session.commit()
+    click.echo(click.style("Success", fg="green")+": Populate Table DeviceType")

@@ -137,4 +137,3 @@ def get_inf_for_pub(device, command):
     date_now = get_date()
     device.last_date = date_now
     db.session.commit()
-

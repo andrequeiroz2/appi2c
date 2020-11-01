@@ -1,6 +1,4 @@
 from appi2c.ext.database import db
-from sqlalchemy.orm import validates
-from appi2c.ext.icon.icon_models import Icon
 
 
 class Device(db.Model):
@@ -19,8 +17,9 @@ class Device(db.Model):
     qos = db.Column('qos', db.Integer, nullable=False)
     retained = db.Column("retained", db.String(5), default='True')
     type_id = db.Column('type_id', db.Integer, db.ForeignKey('device_type.id'), nullable=False)
-    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False)
+    icon_id = db.Column('icon_id', db.Integer, db.ForeignKey('icon.id'), nullable=False)
     group_id = db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False)
+    user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
         return f"Device('{self.name}',\
@@ -36,7 +35,7 @@ class DeviceType(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(60))
     devices = db.relationship('Device', backref='device', lazy=True)
-    icons = db.relationship('Icon', backref='icon', lazy=True)
+
 
     def __repr__(self):
         return f"'{self.name}'"
