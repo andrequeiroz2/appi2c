@@ -189,11 +189,11 @@ onload="enable_text_sub(false)"
                                 </p>
                                 {% endif %}
                             </div>
-
+                            </br>
                             <div class="field">
                                 <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
                             </div>
-                            
+                            </br>
                             <div class="field">
                                 <p class="control">
                                     {{ form.submit(class="button is-primary") }}
@@ -208,34 +208,39 @@ onload="enable_text_sub(false)"
                                         scrollToPreviousElementAnimate: true,
                                         draggable: false,
                                         bgOpacity:0.90,
-                                        boxWidth: '40%',
+                                        boxWidth: '60%',
                                         title: 'Select icon type',
                                         type: 'blue',
                                         content:'' +
                                                 '<form action="" class="btn-dark">' +
                                                 '<div class="form-group">' +
-                                                '<table class="table">' +
+                                                '<table class="table" style="width:70%">' +
                                                 '<thead>' +
                                                 '<tr>' +
                                                 '<th>Select</th>' +
                                                 '<th>Icon</th>' +
                                                 '</thead>' +
-                                                '<tbody>' +
                                                 '<form>' +
                                                 {% for icon in icons %}
+                                                '<tbody>' +
                                                 '<tr>' +
                                                 '<td>' +
                                                 '<div class="radio">' +
                                                 '<input type="radio" id="{{icon.id}}" name="icon">' +
                                                 '</div>' +
                                                 '</td>' +
+                                                '<td>' +
+                                                '<div class="radiotext">' +
+                                                '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
+                                                '</div>' +
+                                                '</td>' +
                                                 '</tr>' +
+                                                '</tboby>' +
                                                 {% endfor %}
                                                 '</form>' +
-                                                '</tboby>'+
                                                 '</table>'+
                                                 '</div>' +
-                                                '</form>'+
+                                                '</form>' +
                                                 '',
                                         buttons: {
                                                     cancel: function () {

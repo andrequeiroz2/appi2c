@@ -73,7 +73,7 @@ def list_mqtt():
     return render_template('mqtt/mqtt_list.html', title='Mqtt List', clients=clients)
 
 
-@bp.route("/admin/Mqtt", methods=['GET', 'POST'])
+@bp.route("/admin/mqtt", methods=['GET', 'POST'])
 def admin_mqtt():
     clients = list_all_client_mqtt()
     if not clients:

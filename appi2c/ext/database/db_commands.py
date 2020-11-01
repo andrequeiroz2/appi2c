@@ -51,7 +51,7 @@ def init_app(app):
     def populate_icon():
         """Populate Table Icon"""
         icon = Icon.query.all()
-        insert_icon = ['fas fa-power-off','fas fa-lightbulb','fas fa-plug','fas fa-thermometer-three-quarters','fas fa-cloud-showers-heavy','fas fa-coffee', 'fas fa-fan']
+        insert_icon = ['fas fa-power-off','fas fa-lightbulb','fas fa-plug','fas fa-thermometer-three-quarters','fas fa-door-open','fas fa-coffee', 'fas fa-lock']
         insert_icon_len = len(insert_icon)
         if not icon:
             for x in range(insert_icon_len):

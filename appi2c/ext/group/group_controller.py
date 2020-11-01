@@ -49,5 +49,3 @@ def choice_query():
 def update_group(id: int, name: str, description: str):
     Group.query.filter_by(id=id).update(dict(name=name, description=description))
     db.session.commit()
-
-
