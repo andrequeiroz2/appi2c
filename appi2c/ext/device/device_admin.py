@@ -2,8 +2,7 @@ from flask_admin.contrib.sqla import ModelView
 
 
 class DeviceAdmin(ModelView):
-    """Interface Local Admin"""
-
+    """Interface Admin Device"""
     column_list = ('Name',
                    'Topic_Pub',
                    'Topic_Sub',
@@ -18,3 +17,9 @@ class DeviceAdmin(ModelView):
                               'qos',
                               'retained',
                               ]
+
+
+class DeviceTypeAdmin(ModelView):
+    """Interface Admin DeviceType"""
+    column_list = ('Id', 'Name')
+    column_searchable_list = ['id', 'name']

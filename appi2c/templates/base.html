@@ -98,59 +98,59 @@
 
     <div class="container">
         <div class="column is-half is-offset-one-quarter">
-            
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-        {% for category, message in messages %}
-        {% if category != "error" %}
-        <script>
-            $.confirm({
-                useBootstrap: false,
-                scrollToPreviousElementAnimate: false,
-                bgOpacity: 0.90,
-                boxWidth: '40%',
-                icon: 'far fa-laugh is-4x',
-                content: '{{ message }}',
-                type: 'blue',
-                buttons: {
-                    cancel: {
-                        text: " Ok ",
-                        btnClass: 'btn-blue',
-                        keys: ['enter'],
-                        action: function () {
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            {% if category != "error" %}
+            <script>
+                $.confirm({
+                    useBootstrap: false,
+                    scrollToPreviousElementAnimate: false,
+                    draggable: false,
+                    bgOpacity: 0.90,
+                    boxWidth: '40%',
+                    icon: 'far fa-laugh',
+                    content: '{{ message }}',
+                    type: 'blue',
+                    buttons: {
+                        cancel: {
+                            text: " Ok ",
+                            btnClass: 'btn-blue',
+                            keys: ['enter'],
+                            action: function () {
 
-                        }
-                    },
-                }
-            });
-        </script>
-        {% else %}
-        <script>
-            $.confirm({
-                useBootstrap: false,
-                scrollToPreviousElementAnimate: false,
-                bgOpacity: 0.90,
-                boxWidth: '40%',
-                icon: 'far fa-frown is-4x',
-                content: '{{ message }}',
-                type: 'red',
-                buttons: {
-                    calcel: {
-                        text: " Ok ",
-                        btnClass: 'btn-red',
-                        keys: ['enter'],
-                        action: function () {
+                            }
+                        },
+                    }
+                });
+            </script>
+            {% else %}
+            <script>
+                $.confirm({
+                    useBootstrap: false,
+                    scrollToPreviousElementAnimate: false,
+                    draggable: false,
+                    bgOpacity: 0.90,
+                    boxWidth: '40%',
+                    icon: 'far fa-frown',
+                    content: '{{ message }}',
+                    type: 'red',
+                    buttons: {
+                        calcel: {
+                            text: " Ok ",
+                            btnClass: 'btn-red',
+                            keys: ['enter'],
+                            action: function () {
 
-                        }
-                    },
-                }
-            });
-        </script>
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-        {% endwith %}
-            
+                            }
+                        },
+                    }
+                });
+            </script>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
 

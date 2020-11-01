@@ -43,6 +43,9 @@ def aboult_group():
 @bp.route("/admin/group", methods=['GET', 'POST'])
 def admin_group():
     groups = list_all_group(current_user)
+    if not groups:
+        flash('There are no records. Register a Group', 'error')
+        return redirect(url_for('groups.register_group'))
     return render_template('group/group_admin.html', title='Group Admin', groups=groups)
 
 
@@ -55,7 +58,7 @@ def edit_group(id):
         current_group.description = form.description.data
         update_group(id, current_group.name, current_group.description)
         flash('Your changes have been saved.', 'success')
-        return redirect(url_for('site.index'))
+        return redirect(url_for('groups.group_opts'))
     elif request.method == 'GET':
         form.name.data = current_group.name
         form.description.data = current_group.description

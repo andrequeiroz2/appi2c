@@ -5,7 +5,6 @@ from wtforms.validators import InputRequired, Length, ValidationError
 from appi2c.ext.group.group_models import Group
  
 
-
 class GroupForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     description = StringField('Description', widget=TextArea())
@@ -22,11 +21,3 @@ class EditGroupForm(FlaskForm):
     name = StringField('Name', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     description = StringField('Description', widget=TextArea())
     submit = SubmitField('Confirm')
-
-
-    def validate_name(self, name, id):
-        group = Group.query.filter_by(name=name.data.title()).first()
-        if group is not None and id != group.id:
-            raise ValidationError('Please use a different group name.')
-
-

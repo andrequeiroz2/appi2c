@@ -16,13 +16,13 @@ from appi2c.ext.encrypt import bcrypt
 import time
 
 
-t=int(time.time())
-t=str(t)
+t = int(time.time())
+t = str(t)
 
 bp = Blueprint('mqtt', __name__, template_folder='appi2c/templates/mqtt')
 
 
-@bp.route("/aboult")
+@bp.route("/aboult/mqtt")
 def aboult_mqtt():
     return render_template('mqtt/mqtt_aboult.html')
 
@@ -59,7 +59,7 @@ def register_mqtt():
                 last_will_qos=form.last_will_qos.data,
                 last_will_retain=retain
                 )
-        flash(f'Client MQTT ' + form.name.data + ' has benn created!', 'success')
+        flash('Client MQTT ' + form.name.data + ' has benn created!', 'success')
         return redirect(url_for('mqtt.list_mqtt'))
     return render_template('mqtt/mqtt_create.html', title='Register Broker MQTT', form=form)
 
@@ -68,14 +68,17 @@ def register_mqtt():
 def list_mqtt():
     clients = list_all_client_mqtt()
     if not clients:
-        flash(f'There are no records. Register a Broker MQTT', 'error')
-        return redirect(url_for('mqtt.register'))
+        flash('There are no records. Register a Broker MQTT', 'error')
+        return redirect(url_for('mqtt.register_mqtt'))
     return render_template('mqtt/mqtt_list.html', title='Mqtt List', clients=clients)
 
 
 @bp.route("/admin/Mqtt", methods=['GET', 'POST'])
 def admin_mqtt():
     clients = list_all_client_mqtt()
+    if not clients:
+        flash('There are no records. Register a Broker MQTT', 'error')
+        return redirect(url_for('mqtt.register_mqtt'))
     return render_template('mqtt/mqtt_admin.html', title='Mqtt Admin', clients=clients)   
 
 
@@ -129,7 +132,7 @@ def edit_mqtt(id):
                            mqtt_client.last_will_qos,
                            mqtt_client.last_will_retain)
         reinitialise_client_mqtt(mqtt_client)
-        flash(f'Your changes have been saved.')
+        flash('Your changes have been saved.')
         return redirect(url_for('mqtt.admin_mqtt'))
     elif request.method == 'GET':
         form.name.data = mqtt_client.name

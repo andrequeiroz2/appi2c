@@ -1,60 +1,66 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="column is-mobile">
-<div class="column is-half is-offset-one-quarter">
-    <form method="POST" action="">
-        <nav class="panel">
-            <p class="panel-heading">
-                {{ title }}
-            </p>
-            <section class="section">
-                <p>
-                    <a type="submit" class="js-select-confirm button is-medium is-fullwidth is-primary">Add Device</a>
+    <div class="column is-half is-offset-one-quarter">
+        <form method="POST" action="">
+            <nav class="panel">
+                <p class="panel-heading">
+                    {{ title }}
                 </p>
-                </br>       
-                <p>
-                    <a href="{{ url_for('devices.list_device') }}"  type="submit" class="button is-medium is-fullwidth is-primary">List Device</a>
-                </p>
-                
-                </br>
-                <p>
-                    <a href="{{ url_for('devices.admin_device') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Admin Device</a>
-                </p>
-                </br>
-                <p>
-                    <a href="{{ url_for('devices.aboult_device') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Aboult Device</a>
-                </p>
-                <script>
-                    $(".js-select-confirm").click(function (event) {
-                        event.preventDefault();
-                        let URL = "{{ url_for('devices.register_device_switch') }}";
-                        $.confirm({
-                            useBootstrap: false,
-                            scrollToPreviousElementAnimate: true,
-                            bgOpacity:0.90,
-                            boxWidth: '40%',
-                            title: 'Select device type',
-                            type: 'blue',
-                            content:'' +
+                <section class="section">
+                    <p>
+                        <a type="submit" class="js-select-device button is-medium is-fullwidth is-primary">Add
+                            Device</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a href="{{ url_for('devices.list_device') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">List Device</a>
+                    </p>
+
+                    </br>
+                    <p>
+                        <a href="{{ url_for('devices.admin_device') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Admin Device</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a href="{{ url_for('devices.aboult_device') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Aboult Device</a>
+                    </p>
+                    <script>
+                        $(".js-select-device").click(function (event) {
+                            event.preventDefault();
+                            $.confirm({
+                                useBootstrap: false,
+                                scrollToPreviousElementAnimate: true,
+                                draggable: false,
+                                bgOpacity: 0.90,
+                                boxWidth: '40%',
+                                title: 'Select device type',
+                                type: 'blue',
+                                content: '' +
                                     '<form action="" class="btn-dark">' +
                                     '<div class="form-group">' +
-                                    '<a href="{{ url_for('devices.register_device_switch') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Switch</a>' +
+                                    {% for x in types %}
+                                    '<a href="{{ url_for('devices.register_device', id=x['id']) }}"  type="submit" class="button is-medium is-fullwidth is-primary">{{ x.name }}</a>' +
                                     '</br>'+
-                                    '<a href="{{ url_for('devices.register_device_sensor') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Sensor</a>' +
+                                    {% endfor %}
                                     '</div>' +
-                                    '</form>',
+                                    '</form>' +
+                                    '',
                             buttons: {
                                         cancel: function () {
-  
+
                                                             }
-                                    }
-                                });
-                            })
-                </script>
-            </section>
-        </nav>
-    </form>
-    
-</div>
+                                     }
+                                 });
+                            })           
+                    </script>
+                </section>
+            </nav>
+        </form>
+
+    </div>
 </div>
 {% endblock main %}

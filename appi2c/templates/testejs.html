@@ -258,36 +258,30 @@ brightness_4
 
 
 
-<div class="container">
-  <div class="column is-half is-offset-one-quarter">
-      <section class="section">
-          {% with messages = get_flashed_messages(with_categories=true) %}
-          {% if messages %}
-          {% for category, message in messages %}
-          {% if category != "error" %}
-          <article class="message is-primary">
-              <div class="message-header">
-                <p>Success</p>
-                <button class="delete" aria-label="delete"></button>
-              </div>
-              <div class="message-body">
-                  {{ message }}
-              </div>
-          </article>
-          {% else %}
-          <article class="message is-danger">
-              <div class="message-header">
-                <p>Error</p>
-                <button class="delete" aria-label="delete"></button>
-              </div>
-              <div class="message-body">
-                  {{ message }}
-              </div>
-          </article>
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-          {% endwith %}
-      </section>
-  </div>
-</div>
+<script>
+  $(".js-select-confirm").click(function (event) {
+      event.preventDefault();
+      let URL = "{{ url_for('devices.register_device_switch') }}";
+      $.confirm({
+          useBootstrap: false,
+          scrollToPreviousElementAnimate: true,
+          bgOpacity:0.90,
+          boxWidth: '40%',
+          title: 'Select device type',
+          type: 'blue',
+          content:'' +
+                  '<form action="" class="btn-dark">' +
+                  '<div class="form-group">' +
+                  '<a href="{{ url_for('devices.register_device_switch') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Switch</a>' +
+                  '</br>'+
+                  '<a href="{{ url_for('devices.register_device_sensor') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Sensor</a>' +
+                  '</div>' +
+                  '</form>',
+          buttons: {
+                      cancel: function () {
+
+                                          }
+                  }
+              });
+          })
+</script>

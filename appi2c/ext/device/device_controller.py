@@ -1,6 +1,6 @@
 from appi2c.ext.group.group_models import Group
 from appi2c.ext.database import db
-from appi2c.ext.device.device_models import Device
+from appi2c.ext.device.device_models import Device, DeviceType
 from datetime import datetime
 from appi2c.ext.mqtt.mqtt_connect import handle_publish
 
@@ -108,9 +108,19 @@ def list_device_in_group(group):
     return device
 
 
-def list_device_id(id):
+def list_device_id(id: int):
     device = Device.query.filter_by(id=id).first()
     return device
+
+
+def list_all_deviceType():
+    deviceType = DeviceType.query.all()
+    return deviceType
+
+
+def list_deviceType_id(id: int):
+    deviceType = DeviceType.query.filter_by(id=id).first()
+    return deviceType
 
 
 def get_inf_for_pub(device, command):
@@ -127,3 +137,4 @@ def get_inf_for_pub(device, command):
     date_now = get_date()
     device.last_date = date_now
     db.session.commit()
+

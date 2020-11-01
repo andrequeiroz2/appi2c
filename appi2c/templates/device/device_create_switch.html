@@ -191,7 +191,7 @@ onload="enable_text_sub(false)"
                             </div>
 
                             <div class="field">
-                                <a type="submit" class="js-select-confirm button is-normal is-dark">Select Icon</a>
+                                <a type="submit" class="js-select-icon-switch button is-normal is-dark">Select Icon</a>
                             </div>
                             
                             <div class="field">
@@ -201,9 +201,8 @@ onload="enable_text_sub(false)"
                             </div>
 
                             <script>
-                                $(".js-select-confirm").click(function (event) {
+                                $(".js-select-icon-switch").click(function (event) {
                                     event.preventDefault();
-                                    let URL = "{{ url_for('devices.register_device_switch') }}";
                                     $.confirm({
                                         useBootstrap: false,
                                         scrollToPreviousElementAnimate: true,
@@ -214,9 +213,8 @@ onload="enable_text_sub(false)"
                                         content:'' +
                                                 '<form action="" class="btn-dark">' +
                                                 '<div class="form-group">' +
+                                                ''
                                                 '<a href="{{ url_for('devices.register_device_switch') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Switch</a>' +
-                                                '</br>'+
-                                                '<a href="{{ url_for('devices.register_device_sensor') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Sensor</a>' +
                                                 '</div>' +
                                                 '</form>',
                                         buttons: {
