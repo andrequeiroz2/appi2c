@@ -11,6 +11,7 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  list_all_deviceType,
                                                  list_deviceType_id
                                                  )
+from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
 
 
@@ -30,6 +31,7 @@ def convert_qos(qos):
 @bp.route("/register/device/switch", methods=['GET', 'POST'])
 def register_device_switch():
     group = list_all_group(current_user)
+    icons = list_all_icon()
     if not group:
         flash('There are no records. Register a Group', 'error')
         return redirect(url_for('groups.register_group'))
@@ -56,7 +58,7 @@ def register_device_switch():
                              group=form.groups.data.id)
         flash('Device ' + form.name.data + ' has benn created!', 'success')
         return redirect(url_for('devices.list_device'))
-    return render_template('device/device_create_switch.html', title='Register Device Switch', form=form)
+    return render_template('device/device_create_switch.html', title='Register Device Switch', icons=icons, form=form)
 
 
 @bp.route("/register/device/sensor", methods=['GET', 'POST'])
@@ -139,8 +141,8 @@ def register_device(id):
         return redirect(url_for('groups.register_group'))
 
     deviceType = list_deviceType_id(id)
-    if deviceType.name == "DeviceSwitch":
+    if deviceType.name == "Switch":
         return redirect(url_for('devices.register_device_switch'))
     else:
-        deviceType.name == "DeviceSensor"
+        deviceType.name == "Sensor"
         return redirect(url_for('devices.register_device_sensor'))

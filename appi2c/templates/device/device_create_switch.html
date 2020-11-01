@@ -191,7 +191,7 @@ onload="enable_text_sub(false)"
                             </div>
 
                             <div class="field">
-                                <a type="submit" class="js-select-icon-switch button is-normal is-dark">Select Icon</a>
+                                <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
                             </div>
                             
                             <div class="field">
@@ -201,31 +201,50 @@ onload="enable_text_sub(false)"
                             </div>
 
                             <script>
-                                $(".js-select-icon-switch").click(function (event) {
+                                $(".js-select-icon").click(function (event) {
                                     event.preventDefault();
                                     $.confirm({
                                         useBootstrap: false,
                                         scrollToPreviousElementAnimate: true,
+                                        draggable: false,
                                         bgOpacity:0.90,
                                         boxWidth: '40%',
-                                        title: 'Select device type',
+                                        title: 'Select icon type',
                                         type: 'blue',
                                         content:'' +
                                                 '<form action="" class="btn-dark">' +
                                                 '<div class="form-group">' +
-                                                ''
-                                                '<a href="{{ url_for('devices.register_device_switch') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Switch</a>' +
+                                                '<table class="table">' +
+                                                '<thead>' +
+                                                '<tr>' +
+                                                '<th>Select</th>' +
+                                                '<th>Icon</th>' +
+                                                '</thead>' +
+                                                '<tbody>' +
+                                                '<form>' +
+                                                {% for icon in icons %}
+                                                '<tr>' +
+                                                '<td>' +
+                                                '<div class="radio">' +
+                                                '<input type="radio" id="{{icon.id}}" name="icon">' +
                                                 '</div>' +
-                                                '</form>',
+                                                '</td>' +
+                                                '</tr>' +
+                                                {% endfor %}
+                                                '</form>' +
+                                                '</tboby>'+
+                                                '</table>'+
+                                                '</div>' +
+                                                '</form>'+
+                                                '',
                                         buttons: {
                                                     cancel: function () {
               
                                                                         }
                                                 }
                                             });
-                                        })
+                                        })            
                             </script>
-
                         </section>
                     </nav>
                 </form>
