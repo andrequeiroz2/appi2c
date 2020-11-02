@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="column is-mobile">
+  <div class="column is-half is-offset-one-quarter">
+
+    <nav class="panel">
+      <p class="panel-heading">
+        {{ title }}
+      </p>
+
+      <form method="POST" action="">
+
+        <div class="panel-block">
+          <div class="table-container column is-12">
+            <table class="table is-striped is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Icon</th>
+                  <th>Html Class</th>
+                </tr>
+              </thead>
+              
+              {% for icon in icons %}
+              <tbody>
+                <tr>
+                  <td><i class="{{ icon.html_class }}" aria-hidden="true"></i></td>
+                  <td>class="{{ icon.html_class }}"</td>
+                </tr>
+              </tbody>
+              {% endfor %}
+            </table>
+          </div>
+        </div>
+      </form>
+      <div class="panel-block">
+        <div class="column is-4 is-offset-8">
+          <div class="buttons are-medium">
+            <a class="js-help-icon button is-primary">
+              Help
+            </a>
+            </br>
+            <a class="button is-primary" href="{{ url_for('icons.register_icon') }}">
+              Add
+            </a>
+          </div>
+        </div>
+      </div>
+      <script>
+        $(".js-help-icon").click(function (event) {
+            event.preventDefault();
+            $.confirm({
+                useBootstrap: false,
+                scrollToPreviousElementAnimate: true,
+                draggable: false,
+                bgOpacity: 0.90,
+                boxWidth: '50%',
+                title: 'Help Add Icon',
+                type: 'blue',
+                content: '<p><span>The icons are provided by Font-Awesome!</span></p>' +
+                         '<p><span>Access: <a href="https://fontawesome.com/">Font-Awesome</a></span></p> ' +
+                         '',
+            buttons: {
+                        ok: function () {
+      
+                                            }
+                     }
+                 });
+            })           
+      </script>
+    </nav>
+  </div>
+</div>
+{% endblock main %}

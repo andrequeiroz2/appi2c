@@ -8,7 +8,7 @@ def list_all_icon():
 
 
 def list_icon_id(id: int) -> Icon:
-    icon = Icon.query.fliter_by(id=id).first()
+    icon = Icon.query.filter_by(id=id).first()
     return icon
 
 
