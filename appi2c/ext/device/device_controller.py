@@ -2,7 +2,9 @@ from appi2c.ext.group.group_models import Group
 from appi2c.ext.database import db
 from appi2c.ext.device.device_models import Device, DeviceType
 from datetime import datetime
-from appi2c.ext.mqtt.mqtt_connect import handle_publish
+from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
+                                          handle_subscribe,
+                                          handle_subscribe)
 
 
 def get_date():
@@ -19,7 +21,8 @@ def create_device_switch(name: str,
                          last_will_topic: str,
                          qos: int,
                          retained: bool,
-                         type_device: str,
+                         type_id: int,
+                         icon_id: int,
                          user: int,
                          group: int):
 
@@ -33,12 +36,12 @@ def create_device_switch(name: str,
                     last_will_topic=last_will_topic,
                     qos=qos,
                     retained=retained,
-                    type_device=type_device,
+                    icon_id=icon_id,
+                    type_id=type_id,
                     user_id=user,
                     group_id=group)
     db.session.add(device)
     db.session.commit()
-    return device
 
 
 def create_device_sensor(group: int,
@@ -50,7 +53,8 @@ def create_device_sensor(group: int,
                          last_will_topic: str,
                          qos: int,
                          retained: bool,
-                         type_device: str,
+                         icon_id: int,
+                         type_id: int,
                          user: int,
                          ):
 
@@ -63,11 +67,35 @@ def create_device_sensor(group: int,
                     last_will_topic=last_will_topic,
                     qos=qos,
                     retained=retained,
-                    type_device=type_device,
-                    user_id=user,
-                    )
+                    icon_id=icon_id,
+                    type_id=type_id,
+                    user_id=user)
     db.session.add(device)
     db.session.commit()
+    handle_subscribe(topic_sub, qos)
+
+
+def convert_boolean(result: str):
+    if result == 'True':
+        value = True
+        return value
+    else:
+        value = False
+        return value
+
+
+def convert_qos(qos: str):
+    if qos == '0':
+        value = 0
+    elif qos == '1':
+        value = 1
+    else:
+        value = 2
+    return value
+
+
+def list_all_device_init():
+    device = Device.query.all()
     return device
 
 
@@ -137,3 +165,18 @@ def get_inf_for_pub(device, command):
     date_now = get_date()
     device.last_date = date_now
     db.session.commit()
+
+
+def get_inf_all_device_sub():
+    devices = list_all_device_init()
+    if not devices:
+        pass
+    else:
+        for device in devices:
+            if not device.topic_sub:
+                pass
+            else:
+                topic = device.topic_sub
+                qos = device.qos
+                print(qos)
+                handle_subscribe(topic, qos)

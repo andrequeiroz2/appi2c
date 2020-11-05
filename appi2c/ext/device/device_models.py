@@ -15,7 +15,7 @@ class Device(db.Model):
     prefix = db.Column('prefix', db.String(10))
     postfix = db.Column('postfix', db.String(10))
     qos = db.Column('qos', db.Integer, nullable=False)
-    retained = db.Column("retained", db.String(5), default='True')
+    retained = db.Column("retained", db.Boolean, default=True)
     type_id = db.Column('type_id', db.Integer, db.ForeignKey('device_type.id'), nullable=False)
     icon_id = db.Column('icon_id', db.Integer, db.ForeignKey('icon.id'), nullable=False)
     group_id = db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False)

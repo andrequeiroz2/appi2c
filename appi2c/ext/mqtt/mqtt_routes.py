@@ -12,6 +12,7 @@ from appi2c.ext.mqtt.mqtt_controller import (create_client_mqtt,
                                              activate_client_mqtt,
                                              update_client_mqtt,
                                              reinitialise_client_mqtt)
+
 from appi2c.ext.encrypt import bcrypt
 import time
 
@@ -84,8 +85,10 @@ def admin_mqtt():
 
 @bp.route("/activate/mqtt/<int:id>", methods=['GET', 'POST'])
 def activate_mqtt(id):
+    from appi2c.ext.device.device_controller import get_inf_all_device_sub
     client = list_client_mqtt_id(id)
     activate_client_mqtt(client)
+    get_inf_all_device_sub()
     return redirect(url_for('mqtt.admin_mqtt'))
 
 

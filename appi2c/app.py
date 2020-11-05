@@ -1,4 +1,5 @@
 from flask import Flask
+from appi2c.ext import socketio
 from appi2c.ext import config
 from appi2c.ext.database import db
 from appi2c.ext.database import db_commands
@@ -16,7 +17,7 @@ from appi2c.ext import icon
 
 def create_app():
     app = Flask(__name__)
-
+    socketio.init_app(app)
     config.init_app(app)
     db.init_app(app)
     db_commands.init_app(app)
@@ -30,5 +31,9 @@ def create_app():
     device.init_app(app)
     group.init_app(app)
     icon.init_app(app)
-    return app
 
+    #with app.app_context():
+    #    from appi2c.ext.device.device_controller import get_inf_all_device_sub
+    #    get_inf_all_device_sub()
+
+    return app

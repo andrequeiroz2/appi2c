@@ -9,23 +9,17 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  list_device_id,
                                                  get_inf_for_pub,
                                                  list_all_deviceType,
-                                                 list_deviceType_id
+                                                 list_deviceType_id,
+                                                 convert_qos,
+                                                 convert_boolean
                                                  )
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
 
 
+
 bp = Blueprint('devices', __name__, template_folder='appi2c/templates/device')
 
-
-def convert_qos(qos):
-    if qos == '0':
-        qos = 0
-    elif qos == '1':
-        qos = 1
-    else:
-        qos = 2
-    return (qos)
 
 
 @bp.route("/register/device/switch", methods=['GET', 'POST'])
@@ -44,7 +38,7 @@ def register_device_switch():
     if form.validate_on_submit():
 
         qos_int = convert_qos(form.qos.data)
-
+        retain_bool = convert_boolean(form.retained.data)
         create_device_switch(name=form.name.data,
                              topic_pub=form.topic_pub.data,
                              topic_sub=form.topic_sub.data,
@@ -52,8 +46,9 @@ def register_device_switch():
                              command_off=form.command_off.data,
                              last_will_topic=form.last_will_topic.data,
                              qos=qos_int,
-                             retained=form.retained.data,
-                             type_device='DeviceSwitch',
+                             retained=retain_bool,
+                             type_id=1,
+                             icon_id=2,
                              user=current_user.id,
                              group=form.groups.data.id)
         flash('Device ' + form.name.data + ' has benn created!', 'success')
@@ -73,9 +68,8 @@ def register_device_sensor():
         return redirect(url_for('mqtt.register_mqtt'))
     form = DeviceSensorForm()
     if form.validate_on_submit():
-
         qos_int = convert_qos(form.qos.data)
-
+        retain_bool = convert_boolean(form.retained.data)
         create_device_sensor(group=form.groups.data.id,
                              name=form.name.data,
                              topic_pub=form.topic_pub.data,
@@ -84,13 +78,11 @@ def register_device_sensor():
                              postfix=form.postfix.data,
                              last_will_topic=form.last_will_topic.data,
                              qos=qos_int,
-                             retained=form.retained.data,
-                             type_device='DeviceSensor',
+                             retained=retain_bool,
+                             type_id=2,
+                             icon_id=1,
                              user=current_user.id,
                              )
-        print(form.topic_sub.data)
-        print(type(form.qos.data))
-        #client_subscrib(form.topic_sub.data, int(form.qos.data))
         flash('Device ' + form.name.data + ' has benn created!', 'success')
         return redirect(url_for('devices.list_device'))
     return render_template('device/device_create_sensor.html', title='Register Device Sensor', form=form)

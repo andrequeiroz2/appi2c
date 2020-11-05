@@ -15,7 +15,7 @@ class DeviceSwitchForm(FlaskForm):
     command_on = StringField('On Command', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     command_off = StringField('Off Command', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()], default=0)
-    retained = SelectField('Retained', choices=[('False', 'False'), ('True', 'True')], default='True')
+    retained = SelectField('Retained', choices=[(False, False), (True, True)], default=True)
 
     submit = SubmitField('Insert')
 

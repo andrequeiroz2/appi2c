@@ -22,7 +22,6 @@ class User(db.Model, UserMixin):
     admin = db.Column("admin", db.Boolean, default=False)
     groups = db.relationship('Group', backref='user', lazy=True)
     devices = db.relationship('Device', backref='user', lazy=True)
-    
     client_mqtt = db.relationship('ClientMqtt', backref='user', lazy='dynamic')
 
     def __repr__(self):

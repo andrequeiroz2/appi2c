@@ -1,5 +1,5 @@
 #from flask import json
-#from appi2c.ext.mqtt.mqtt_socketio import socketio
+from appi2c.ext.socketio import socketio
 from flask import current_app
 from flask_mqtt import Mqtt
 import uuid
@@ -55,5 +55,11 @@ def handle_disconnect():
     mqtt._disconnect()
 
 
-def handle_publish(topic, msg, qos, retain):
-    mqtt.publish(topic, msg, qos)
+@mqtt.on_publish()
+def handle_publish(topic: str, msg: str, qos: int, retain: bool):
+    mqtt.publish(topic=topic, payload=msg, qos=qos, retain=retain)
+
+
+@socketio.on('subscribe')
+def handle_subscribe(topic: str, qos: int):
+    mqtt.subscribe(topic=topic, qos=qos)

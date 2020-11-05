@@ -287,5 +287,196 @@ brightness_4
 </script>
 
 
+$('.js-form-icon').click(function(event) {
+  function getRadioVal(form, name) {
+          var val;
+          var radios = form.elements[name];
+          for (var i=0, len=radios.length; i<len; i++) {
+              if ( radios[i].checked ) { // radio checked?
+                  val = radios[i].value; // if so, hold its value in val
+                  break; // and break out of for loop
+              }
+          }
+          
+          return val; // return value of checked radio or undefined if none checked
+      }   
+      
+      var val = getRadioVal( document.getElementById('form_icon'), 'ship' );
+      alert(val);
+  });
 
 
+
+
+
+
+<div class="field">
+    <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
+</div>
+  <script>
+    $(".js-select-icon").click(function(event) {
+        event.preventDefault();
+        $.confirm({
+            useBootstrap: false,
+            scrollToPreviousElementAnimate: true,
+            draggable: false,
+            bgOpacity:0.90,
+            boxWidth: '60%',
+            title: 'Select icon type',
+            type: 'blue',
+            content:'' + 
+                    '<form action="" class="btn-dark">' +
+                    '<div class="form-group">' +
+                    '<table class="table" style="width:70%">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Select</th>' +
+                    '<th>Icon</th>' +
+                    '</thead>' +
+                    '<form name="js-form-icon" id="js-form-icon">' +
+                    '<tbody>' +
+                    '{% for icon in icons %}'+
+                    '<tr>' +
+                    '<td>' +
+                    '<div class="radio">' +
+                    '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
+                    '</div>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="radiotext">' +
+                    '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
+                    '</div>' +
+                    '</td>' +
+                    '</tr>' +
+                    '{% endfor %}'+
+                    '</tboby>' +
+                    '</form>' +
+                    '</table>'+
+                    '</div>' +
+                    '</form>' +
+                    '',  
+            buttons:{
+                        ok: function() {
+                                  
+                        },       
+                        close: function() {         
+
+                        }
+                    }
+                });
+    });          
+</script>
+
+
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+
+
+<div class="field">
+  <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
+</div>
+<script>
+  $(".js-select-icon").click(function(event) {
+      event.preventDefault();
+      $.confirm({
+          useBootstrap: false,
+          scrollToPreviousElementAnimate: true,
+          draggable: false,
+          bgOpacity:0.90,
+          boxWidth: '60%',
+          title: 'Select icon type',
+          type: 'blue',
+          content:'' + 
+                  '<form action="" class="btn-dark">' +
+                  '<div class="form-group">' +
+                  '<table class="table" style="width:70%">' +
+                  '<thead>' +
+                  '<tr>' +
+                  '<th>Select</th>' +
+                  '<th>Icon</th>' +
+                  '</thead>' +
+                  '<form name="js-form-icon" id="js-form-icon">' +
+                  '<tbody>' +
+                  '{% for icon in icons %}'+
+                  '<tr>' +
+                  '<td>' +
+                  '<div class="radio">' +
+                  '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
+                  '</div>' +
+                  '</td>' +
+                  '<td>' +
+                  '<div class="radiotext">' +
+                  '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
+                  '</div>' +
+                  '</td>' +
+                  '</tr>' +
+                  '{% endfor %}'+
+                  '</tboby>' +
+                  '</form>' +
+                  '</table>'+
+                  '</div>' +
+                  '</form>' +
+                  '',  
+          buttons:{
+                      "confirm": getRadioVal,
+
+                      close: function() {}
+                  }
+              });
+                  function getRadioVal() {
+                  $('.js-form-icon').click(function(event) {
+                      var val;
+                      var x = document.getElementById('js-form-icon')
+                      var name = 'icon-select'
+                      var radios = x.elements[name];
+                      for (var i=0, len=radios.length; i<len; i++) {
+                          if ( radios[i].checked ) {
+                              val = radios[i].value;
+                              break;
+                          }
+                      }
+                      alert(val);
+                      return val;
+                  }); 
+                  } 
+  });          
+</script>
+
+
+
+<div class="field">
+  <a type="submit" class="button is-nomal is-dark" href="div-icon" rel="modal:open">Select
+      Icon</a>
+</div>
+
+<div id="div-icon" class="modal">
+  <form id="form-icon">
+      <div class="form-group">
+          <table class="table" style="width:70%">
+              <thead>
+                  <tr>
+                      <th>Select</th>
+                      <th>Icon</th>
+              </thead>
+
+              <tbody>
+                  {% for icon in icons %}
+                  <tr>
+                      <td>
+                          <div class="radio">
+                              <input type="radio" id="{{icon.id}}" value={{icon.id}}
+                                  name="icon-select">
+                          </div>
+                      </td>
+                      <td>
+                          <div class="radiotext">
+                              <i class="{{ icon.html_class }}" aria-hidden="true"></i>
+                          </div>
+                      </td>
+                  </tr>
+                  {% endfor %}
+                  </tboby>
+          </table>
+      </div>
+  </form>
+</div>

@@ -23,7 +23,7 @@
               </span>
             </a>
           </header>
-          {% if device.type_device == 'DeviceSwitch' %}
+          {% if device.type_id == 1 %}
           <div class="card-content">
             <div class="has-text-centered">
               <div class="content">
@@ -49,6 +49,29 @@
             </div>
           </div>
           {% endif %}
+
+          {% if device.type_id == 2 %}
+          <div class="card-content">
+            <div class="has-text-centered">
+              <div class="content">
+
+                <section>
+                  <p><i class="fas fa-2x fa-bolt" color="#ff6600"></i></p>
+
+                </section>
+
+
+
+              </div>
+            </div>
+            <div class="has-text-centered">
+              </br>
+              <span>Last Message:</span>
+              <a> data </a>
+            </div>
+          </div>
+          {% endif %}
+
           <footer class="card-footer">
             <a href="#" class="card-footer-item">Edit</a>
             <a href="#" class="card-footer-item">Dashboard</a>
