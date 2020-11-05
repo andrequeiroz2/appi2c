@@ -1,5 +1,6 @@
 #from flask import json
 from appi2c.ext.socketio import socketio
+from flask_socketio import emit
 from flask import current_app
 from flask_mqtt import Mqtt
 import uuid
@@ -30,24 +31,22 @@ def connect(client):
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
-    print('===On Msg===')
-    print('Client: ', client)
-    print('User: ', userdata)
-    print('Topic: ', message.topic)
-    print('Payload: ', message.payload.decode())
-    data = dict(
-        topic=message.topic,
-        payload=message.payload.decode()
-    )
+    #print('===On Msg===')
+    #print('Topic: ', message.topic)
+    #print('Payload: ', message.payload.decode())
+    topic = message.topic  
+    data = dict(topic=message.topic, payload=message.payload.decode(), qos=message.qos)
+    socketio.emit(topic, data=data)
 
 
 @mqtt.on_log()
 def handle_logging(client, userdata, level, buf):
-    print("===ON LOG===")
-    print('Client: ', client)
-    print('User: ', userdata)
-    print('Level: ', level)
-    print('Buf: ', buf)
+    #print("===ON LOG===")
+    #print('Client: ', client)
+    #print('User: ', userdata)
+    #print('Level: ', level)
+    #print('Buf: ', buf)
+    pass
 
 
 @mqtt.on_disconnect()

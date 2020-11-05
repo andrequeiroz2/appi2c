@@ -1,5 +1,5 @@
 import eventlet
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 
 socketio = SocketIO()
 
@@ -13,5 +13,3 @@ def init_app(app):
                      port=8000,
                      use_reloader=True,
                      debug=True)
-
-        

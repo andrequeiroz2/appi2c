@@ -54,14 +54,10 @@
           <div class="card-content">
             <div class="has-text-centered">
               <div class="content">
-
                 <section>
-                  <p><i class="fas fa-2x fa-bolt" color="#ff6600"></i></p>
+                  <p><div id="{{device.topic_sub}}"> Waiting... </div></p>
 
                 </section>
-
-
-
               </div>
             </div>
             <div class="has-text-centered">
@@ -70,8 +66,16 @@
               <a> data </a>
             </div>
           </div>
+          <script type="text/javascript" charset="utf-8">
+            socket.on('{{device.topic_sub}}', function(data) {
+                  if (data['topic'] == '{{device.topic_sub}}') {
+                      console.log('passei aki');
+                      $('#{{device.topic_sub}}').text(data['payload']);
+                  }
+                  console.log('nao passou');
+              });
+          </script>
           {% endif %}
-
           <footer class="card-footer">
             <a href="#" class="card-footer-item">Edit</a>
             <a href="#" class="card-footer-item">Dashboard</a>
@@ -83,5 +87,7 @@
     </div>
   </div>
 </div>
+
+
 
 {% endblock main %}
