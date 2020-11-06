@@ -180,3 +180,26 @@ def get_inf_all_device_sub():
                 qos = device.qos
                 print(qos)
                 handle_subscribe(topic, qos)
+
+
+def update_device_switch(id: int,
+                         name: str,
+                         topic_pub: str,
+                         topic_sub: str,
+                         prefix: str,
+                         postfix: str,
+                         last_will_topic: str,
+                         qos: int,
+                         retained: bool,
+                         group_id: int):
+
+    Device.query.filter_by(id=id).update(dict(name=name, 
+                                              topic_pub=topic_pub,
+                                              topic_sub=topic_sub,
+                                              prefix=prefix,
+                                              postfix=postfix,
+                                              last_will_topic=last_will_topic,
+                                              qos=qos,
+                                              retained=retained,
+                                              group_id=group_id))
+    db.session.commit()

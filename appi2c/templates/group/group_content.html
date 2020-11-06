@@ -55,7 +55,11 @@
             <div class="has-text-centered">
               <div class="content">
                 <section>
-                  <p><div id="{{device.topic_sub}}"> Waiting... </div></p>
+                  <p>
+                    <i>{{ device.prefix }}</i>
+                    <div id="{{device.topic_sub}}"> Waiting... </div>
+                    <i>{{ device.postfix }}</i>
+                  </p>
 
                 </section>
               </div>

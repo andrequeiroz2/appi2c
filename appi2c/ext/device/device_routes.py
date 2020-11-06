@@ -1,6 +1,14 @@
 from appi2c.ext.device.device_models import DeviceType
-from flask import Blueprint, flash, redirect, render_template, url_for
-from appi2c.ext.device.device_forms import DeviceSwitchForm, DeviceSensorForm
+from flask import (Blueprint,
+                   flash,
+                   redirect,
+                   render_template,
+                   url_for,
+                   request)
+from appi2c.ext.device.device_forms import (DeviceSwitchForm,
+                                            DeviceSensorForm,
+                                            EditSwitchForm,
+                                            EditSensorForm)
 from appi2c.ext.group.group_controller import list_all_group
 from appi2c.ext.mqtt.mqtt_controller import list_all_client_mqtt
 from appi2c.ext.device.device_controller import (create_device_switch,
@@ -11,7 +19,8 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  list_all_deviceType,
                                                  list_deviceType_id,
                                                  convert_qos,
-                                                 convert_boolean
+                                                 convert_boolean,
+                                                 update_device_switch
                                                  )
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
@@ -109,7 +118,7 @@ def admin_device():
     if not devices:
         flash('There are no records. Register a Device', 'error')
         return redirect(url_for('devices.device_opts'))
-    return 'admin/device'
+    return render_template('device/device_admin.html', title='Device Admin', devices=devices)
 
 
 @bp.route("/aboult/device")
@@ -121,8 +130,6 @@ def aboult_device():
 def pub_device(id, id_group, command):
     device = list_device_id(id)
     get_inf_for_pub(device, command)
-    print(command)
-    return redirect(url_for('groups.content_group', id=id_group))
 
 
 @bp.route("/register/device/<int:id>", methods=['GET', 'POST'])
@@ -138,3 +145,94 @@ def register_device(id):
     else:
         deviceType.name == "Sensor"
         return redirect(url_for('devices.register_device_sensor'))
+
+
+@bp.route('/edit/device/<int:id>', methods=['GET', 'POST'])
+def edit_device(id):
+    if id == 1:
+        form = EditSwitchForm()
+        current_device = list_device_id(id)
+
+        if form.validate_on_submit():
+            qos_int = convert_qos(form.qos.data)
+            retain_bool = convert_boolean(form.retained.data)
+            current_device.name = form.name.data
+            current_device.topic_pub = form.topic_pub.data
+            current_device.topic_sub = form.topic_sub.data
+            current_device.command_on = form.command_on.data
+            current_device.command_off = form.command_off.data
+            current_device.last_will_topic = form.last_will_topic.data
+            current_device.qos = qos_int
+            current_device.retained = retain_bool
+            current_device.groups = form.groups.data.id
+
+            update_device_switch(id,
+                                 current_device.name,
+                                 current_device.topic_pub,
+                                 current_device.topic_sub,
+                                 current_device.command_on,
+                                 current_device.command_off,
+                                 current_device.last_will_topic,
+                                 current_device.qos,
+                                 current_device.retained,
+                                 current_device.groups)
+
+            flash('Your changes have been saved.', 'success')
+            return redirect(url_for('devices.device_opts'))
+
+        elif request.method == 'GET':
+            form.name.data = current_device.name
+            form.topic_pub.data = current_device.topic_pub
+            form.topic_sub.data = current_device.topic_sub
+            form.command_on.data = current_device.command_on
+            form.command_off.data = current_device.command_off
+            form.last_will_topic.data = current_device.last_will_topic
+            form.qos.data = current_device.qos
+            form.retained.data = current_device.retained
+            form.groups.data = current_device.group_id
+
+        return render_template('device/device_edit_switch.html', title='Edit Device Switch', form=form)
+
+    if id == 2:
+        form = EditSensorForm()
+        current_device = list_device_id(id)
+
+        if form.validate_on_submit():
+            current_device.name = form.name.data
+            current_device.topic_pub = form.topic_pub.data
+            current_device.topic_sub = form.topic_sub.data
+            current_device.prefix = form.prefix.data
+            current_device.postfix = form.postfix.data
+            current_device.last_will_topic = form.last_will_topic.data
+            current_device.qos = form.qos.data
+            current_device.retained = form.retained.data
+            current_device.groups = form.groups.data
+
+            update_device_switch(id,
+                                 current_device.name,
+                                 current_device.topic_pub,
+                                 current_device.topic_sub,
+                                 current_device.prefix,
+                                 current_device.postfix,
+                                 current_device.last_will_topic,
+                                 current_device.qos,
+                                 current_device.retained,
+                                 current_device.groups)
+
+            flash('Your changes have been saved.', 'success')
+            return redirect(url_for('devices.device_opts'))
+
+        elif request.method == 'GET':
+            form.name.data = current_device.name
+            form.topic_pub.data = current_device.topic_pub
+            form.topic_sub.data = current_device.topic_sub
+            form.prefix.data = current_device.prefix
+            form.postfix.data = current_device.postfix
+            form.last_will_topic.data = current_device.last_will_topic
+            form.qos.data = current_device.qos
+            form.retained.data = current_device.retained
+            form.groups.data = current_device.groups
+
+        return render_template('device/device_opts.html', title='Edit Device Switch', form=form)
+    
+    return 'Tipo de device sem form de edicao'
