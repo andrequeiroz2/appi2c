@@ -25,8 +25,7 @@
                     </p>
                     </br>
                     <p>
-                        <a href="{{ url_for('devices.aboult_device') }}" type="submit"
-                            class="button is-medium is-fullwidth is-primary">Aboult Device</a>
+                        <a type="submit" class="js-aboult-device button is-medium is-fullwidth is-primary">Aboult Device</a>
                     </p>
                     <script>
                         $(".js-select-device").click(function (event) {
@@ -42,10 +41,10 @@
                                 content: '' +
                                     '<form action="" class="btn-dark">' +
                                     '<div class="form-group">' +
-                                    {% for x in types %}
+                                    '{% for x in types %}'+
                                     '<a href="{{ url_for('devices.register_device', id=x['id']) }}"  type="submit" class="button is-medium is-fullwidth is-primary">{{ x.name }}</a>' +
                                     '</br>'+
-                                    {% endfor %}
+                                    '{% endfor %}'+
                                     '</div>' +
                                     '</form>' +
                                     '',
@@ -55,7 +54,36 @@
                                                             }
                                      }
                                  });
-                            })           
+                            });
+
+                            $(".js-aboult-device").click(function (event) {
+                                event.preventDefault();
+                                $.confirm({
+                                useBootstrap: false,
+                                scrollToPreviousElementAnimate: true,
+                                draggable: false,
+                                bgOpacity:0.90,
+                                boxWidth: '60%',
+                                title: 'Aboult Device',
+                                type: 'blue',
+                                content:
+                                        ''+ 
+                                        '<p>Device are micro-controlled devices that use Mqtt as a communication protocol.</p>'+
+                                        '<p>Appi2c currently supports two types of devices.</p>' +
+                                        '<p>Switch type corresponds to actuators, relays, etc.</p>' +
+                                        '<p>Sensor type corresponds to sensors, humidity, temperature, gas, etc.</p>'+
+                                        '<p>Types of devices that do not correspond to existing ones. they need implementation.</p>'+
+                                        '',
+                                type: 'blue',
+                                buttons: {
+                                            ok: {
+                                            text: "Ok",
+                                            btnClass: 'btn-blue',
+                                            keys: ['enter']
+                                            }
+                                        },
+                                    });
+                                });      
                     </script>
                 </section>
             </nav>

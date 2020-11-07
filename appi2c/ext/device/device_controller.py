@@ -203,3 +203,9 @@ def update_device_switch(id: int,
                                               retained=retained,
                                               group_id=group_id))
     db.session.commit()
+
+
+def delete_device_id(id):
+    device = Device.query.filter_by(id=id).first() 
+    db.session.delete(device)
+    db.session.commit()

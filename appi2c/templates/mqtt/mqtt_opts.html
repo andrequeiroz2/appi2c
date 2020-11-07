@@ -22,7 +22,7 @@
                 </p>
                 </br>
                 <p>
-                    <a href="{{ url_for('mqtt.aboult_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Aboult Mqtt</a>
+                    <a type="submit" class="js-aboult-mqtt button is-medium is-fullwidth is-primary">Aboult Mqtt</a>
                 </p>
             </section>
         </nav>
@@ -30,4 +30,36 @@
     
 </div>
 </div>
+
+<script>
+    $(".js-aboult-mqtt").click(function (event) {
+      event.preventDefault();
+      
+      $.confirm({
+        useBootstrap: false,
+        scrollToPreviousElementAnimate: true,
+        draggable: false,
+        bgOpacity:0.90,
+        boxWidth: '60%',
+        title: 'Aboult Mqtt',
+        type: 'blue',
+        content:
+            ''+ 
+            '<p>The Appi2c uses the Mqtt protocol to exchange messages between managed devices.</p>'+
+            '<p>Flask-mqtt is a Flask extension meant to facilitate the integration of a devices MQTT client into webapplication Appi2c.</p>'+
+            '<p>Register an mqtt client and make sure it is connected. Before sending or receiving information from your devices.</p>'+
+            '<p>More explanations see <a href="https://flask-mqtt.readthedocs.io/en/latest/">Flask-MQTT</a></p>'+
+            '',
+        type: 'blue',
+        buttons: {
+          ok: {
+            text: "Ok",
+            btnClass: 'btn-blue',
+            keys: ['enter']
+            
+            }
+          },
+      });
+    })
+  </script>
 {% endblock main %}

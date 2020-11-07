@@ -22,14 +22,13 @@
                                     <th>Administration</th>
                                 </tr>
                             </thead>
-
                             {% set counter = 0 -%}
                             {% for device in devices %}
                             <tbody>
                                 <tr>
-                                    {% if device.type_id == 1 %}
+                                   
                                     <td>{{ device.name }}</td>
-                                    <td> Switch </td>
+                                    <td> {{ device.type_id.name }} </td>
                                     <td>
                                         <a class="button is-black is-small"
                                             href=""> 
@@ -40,12 +39,12 @@
                                              Edit 
                                         </a>
                                         <a class="js-delete-confirm button is-black is-small"
-                                            href="nada">
+                                            href="{{ url_for('devices.delete_device', id=device['id']) }}">
                                              Delete 
                                             {% set msg = device.name %}
                                         </a>
                                     </td>
-                                    {% endif %}
+                                   
                                 </tr>
                             </tbody>
                             {% endfor %}
@@ -67,7 +66,7 @@
         bgOpacity:0.90,
         boxWidth: '40%',
         title: 'Attention',
-        content: 'Do you confirm the deletion of the Group?',
+        content: 'Do you confirm the deletion of the Device?',
         type: 'red',
         buttons: {
           ok: {
@@ -84,6 +83,5 @@
         }
       });
     })
-  </script>
-
+</script>
 {% endblock main %}

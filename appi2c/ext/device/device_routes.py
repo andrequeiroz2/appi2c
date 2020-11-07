@@ -20,7 +20,8 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  list_deviceType_id,
                                                  convert_qos,
                                                  convert_boolean,
-                                                 update_device_switch
+                                                 update_device_switch,
+                                                 delete_device_id
                                                  )
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
@@ -233,6 +234,12 @@ def edit_device(id):
             form.retained.data = current_device.retained
             form.groups.data = current_device.groups
 
-        return render_template('device/device_opts.html', title='Edit Device Switch', form=form)
-    
+        return render_template('device/device_edit_sensor.html', title='Edit Device Sensor', form=form)
     return 'Tipo de device sem form de edicao'
+
+
+@bp.route('/delete/device/<int:id>', methods=['GET', 'POST'])
+def delete_device(id):
+    delete_device_id(id)
+    flash('Device successfully deleted.', 'success')
+    return redirect(url_for('devices.admin_device'))
