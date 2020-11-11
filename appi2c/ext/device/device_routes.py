@@ -21,8 +21,7 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  convert_qos,
                                                  convert_boolean,
                                                  update_device_switch,
-                                                 delete_device_id
-                                                 )
+                                                 delete_device_id)
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
 
@@ -58,17 +57,18 @@ def register_device_switch():
                              qos=qos_int,
                              retained=retain_bool,
                              type_id=1,
-                             icon_id=2,
+                             icon_id=form.icon_id.data,
                              user=current_user.id,
                              group=form.groups.data.id)
         flash('Device ' + form.name.data + ' has benn created!', 'success')
-        return redirect(url_for('devices.list_device'))
+        return redirect(url_for('devices.device_opts'))
     return render_template('device/device_create_switch.html', title='Register Device Switch', icons=icons, form=form)
 
 
 @bp.route("/register/device/sensor", methods=['GET', 'POST'])
 def register_device_sensor():
     group = list_all_group(current_user)
+    icons = list_all_icon()
     if not group:
         flash('There are no records. Register a Group', 'error')
         return redirect(url_for('groups.register_group'))
@@ -90,12 +90,12 @@ def register_device_sensor():
                              qos=qos_int,
                              retained=retain_bool,
                              type_id=2,
-                             icon_id=1,
+                             icon_id=form.icon_id.data,
                              user=current_user.id,
                              )
         flash('Device ' + form.name.data + ' has benn created!', 'success')
         return redirect(url_for('devices.list_device'))
-    return render_template('device/device_create_sensor.html', title='Register Device Sensor', form=form)
+    return render_template('device/device_create_sensor.html', title='Register Device Sensor', icons=icons, form=form)
 
 
 @bp.route("/list/device", methods=['GET', 'POST'])

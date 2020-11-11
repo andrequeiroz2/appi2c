@@ -172,7 +172,11 @@ onload="enable_text_pub(false)"
                             <div class="field">
                                 {{ form.groups.label }}
                                 {% if form.groups.errors %}
-                                {{ form.groups(class="input is-info is-invalid") }}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.groups(class="select is-info", type="text") }}
+                                </div>
+                                </p>
                                 <div class="invalid-feedback">
                                     {% for error in form.groups.errors %}
                                     <p class="help is-danger">
@@ -188,6 +192,16 @@ onload="enable_text_pub(false)"
                                 </p>
                                 {% endif %}
                             </div>
+                            </br>
+                            
+                            <div class="field">
+                                <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
+                            </div>
+    
+                            <div class="field">
+                                {{ form.icon_id(id="iconid", class="input is-info", type="text", style="visibility:hidden", value=selected) }}
+                            </div>
+    
 
                             <div class="field">
                                 <p class="control">
@@ -202,4 +216,55 @@ onload="enable_text_pub(false)"
         </div>
     </div>
 </form>
+
+<script>
+    $(".js-select-icon").click(function (event) {
+        $.confirm({
+            useBootstrap: false,
+            scrollToPreviousElementAnimate: true,
+            draggable: false,
+            bgOpacity: 0.90,
+            boxWidth: '50%',
+            title: 'Aboult Device',
+            type: 'blue',
+            backgroundDismiss: 'buttonName',
+            btnClass: 'btn-blue',
+            content:
+                '' +
+                '<table class="table" style="width:70%">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>Select</th>' +
+                '<th>Icon</th>' +
+                '</thead>' +
+                '<tbody>' +
+                '{% for icon in icons %}' +
+                '<tr>' +
+                '<td>' +
+                '<div class="radio">' +
+                '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
+                '</div>' +
+                '</td>' +
+                '<td>' +
+                '<div class="radiotext">' +
+                '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
+                '</div>' +
+                '</td>' +
+                '</tr>' +
+                '{% endfor %}' +
+                '</tboby>' +
+                '</table>' +
+                '',
+            buttons: {
+                Select:
+                    function () {
+                        var selected = $('input[name=icon-select]:checked').val();
+                        document.getElementById("iconid").value = selected;
+                    },
+                close: function () {
+                }
+            }
+        });
+    });
+</script>
 {% endblock main %}

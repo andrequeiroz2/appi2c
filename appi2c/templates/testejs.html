@@ -480,3 +480,36 @@ $('.js-form-icon').click(function(event) {
       </div>
   </form>
 </div>
+
+
+
+
+<imput id="icon_id" style="visibility:hidden" class="select is-info">
+                            
+</imput>
+
+
+
+
+
+
+
+
+
+
+
+
+
+//cria o imput e passa o valor do id do radio button selecionado 
+
+function () {
+  var selected = $('input[name=icon-select]:checked').val();  
+  $('#icon_id').html(selected); 
+},
+
+//imput que e criado
+
+<input class="input is-info" id="icon_id" name="icon_id" style="visibility:hidden" type="text" value="1"> id radio button
+
+var selected = $('input[name=icon-select]:checked').val();  
+$('#icon_id').html(selected);

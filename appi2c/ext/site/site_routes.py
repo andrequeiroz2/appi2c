@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
-from appi2c.ext.group.group_controller import (list_all_group,
+from appi2c.ext.group.group_controller import (num_group_user,
                                                list_all_devices_in_group,
                                                num_group)
 
@@ -24,12 +24,12 @@ bp = Blueprint('site', __name__)
 def index():
     if current_user.is_authenticated:
         user = current_user.username
-        groups = list_all_group(current_user)
+        total_groups = num_group_user(current_user)
         total_device = num_device_in_user(current_user)
         return render_template("index.html",
                                user=user,
                                total_device=total_device,
-                               groups=groups
+                               total_groups=total_groups
                                )
     else:
         total_user = num_user()

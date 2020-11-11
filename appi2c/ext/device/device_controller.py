@@ -3,7 +3,6 @@ from appi2c.ext.database import db
 from appi2c.ext.device.device_models import Device, DeviceType
 from datetime import datetime
 from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
-                                          handle_subscribe,
                                           handle_subscribe)
 
 

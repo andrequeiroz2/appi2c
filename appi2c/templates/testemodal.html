@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+        <form>
+            <section class = "section">
+                <div class = "container">
+                   <p>
+                      <a class = "button is-normal is-dark modal-button" data-target="#modal">Select Icon</a>
+                   </p>
+                   <div id="modal" class = "modal">
+                      <div class = "modal-background"></div>
+                      <div class = "modal-card">
+                         <header class = "modal-card-head">
+                            <p class = "modal-card-title"></p>
+                            <button class = "delete" aria-label="close"></button>
+                         </header>
+                         <section class = "modal-card-body">
+                            <div class = "content">
+                               
+
+
+
+
+
+
+
+                            </div>
+                         </section>
+                      </div>
+                   </div>
+                </div>
+             </section>
+        </form>
+    </div>
+</div>
+<script>
+    $(".modal-button").click(function() {
+    var target = $(this).data("target");
+    $("html").addClass("is-clipped");
+    $(target).addClass("is-active");
+    });
+    
+    $(".modal-close").click(function() {
+    $("html").removeClass("is-clipped");
+    $(this).parent().removeClass("is-active");
+    });
+ </script>
+{% endblock main %}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>

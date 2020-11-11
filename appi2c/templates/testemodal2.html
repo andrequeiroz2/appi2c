@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="field">
+    <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
+</div>
+
+<script>
+$(".js-select-icon").click(function (event) {
+$.confirm({
+    useBootstrap: false,
+    scrollToPreviousElementAnimate: true,
+    draggable: false,
+    bgOpacity:0.90,
+    boxWidth: '60%',
+    title: 'Aboult Device',
+    type: 'blue',
+    backgroundDismiss: 'buttonName',
+    content:'' + 
+                   
+                    '<table class="table" style="width:70%">' +
+                    '<thead>' +
+                    '<tr>' +
+                    '<th>Select</th>' +
+                    '<th>Icon</th>' +
+                    '</thead>' +
+                    
+                    '<tbody>' +
+                    '{% for icon in icons %}'+
+                    '<tr>' +
+                    '<td>' +
+                    '<div class="radio">' +
+                    '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
+                    '</div>' +
+                    '</td>' +
+                    '<td>' +
+                    '<div class="radiotext">' +
+                    '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
+                    '</div>' +
+                    '</td>' +
+                    '</tr>' +
+                    '{% endfor %}'+
+                    '</tboby>' +
+                    
+                    '</table>'+
+                  
+                    '',  
+    buttons: {
+        Select: function () {
+            var $checkbox = this.$content.find('#enableCheckbox');
+            alert('Yessssss')
+            return $checkbox.prop('checked');
+        },
+        close: function () {
+        }
+    }
+});
+});
+</script>
+  {% endblock main %}

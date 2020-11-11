@@ -8,6 +8,7 @@
             <ul>
                 <li><a href="admin/" aria-current="page">Admin</a></li>
                 <li><a href="{{ url_for('icons.admin_icon') }}" aria-current="page">Icon</a></li>
+                <li><a href="{{ url_for('icons.teste') }}" aria-current="page">Modal</a></li>
             </ul>
         </nav>
         <section class="hero is-dark welcome is-small">
@@ -27,14 +28,14 @@
             <div class="tile is-ancestor has-text-centered">
                 <div class="tile is-parent">
                     <article class="tile is-child box">
-                        <p class="title">{{ total_group }}</p>
-                        <p class="subtitle">Total Groups</p>
+                        <p class="title"> on/off </p>
+                        <p class="subtitle"> Broker Connection </p>
                     </article>
                 </div>
                 <div class="tile is-parent">
                     <article class="tile is-child box">
-                        <p class="title">{{ total_broker }}</p>
-                        <p class="subtitle">Total Brokers</p>
+                        <p class="title">{{ total_groups }}</p>
+                        <p class="subtitle">Total Groups</p>
                     </article>
                 </div>
                 <div class="tile is-parent">

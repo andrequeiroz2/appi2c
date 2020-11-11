@@ -41,3 +41,9 @@ def edit_icon(id):
     elif request.method == 'GET':
         form.html_class.data = current_icon.html_class
     return render_template('icon/edit_icon.html', title='Edit Icon', form=form)
+
+
+@bp.route('/teste', methods=['GET', 'POST'])
+def teste():
+    icons = list_all_icon()
+    return render_template('testemodal2.html', icons=icons)

@@ -37,6 +37,13 @@ def num_group():
     return num_group
 
 
+def num_group_user(user):
+    group = Group.query.filter_by(id=user.id).all()
+    num_group = len(group)
+    print('oiiiiiiiiiiiii: ', num_group)
+    return num_group
+
+
 def list_group_id(id: int) -> Group:
     group = Group.query.filter_by(id=id).first()
     return group
