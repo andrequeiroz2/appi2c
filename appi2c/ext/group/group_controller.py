@@ -40,7 +40,6 @@ def num_group():
 def num_group_user(user):
     group = Group.query.filter_by(id=user.id).all()
     num_group = len(group)
-    print('oiiiiiiiiiiiii: ', num_group)
     return num_group
 
 
@@ -56,3 +55,4 @@ def choice_query():
 def update_group(id: int, name: str, description: str):
     Group.query.filter_by(id=id).update(dict(name=name, description=description))
     db.session.commit()
+

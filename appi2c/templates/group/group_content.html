@@ -10,7 +10,7 @@
       {{ group.name }}
     </p>
     <div id="app" class="row columns is-multiline">
-      {% for device in devices %}
+      {% for device, icon in obj %}
       <div v-for="card in cardData" key="card.id" class="column is-4">
         <div class="card">
           <header class="card-header">
@@ -29,13 +29,13 @@
               <div class="content">
                 {% if device.last_command == device.command_on %}
                 <section>
-                  <p><i class="fas fa-2x fa-bolt" color="#ff6600"></i></p>
+                  <p><i class="{{icon}}" color="#ff6600"></i></p>
                   <a class="button is-medium is-primary"
                     href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_off') }}">Off</a>
                 </section>
                 {% else %}
                 <section>
-                  <p><i class="fas fa-2x fa-bolt" color="#E9E2E0"></i></p>
+                  <p><i class="{{icon}}" color="#E9E2E0"></i></p>
                   <a class="button is-medium is-primary"
                     href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_on') }}">On</a>
                 </section>
@@ -55,12 +55,10 @@
             <div class="has-text-centered">
               <div class="content">
                 <section>
+                  <p><i class="{{icon}}" color="#E9E2E0"></i></p>
                   <p>
-                    <i>{{ device.prefix }}</i>
-                    <div id="{{device.topic_sub}}"> Waiting... </div>
-                    <i>{{ device.postfix }}</i>
+                     <div id="{{device.id}}"> Waiting... </div>
                   </p>
-
                 </section>
               </div>
             </div>
@@ -73,10 +71,9 @@
           <script type="text/javascript" charset="utf-8">
             socket.on('{{device.topic_sub}}', function(data) {
                   if (data['topic'] == '{{device.topic_sub}}') {
-                      console.log('passei aki');
-                      $('#{{device.topic_sub}}').text(data['payload']);
+                     $('#{{device.id}}').text(data['payload']);
                   }
-                  console.log('nao passou');
+                  
               });
           </script>
           {% endif %}

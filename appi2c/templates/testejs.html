@@ -1,515 +1,194 @@
-Bulma | Modal
-Last Updated: 01-07-2020
-Bulma is a free and open-source CSS framework based on Flexbox. It is component rich, compatible, and well documented.
-It is highly responsive in nature. It uses classes to implement its design.
+{% extends "base.html" %}
 
-The Modal is a classic overlay in which one can include any content. The Modal component is a dialog box/popup window
-that is displayed on top of the current page once the trigger button is clicked. The ‘modal’ component includes several
-other components that can be added to design the content. These components are listed below:
+{% block main %}
 
-modal-background: It is the transparent overlay that acts as a click target to close the modal.
-modal-content: It is the container with a maximum width of ‘640px’. This container shows the content of the model class.
-modal-close: It is the ‘cross’ located in the top right corner which used to close the modal.
-Example 1:
 
-filter_none
-edit
-play_arrow
-
-brightness_4
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Bulma Modal</title>
-
-  <!-- Include Bulma CSS -->
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css'>
-
-  <!-- FontAwesome Library -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js'>
-  </script>
-
-  <!-- Custom CSS -->
-  <style>
-    div.columns {
-      margin-top: 50px;
-    }
-
-    .modal-content {
-      margin-top: 100px;
-      width: 450px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class='container has-text-centered'>
-    <div class='columns is-mobile is-centered'>
-      <div class='column is-4'>
-        <button class="button is-primary" id='btn'>Click to see modal</button>
-        <div class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-content">
-
-            <div class='box'>
-              <h1 class='title' style='color:green'>
-                Geek for Geeks</h1>
-              <p class='is-family-monospace'>
-                'GeeksforGeeks' is a computer
-                science portal.it was created with
-                a goal in mind to provide well
-                written, well thought and
-                well explained solutions for
-                selected questions. The core team
-                of five super geeks constituting
-                of technology lovers and
-                computer science enthusiasts
-                have been constantly working
-                in this direction .
-              </p>
-              <div class='buttons'>
-                <button class='button is-fullwidth'>
-                  Know more about GfG
-                </button>
+<div class="container">
+  <div class="section">
+    <h5 class="title is-4">Group Content</h5>
+    <p class="title is-4">
+      {{ group.name }}
+    </p>
+    <div id="app" class="row columns is-multiline">
+      {% for device in devices %}
+      <div v-for="card in cardData" key="card.id" class="column is-4">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{device.name}}
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
+          {% if device.type_id == 1 %}
+          <div class="card-content">
+            <div class="has-text-centered">
+              <div class="content">
+                {% if device.last_command == device.command_on %}
+                <section>
+                  <p><i class="{{ device.icon_id.html_class }}" color="#ff6600"></i></p>
+                  <a class="button is-medium is-primary"
+                    href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_off') }}">Off</a>
+                </section>
+                {% else %}
+                <section>
+                  <p><i class="fas fa-2x fa-bolt" color="#E9E2E0"></i></p>
+                  <a class="button is-medium is-primary"
+                    href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_on') }}">On</a>
+                </section>
+                {% endif %}
               </div>
             </div>
-          </div>
-          <button class="modal-close is-large" aria-label="close">
-            Model
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Bulma does not have JavaScript included, 
-    // hence custom JavaScript has to be 
-    // written to open or close the modal 
-    const modal =
-      document.querySelector('.modal');
-    const btn =
-      document.querySelector('#btn')
-    const close =
-      document.querySelector('.modal-close')
-
-    btn.addEventListener('click',
-      function () {
-        modal.style.display = 'block'
-      })
-
-    close.addEventListener('click',
-      function () {
-        modal.style.display = 'none'
-      })
-
-    window.addEventListener('click',
-      function (event) {
-        if (event.target.className ===
-          'modal-background') {
-          modal.style.display = 'none'
-        }
-      }) 
-  </script>
-</body>
-
-</html>
-Output:
-
-Video Player
-
-00:00
-00:11
-
-
-Example 2: Login form modal.
-
-
-
-filter_none
-edit
-play_arrow
-
-brightness_4
-<!DOCTYPE html>
-<html>
-
-<head>
-  <title>Bulma Modal</title>
-
-  <!-- Include Bulma CSS -->
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.css'>
-
-  <!-- FontAwesome Library -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/js/all.min.js'>
-  </script>
-
-  <!-- Custom CSS -->
-  <style>
-    div.columns {
-      margin-top: 50px;
-    }
-
-    .modal-content {
-      margin-top: 100px;
-      width: 450px;
-    }
-
-    .buttons {
-      margin-top: 12px;
-    }
-  </style>
-</head>
-
-<body>
-  <div class='container'>
-    <div class='columns is-mobile is-centered'>
-      <div class='column is-4'>
-        <div class='has-text-centered'>
-          <button class="button is-primary" id='btn'>
-            Login form modal
-          </button>
-        </div>
-        <div class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-content">
-            <div class="box">
-              <div>
-                <h1 class='title has-text-centered'>
-                  Login
-                </h1>
-              </div>
-              <form action='#' method='post'>
-                <div class='field'>
-                  <label class='label' id='username'>
-                    Username
-                  </label>
-                  <div class='control has-icons-left'>
-                    <input class='input' type='text' for='username' placeholder='Username'>
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-user"></i>
-                    </span>
-                  </div>
-                </div>
-
-                <div class='field'>
-                  <label class='label' id='password'>
-                    Password
-                  </label>
-                  <div class='control has-icons-left'>
-                    <input class='input' type='password' for='password' placeholder='Password'>
-                    <span class="icon is-small is-left">
-                      <i class="fas fa-lock"></i>
-                    </span>
-                  </div>
-
-                  <div class='buttons'>
-                    <button class='button is-link'>
-                      Login
-                    </button>
-                  </div>
-                </div>
-              </form>
+            <div class="has-text-centered">
+              </br>
+              <span>Last Publish:</span>
+              <a> {{ device.last_date }} </a>
             </div>
           </div>
-          <button class="modal-close is-large" aria-label="close">
-            Model
-          </button>
+          {% endif %}
+
+          {% if device.type_id == 2 %}
+          <div class="card-content">
+            <div class="has-text-centered">
+              <div class="content">
+                <section>
+                  <p>
+                    <i>{{ device.prefix }}</i>
+                    <div id="{{device.topic_sub}}"> Waiting... </div>
+                    <i>{{ device.postfix }}</i>
+                  </p>
+
+                </section>
+              </div>
+            </div>
+            <div class="has-text-centered">
+              </br>
+              <span>Last Message:</span>
+              <a> data </a>
+            </div>
+          </div>
+          <script type="text/javascript" charset="utf-8">
+            socket.on('{{device.topic_sub}}', function(data) {
+                  if (data['topic'] == '{{device.topic_sub}}') {
+                      console.log('passei aki');
+                      $('#{{device.topic_sub}}').text(data['payload']);
+                  }
+                  console.log('nao passou');
+              });
+          </script>
+          {% endif %}
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Dashboard</a>
+          </footer>
         </div>
+        </br>
       </div>
+      {% endfor %}
     </div>
   </div>
-
-  <script>
-    // Bulma does not have JavaScript included, 
-    // hence custom JavaScript has to be 
-    // written to open or close the modal 
-    const modal = document.querySelector('.modal');
-    const btn = document.querySelector('#btn')
-    const close = document.querySelector('.modal-close')
-
-    btn.addEventListener('click',
-      function () {
-        modal.style.display = 'block'
-      })
-
-    close.addEventListener('click',
-      function () {
-        modal.style.display = 'none'
-      })
-
-    window.addEventListener('click',
-      function (event) {
-        if (event.target.className ===
-          'modal-background') {
-          modal.style.display = 'none'
-        }
-      }) 
-  </script>
-</body>
-
-</html>
+</div>
 
 
 
+{% endblock main %}
+
+{% extends "base.html" %}
+
+{% block main %}
 
 
+<div class="container">
+  <div class="section">
+    <h5 class="title is-4">Group Content</h5>
+    <p class="title is-4">
+      {{ group.name }}
+    </p>
+    <div id="app" class="row columns is-multiline">
+      {% for device in devices %}
+      <div v-for="card in cardData" key="card.id" class="column is-4">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{device.name}}
+            </p>
+            <a href="#" class="card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="fas fa-angle-down" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
+          {% if device.type_id == 1 %}
+          <div class="card-content">
+            <div class="has-text-centered">
+              <div class="content">
+                {% if device.last_command == device.command_on %}
+                <section>
+                  <p><i class="fas fa-bolt" color="#ff6600"></i></p>
+                  <a class="button is-medium is-primary" type="submit" value="{{ device.id }}/command_off" id="{{ device.id }}">Off</a>
+                </section>
+                {% else %}
+                <section>
+                  <p><i class="fas fa-bolt" color="#E9E2E0"></i></p>
+                  <a class="button is-medium is-primary"
+                    href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_on') }}">On</a>
+                </section>
+                {% endif %}
+              </div>
+            </div>
+            <div class="has-text-centered">
+              </br>
+              <span>Last Publish:</span>
+              <a> {{ device.last_date }} </a>
+            </div>
+          </div>
+          {% endif %}
 
+          {% if device.type_id == 2 %}
+          <div class="card-content">
+            <div class="has-text-centered">
+              <div class="content">
+                <section>
+                  <p>
+                    <i>{{ device.prefix }}</i>
+                    <div id="{{device.topic_sub}}"> Waiting... </div>
+                    <i>{{ device.postfix }}</i>
+                  </p>
 
-
-<script>
-  $(".js-select-confirm").click(function (event) {
-      event.preventDefault();
-      let URL = "{{ url_for('devices.register_device_switch') }}";
-      $.confirm({
-          useBootstrap: false,
-          scrollToPreviousElementAnimate: true,
-          bgOpacity:0.90,
-          boxWidth: '40%',
-          title: 'Select device type',
-          type: 'blue',
-          content:'' +
-                  '<form action="" class="btn-dark">' +
-                  '<div class="form-group">' +
-                  '<a href="{{ url_for('devices.register_device_switch') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Switch</a>' +
-                  '</br>'+
-                  '<a href="{{ url_for('devices.register_device_sensor') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Sensor</a>' +
-                  '</div>' +
-                  '</form>',
-          buttons: {
-                      cancel: function () {
-
-                                          }
+                </section>
+              </div>
+            </div>
+            <div class="has-text-centered">
+              </br>
+              <span>Last Message:</span>
+              <a> data </a>
+            </div>
+          </div>
+          <script type="text/javascript" charset="utf-8">
+            socket.on('{{device.topic_sub}}', function(data) {
+                  if (data['topic'] == '{{device.topic_sub}}') {
+                      
+                      $('#{{device.topic_sub}}').text(data['payload']);
                   }
+                  
               });
-          })
-</script>
-
-
-$('.js-form-icon').click(function(event) {
-  function getRadioVal(form, name) {
-          var val;
-          var radios = form.elements[name];
-          for (var i=0, len=radios.length; i<len; i++) {
-              if ( radios[i].checked ) { // radio checked?
-                  val = radios[i].value; // if so, hold its value in val
-                  break; // and break out of for loop
-              }
-          }
-          
-          return val; // return value of checked radio or undefined if none checked
-      }   
-      
-      var val = getRadioVal( document.getElementById('form_icon'), 'ship' );
-      alert(val);
-  });
-
-
-
-
-
-
-<div class="field">
-    <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
-</div>
-  <script>
-    $(".js-select-icon").click(function(event) {
-        event.preventDefault();
-        $.confirm({
-            useBootstrap: false,
-            scrollToPreviousElementAnimate: true,
-            draggable: false,
-            bgOpacity:0.90,
-            boxWidth: '60%',
-            title: 'Select icon type',
-            type: 'blue',
-            content:'' + 
-                    '<form action="" class="btn-dark">' +
-                    '<div class="form-group">' +
-                    '<table class="table" style="width:70%">' +
-                    '<thead>' +
-                    '<tr>' +
-                    '<th>Select</th>' +
-                    '<th>Icon</th>' +
-                    '</thead>' +
-                    '<form name="js-form-icon" id="js-form-icon">' +
-                    '<tbody>' +
-                    '{% for icon in icons %}'+
-                    '<tr>' +
-                    '<td>' +
-                    '<div class="radio">' +
-                    '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
-                    '</div>' +
-                    '</td>' +
-                    '<td>' +
-                    '<div class="radiotext">' +
-                    '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
-                    '</div>' +
-                    '</td>' +
-                    '</tr>' +
-                    '{% endfor %}'+
-                    '</tboby>' +
-                    '</form>' +
-                    '</table>'+
-                    '</div>' +
-                    '</form>' +
-                    '',  
-            buttons:{
-                        ok: function() {
-                                  
-                        },       
-                        close: function() {         
-
-                        }
-                    }
-                });
-    });          
-</script>
-
-
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-
-
-<div class="field">
-  <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
-</div>
-<script>
-  $(".js-select-icon").click(function(event) {
-      event.preventDefault();
-      $.confirm({
-          useBootstrap: false,
-          scrollToPreviousElementAnimate: true,
-          draggable: false,
-          bgOpacity:0.90,
-          boxWidth: '60%',
-          title: 'Select icon type',
-          type: 'blue',
-          content:'' + 
-                  '<form action="" class="btn-dark">' +
-                  '<div class="form-group">' +
-                  '<table class="table" style="width:70%">' +
-                  '<thead>' +
-                  '<tr>' +
-                  '<th>Select</th>' +
-                  '<th>Icon</th>' +
-                  '</thead>' +
-                  '<form name="js-form-icon" id="js-form-icon">' +
-                  '<tbody>' +
-                  '{% for icon in icons %}'+
-                  '<tr>' +
-                  '<td>' +
-                  '<div class="radio">' +
-                  '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
-                  '</div>' +
-                  '</td>' +
-                  '<td>' +
-                  '<div class="radiotext">' +
-                  '<i class="{{ icon.html_class }}" aria-hidden="true"></i>' +
-                  '</div>' +
-                  '</td>' +
-                  '</tr>' +
-                  '{% endfor %}'+
-                  '</tboby>' +
-                  '</form>' +
-                  '</table>'+
-                  '</div>' +
-                  '</form>' +
-                  '',  
-          buttons:{
-                      "confirm": getRadioVal,
-
-                      close: function() {}
-                  }
-              });
-                  function getRadioVal() {
-                  $('.js-form-icon').click(function(event) {
-                      var val;
-                      var x = document.getElementById('js-form-icon')
-                      var name = 'icon-select'
-                      var radios = x.elements[name];
-                      for (var i=0, len=radios.length; i<len; i++) {
-                          if ( radios[i].checked ) {
-                              val = radios[i].value;
-                              break;
-                          }
-                      }
-                      alert(val);
-                      return val;
-                  }); 
-                  } 
-  });          
-</script>
-
-
-
-<div class="field">
-  <a type="submit" class="button is-nomal is-dark" href="div-icon" rel="modal:open">Select
-      Icon</a>
-</div>
-
-<div id="div-icon" class="modal">
-  <form id="form-icon">
-      <div class="form-group">
-          <table class="table" style="width:70%">
-              <thead>
-                  <tr>
-                      <th>Select</th>
-                      <th>Icon</th>
-              </thead>
-
-              <tbody>
-                  {% for icon in icons %}
-                  <tr>
-                      <td>
-                          <div class="radio">
-                              <input type="radio" id="{{icon.id}}" value={{icon.id}}
-                                  name="icon-select">
-                          </div>
-                      </td>
-                      <td>
-                          <div class="radiotext">
-                              <i class="{{ icon.html_class }}" aria-hidden="true"></i>
-                          </div>
-                      </td>
-                  </tr>
-                  {% endfor %}
-                  </tboby>
-          </table>
+          </script>
+          {% endif %}
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Dashboard</a>
+          </footer>
+        </div>
+        </br>
       </div>
-  </form>
+      {% endfor %}
+    </div>
+  </div>
 </div>
 
 
 
-
-<imput id="icon_id" style="visibility:hidden" class="select is-info">
-                            
-</imput>
-
-
-
-
-
-
-
-
-
-
-
-
-
-//cria o imput e passa o valor do id do radio button selecionado 
-
-function () {
-  var selected = $('input[name=icon-select]:checked').val();  
-  $('#icon_id').html(selected); 
-},
-
-//imput que e criado
-
-<input class="input is-info" id="icon_id" name="icon_id" style="visibility:hidden" type="text" value="1"> id radio button
-
-var selected = $('input[name=icon-select]:checked').val();  
-$('#icon_id').html(selected);
+{% endblock main %}

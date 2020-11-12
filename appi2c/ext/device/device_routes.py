@@ -4,7 +4,8 @@ from flask import (Blueprint,
                    redirect,
                    render_template,
                    url_for,
-                   request)
+                   request,
+                   jsonify)
 from appi2c.ext.device.device_forms import (DeviceSwitchForm,
                                             DeviceSensorForm,
                                             EditSwitchForm,
@@ -26,9 +27,7 @@ from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
 
 
-
 bp = Blueprint('devices', __name__, template_folder='appi2c/templates/device')
-
 
 
 @bp.route("/register/device/switch", methods=['GET', 'POST'])
@@ -131,6 +130,14 @@ def aboult_device():
 def pub_device(id, id_group, command):
     device = list_device_id(id)
     get_inf_for_pub(device, command)
+    return redirect(url_for('groups.content_group', id=id_group))
+
+
+#@bp.route("/device/pub", methods=["POST"])
+#def pub_device():
+#    command = request.form.get("command_on")
+#    return jsonify('')
+
 
 
 @bp.route("/register/device/<int:id>", methods=['GET', 'POST'])

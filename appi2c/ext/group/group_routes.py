@@ -11,6 +11,8 @@ from appi2c.ext.group.group_controller import (create_group,
 from appi2c.ext.device.device_controller import (list_num_devices_in_group,
                                                  list_device_in_group)
 
+from appi2c.ext.icon.icon_controller import list_icon_in_device
+
 
 bp = Blueprint('groups', __name__, template_folder="appi2c/templates/group")
 
@@ -84,4 +86,6 @@ def group_opts():
 def content_group(id):
     group = list_group_id(id)
     devices = list_device_in_group(group)
-    return render_template('group/group_content.html', devices=devices, group=group)
+    icons = list_icon_in_device(devices)
+    print(icons)
+    return render_template('group/group_content.html', group=group, obj=zip(devices, icons))
