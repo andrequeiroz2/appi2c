@@ -5,21 +5,21 @@
 
 <div class="container">
   <div class="section">
-    <h5 class="title is-4">Group Content</h5>
+    <h4 class="title is-4">Title 4 <h5 class="subtitle is-5">{{ group.name }}</h5> </h4>
     <p class="title is-4">
       {{ group.name }}
     </p>
     <div id="app" class="row columns is-multiline">
-      {% for device in devices %}
+      {% for device, icon in obj %}
       <div v-for="card in cardData" key="card.id" class="column is-4">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
               {{device.name}}
             </p>
-            <a href="#" class="card-header-icon" aria-label="more options">
+            <a type="submit" class="js-device-detail card-header-icon" aria-label="more options">
               <span class="icon">
-                <i class="fas fa-angle-down" aria-hidden="true"></i>
+                <i class="far fa-eye" aria-hidden="true"></i>
               </span>
             </a>
           </header>
@@ -29,13 +29,13 @@
               <div class="content">
                 {% if device.last_command == device.command_on %}
                 <section>
-                  <p><i class="{{ device.icon_id.html_class }}" color="#ff6600"></i></p>
+                  <p><i class="{{icon}}" color="#ff6600"></i></p>
                   <a class="button is-medium is-primary"
                     href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_off') }}">Off</a>
                 </section>
                 {% else %}
                 <section>
-                  <p><i class="fas fa-2x fa-bolt" color="#E9E2E0"></i></p>
+                  <p><i class="{{icon}}" color="#E9E2E0"></i></p>
                   <a class="button is-medium is-primary"
                     href="{{ url_for('devices.pub_device', id=device['id'], id_group=group['id'], command='command_on') }}">On</a>
                 </section>
@@ -55,12 +55,10 @@
             <div class="has-text-centered">
               <div class="content">
                 <section>
+                  <p><i class="{{icon}}" color="#000000"></i></p>
                   <p>
-                    <i>{{ device.prefix }}</i>
-                    <div id="{{device.topic_sub}}"> Waiting... </div>
-                    <i>{{ device.postfix }}</i>
+                     <div id="{{device.id}}"> Waiting... </div>
                   </p>
-
                 </section>
               </div>
             </div>
@@ -73,10 +71,9 @@
           <script type="text/javascript" charset="utf-8">
             socket.on('{{device.topic_sub}}', function(data) {
                   if (data['topic'] == '{{device.topic_sub}}') {
-                      console.log('passei aki');
-                      $('#{{device.topic_sub}}').text(data['payload']);
+                     $('#{{device.id}}').text(data['payload']);
                   }
-                  console.log('nao passou');
+                  
               });
           </script>
           {% endif %}
@@ -91,10 +88,14 @@
     </div>
   </div>
 </div>
-
-
-
 {% endblock main %}
+
+
+
+
+
+
+
 
 {% extends "base.html" %}
 
@@ -191,4 +192,137 @@
 
 
 
+{% endblock main %}
+
+
+
+{% extends "base.html" %}
+
+{% block main %}
+
+
+<div class="container">
+  <div class="section">
+    <h5 class="title is-5">Group Content<span>( {{ group.name }} )</span> </h5>
+
+    <div id="app" class="row columns is-multiline">
+      {% for device, icon in obj %}
+      {% if device.type_id == 1 %}
+      <div v-for="card in cardData" key="card.id" class="column is-4">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{device.name}}
+            </p>
+            <a type="submit" class="js-device-detail-{{device.id}} card-header-icon" aria-label="more options">
+              <span class="icon">
+                <i class="far fa-eye" aria-hidden="true"></i>
+              </span>
+            </a>
+          </header>
+
+          <div class="card-content" id={{device.id}}>
+            <div class="has-text-centered">
+              <div class="content">
+                {% if device.last_command == device.command_on %}
+                <form id="pub{{device.id}}" method="POST">
+                  <p><i id="color{{device.id}}" class="{{icon}}" color="#ff6600"></i></p>
+                  <input value="{{device.id}}/{{device.command_off}}" type="hidden" name="command" id="commandjs{{device.id}}">
+                  <input type="submit" class="button is-normal is-primary" id="nextcommand{{device.id}}" value="Off">
+                 
+                </form>
+                {% else %}
+                <form id="pub{{device.id}}" method="POST">
+                  <p><i id="color{{device.id}}" class="{{icon}}" color="#E9E2E0"></i></p>
+                  <input value="{{device.id}}/{{device.command_on}}" type="hidden" name="command" id="commandjs{{device.id}}">
+                  <input type="submit" class="button is-normal is-primary" id="nextcommand{{device.id}}" value="On">
+                  
+                </form>
+                {% endif %}
+
+                <script>
+                  function addSubmit(ev) {
+                    ev.preventDefault();
+                    var request = new XMLHttpRequest();
+                    request.addEventListener('load', addShow);
+                    request.open('POST', {{ url_for('devices.pub_device')| tojson }});
+                  request.send(new FormData(this));
+                  }
+                  function addShow() {
+                    var data = JSON.parse(this.responseText);
+                     
+                    var last_date_concat = "lastdate".concat(data.id);
+                    var last_date_txt = document.getElementById(last_date_concat);
+                    last_date_txt.innerText = data.last_date
+
+                    var next_command_concat = "nextcommand".concat(data.id);
+                    document.getElementById(next_command_concat).setAttribute('value',data.next_command);
+                    
+                    var device_command_concat = "commandjs".concat(data.id);
+                    var device_command_txt = data.id.concat("/",data.device_command)
+                    document.getElementById(device_command_concat).setAttribute('value',device_command_txt);
+                    
+                    var device_color_concat = "color".concat(data.id);
+                    document.getElementById(device_color_concat).setAttribute('color',data.device_color);
+
+                  }
+                  var form = document.getElementById('pub{{device.id}}');
+                  form.addEventListener('submit', addSubmit);
+
+                  $(".js-device-detail-{{device.id}}").click(function (event) {
+                    $.confirm({
+                      useBootstrap: false,
+                      scrollToPreviousElementAnimate: true,
+                      draggable: false,
+                      bgOpacity: 0.90,
+                      boxWidth: '40%',
+                      title: 'Device detail',
+                      type: 'blue',
+                      btnClass: 'btn-blue',
+                      content:
+                          '' +
+                          '<div class="field">' +
+                          '<p>Name: <em>{{device.name}}</em></p>' +
+                          '<p>Topic Pub: <em>{{device.topic_pub}}</em></p>' +
+                          '<p>Topic Sub: <em>{{device.topic_sub}}</em></p>' +
+                          '<p>Command On: <em>{{device.command_on}}</em></p>' +
+                          '<p>Command Off: <em>{{device.command_off}}</em></p>' +
+                          '<p>Qos: <em>{{device.qos}}</em></p>' +
+                          '<p>Retain: <em>{{device.retained}}</em></p>' +
+                          '</div>' +
+                          '',
+                      buttons: {
+                      OK: {
+                        text: " Ok ",
+                            btnClass: 'btn-blue',
+                            keys: ['enter'],
+                            action: function (){
+
+                          }
+                       },          
+                      }
+                    });
+                  });
+
+                </script>
+
+              </div>
+            </div>
+            <div class="has-text-centered">
+              </br>
+              <em>Last Publish:</em>
+              <em id="lastdate{{device.id}}">{{ device.last_date }}</em>
+            </div>
+          </div>
+          <footer class="card-footer">
+            <a href="#" class="card-footer-item">Edit</a>
+            <a href="#" class="card-footer-item">Dashboard</a>
+          </footer>
+        </div>
+        </br>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
 {% endblock main %}

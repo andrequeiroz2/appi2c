@@ -126,18 +126,36 @@ def aboult_device():
     return render_template("device/device_aboult.html", title='Device Aboult')
 
 
-@bp.route("/device/pub/<int:id>/<int:id_group>/<command>", methods=['GET', 'POST'])
-def pub_device(id, id_group, command):
-    device = list_device_id(id)
-    get_inf_for_pub(device, command)
-    return redirect(url_for('groups.content_group', id=id_group))
+#@bp.route("/device/pub/<int:id>/<int:id_group>/<command>", methods=['GET', 'POST'])
+#def pub_device1(id, id_group, command):
+#    device = list_device_id(id)
+#    get_inf_for_pub(device, command)
+#    return redirect(url_for('groups.content_group', id=id_group))
 
 
-#@bp.route("/device/pub", methods=["POST"])
-#def pub_device():
-#    command = request.form.get("command_on")
-#    return jsonify('')
+@bp.route("/pub", methods=['GET', 'POST'])
+def pub_device():
+    action = request.form.get("command")
+    print(action)
+    s = action.split('/')
+    command_device = s[1]
+    id_device = int(s[0])
+    device = list_device_id(id_device)
+    get_inf_for_pub(device, command_device)
 
+    device_id = str(device.id)
+    device_last_date = device.last_date
+
+    last_command = device.last_command
+    if last_command == device.command_on:
+        device_next_command = "Off"
+        devive_commad = device.command_off
+        device_color = "#ff6600"
+    else:
+        device_next_command = "On"
+        devive_commad = device.command_on
+        device_color = "#E9E2E0"
+    return jsonify(id=device_id, last_date=device_last_date, next_command=device_next_command, device_command=devive_commad, device_color=device_color)
 
 
 @bp.route("/register/device/<int:id>", methods=['GET', 'POST'])

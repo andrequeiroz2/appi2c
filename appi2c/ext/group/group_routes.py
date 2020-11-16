@@ -87,5 +87,4 @@ def content_group(id):
     group = list_group_id(id)
     devices = list_device_in_group(group)
     icons = list_icon_in_device(devices)
-    print(icons)
     return render_template('group/group_content.html', group=group, obj=zip(devices, icons))

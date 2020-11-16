@@ -154,7 +154,7 @@ def get_inf_for_pub(device, command):
     topic = device.topic_pub
     qos = device.qos
     retain = device.retained
-    if command == 'command_off':
+    if command == device.command_off:
         msg = device.command_off
         device.last_command = device.command_off
     else:
