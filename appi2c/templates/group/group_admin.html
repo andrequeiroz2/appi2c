@@ -52,32 +52,15 @@
 </div>
 
 <script>
-    $(".js-delete-confirm").click(function (event) {
+     $(".js-delete-confirm").click(function (event) {
       event.preventDefault();
       let URL = $(this).attr('href');
-      $.confirm({
-        useBootstrap: false,
-        scrollToPreviousElementAnimate: true,
-        bgOpacity:0.90,
-        boxWidth: '40%',
-        title: 'Attention',
-        content: 'Do you confirm the deletion of the Group?',
-        type: 'red',
-        buttons: {
-          ok: {
-            text: "Ok",
-            btnClass: 'btn-red',
-            keys: ['enter'],
-            action: function () {
-              window.location.href = URL
-            }
-          },
-          cancel: function () {
-  
-          }
-        }
+      let _url = "{{ url_for('static', filename='js/jquery_delete.js') }}";
+      params = {'msg': 'Do you confirm the deletion of the Group?', 'href': URL};
+      $.getScript(_url , function(params) {
+                    
+                });
       });
-    })
-  </script>
+</script>
 
 {% endblock main %}

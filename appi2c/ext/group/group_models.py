@@ -8,6 +8,5 @@ class Group(db.Model):
     description = db.Column("description", db.String(100), nullable=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False) 
     devices = db.relationship('Device', backref='group', lazy=True)
-
     def __repr__(self):
         return f"Group('{self.name}')"

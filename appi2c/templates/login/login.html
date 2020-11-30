@@ -58,3 +58,68 @@
     </div>
 </div>
 {% endblock main %}
+
+
+<script>
+    $(".js-select-device").click(function (event) {
+        console.log(event);
+        $.confirm({
+            useBootstrap: false,
+            scrollToPreviousElementAnimate: true,
+            draggable: false,
+            bgOpacity: 0.90,
+            boxWidth: '50%',
+            title: 'Select device type',
+            type: 'blue',
+            content: '' +
+                '<form action="" class="btn-dark">' +
+                '<div class="form-group">' +
+                '{% for x in types %}'+
+                '<a href="{{ url_for('devices.register_device', id=x['id']) }}"  type="submit" class="button is-medium is-fullwidth is-primary">{{ x.name }}</a>' +
+                '</br>'+
+                '{% endfor %}'+
+                '</div>' +
+                '</form>' +
+                '',
+        buttons: {
+                    cancel: function () {
+
+                                        }
+                 }
+             });
+        });
+
+        $(".js-aboult-device").click(function (event) {
+            
+            $.confirm({
+            useBootstrap: false,
+            scrollToPreviousElementAnimate: true,
+            draggable: false,
+            bgOpacity:0.90,
+            boxWidth: '60%',
+            title: 'Aboult Device',
+            type: 'blue',
+            content:
+                    ''+ 
+                    '<p>Device are micro-controlled devices that use Mqtt as a communication protocol.</p>'+
+                    '<p>Appi2c currently supports two types of devices.</p>' +
+                    '<p>Switch type corresponds to actuators, relays, etc.</p>' +
+                    '<p>Sensor type corresponds to sensors, humidity, temperature, gas, etc.</p>'+
+                    '<p>Types of devices that do not correspond to existing ones. they need implementation.</p>'+
+                    '',
+            type: 'blue',
+            buttons: {
+                        ok: {
+                        text: "Ok",
+                        btnClass: 'btn-blue',
+                        keys: ['enter']
+                        }
+                    },
+                });
+            });      
+</script>
+
+
+
+
+

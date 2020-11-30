@@ -21,10 +21,22 @@
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
         integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+
+    <script
+    src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+    integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
+    crossorigin="anonymous"></script>
+    
+    
+    <script src="//rawgit.com/ngryman/jquery.finger/v0.1.2/dist/jquery.finger.js"></script>
     {% endblock head %}
 
 
     {% block script %}{% endblock script %}
+    
+    <script type=text/javascript>
+        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+      </script>
     
     <script type="text/javascript" charset="utf-8">
         var socket = io();
@@ -72,7 +84,7 @@
                     </div>
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-light" href="{{ url_for('login.logout') }}">
+                            <a class="user button is-light" id="logout">
                                 Logout
                             </a>
                         </div>
@@ -85,7 +97,7 @@
                             <a class="button is-primary" href="{{ url_for('login.signup') }}">
                                 <strong>Sign up</strong>
                             </a>
-                            <a class="button is-light" href="{{ url_for('login.login') }}">
+                            <a class="user button is-light" id="login">
                                 Log in
                             </a>
                         </div>
@@ -104,53 +116,12 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
-            {% if category != "error" %}
-            <script>
-                $.confirm({
-                    useBootstrap: false,
-                    scrollToPreviousElementAnimate: false,
-                    draggable: false,
-                    bgOpacity: 0.90,
-                    boxWidth: '40%',
-                    icon: 'far fa-laugh',
-                    content: '{{ message }}',
-                    type: 'blue',
-                    buttons: {
-                        cancel: {
-                            text: " Ok ",
-                            btnClass: 'btn-blue',
-                            keys: ['enter'],
-                            action: function () {
-
-                            }
-                        },
-                    }
+                <script>
+                    var url = "{{ url_for('static', filename='js/jquery_msg.js') }}";
+                    data = {'status': "{{category}}", "msg": "{{message}}" };
+                    $.getScript(url , function(data) {
                 });
-            </script>
-            {% else %}
-            <script>
-                $.alert({
-                    useBootstrap: false,
-                    scrollToPreviousElementAnimate: false,
-                    draggable: false,
-                    bgOpacity: 0.90,
-                    boxWidth: '40%',
-                    icon: 'far fa-frown',
-                    content: '{{ message }}',
-                    type: 'red',
-                    buttons: {
-                        calcel: {
-                            text: " Ok ",
-                            btnClass: 'btn-red',
-                            keys: ['enter'],
-                            action: function () {
-
-                            }
-                        },
-                    }
-                });
-            </script>
-            {% endif %}
+                </script>   
             {% endfor %}
             {% endif %}
             {% endwith %}
@@ -178,6 +149,42 @@
         </div>
     </footer>
     {% endblock footer %}
-</body>
 
+    <script>
+        //get tag ".user" and set "id" in action
+        $(document).ready(function(){  
+            $(".user").click(function(){
+               var action = $(this).attr('id');
+               
+               if(action === 'login'){
+                var url = "{{ url_for('static', filename='js/jquery_login.js') }}";
+                $.getScript(url , function(params) {
+                    login();
+                });
+                }
+
+                if(action === 'logout'){
+                var url = "{{ url_for('static', filename='js/jquery_logout.js') }}";
+                $.getScript(url , function(params) {
+                    logout();
+                });
+                }          
+            });   
+        });   
+    </script>
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
