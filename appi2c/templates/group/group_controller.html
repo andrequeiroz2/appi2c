@@ -64,8 +64,8 @@
                                         var request = new XMLHttpRequest();
                                         request.addEventListener('load', addShow);
                                         request.open('POST', {{ url_for('devices.pub_device')| tojson }});
-                                    request.send(new FormData(this));
-                    }
+                                        request.send(new FormData(this));
+                                    }
                                     function addShow() {
                                         var data = JSON.parse(this.responseText);
 

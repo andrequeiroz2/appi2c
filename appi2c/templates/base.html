@@ -22,40 +22,21 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
         integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
 
-<<<<<<< HEAD
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
         integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous">
         </script>
     
     <script src="//rawgit.com/ngryman/jquery.finger/v0.1.2/dist/jquery.finger.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/min/dropzone.min.css">
-=======
-    <script
-    src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
-    integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E="
-    crossorigin="anonymous"></script>
-    
-    
-    <script src="//rawgit.com/ngryman/jquery.finger/v0.1.2/dist/jquery.finger.js"></script>
->>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
     {% endblock head %}
 
 
     {% block script %}{% endblock script %}
-<<<<<<< HEAD
 
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
       </script>
 
-=======
-    
-    <script type=text/javascript>
-        $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-      </script>
-    
->>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
     <script type="text/javascript" charset="utf-8">
         var socket = io();
     </script>
@@ -134,21 +115,12 @@
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
-<<<<<<< HEAD
             <script>
                 var url = "{{ url_for('static', filename='js/jquery_msg.js') }}";
                 data = { 'status': "{{category}}", "msg": "{{message}}" };
                 $.getScript(url, function (data) {
                 });
             </script>
-=======
-                <script>
-                    var url = "{{ url_for('static', filename='js/jquery_msg.js') }}";
-                    data = {'status': "{{category}}", "msg": "{{message}}" };
-                    $.getScript(url , function(data) {
-                });
-                </script>   
->>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
             {% endfor %}
             {% endif %}
             {% endwith %}
@@ -179,7 +151,6 @@
 
     <script>
         //get tag ".user" and set "id" in action
-<<<<<<< HEAD
         $(document).ready(function () {
             $(".user").click(function () {
                 var action = $(this).attr('id');
@@ -198,26 +169,6 @@
                     });
                 }
             });
-=======
-        $(document).ready(function(){  
-            $(".user").click(function(){
-               var action = $(this).attr('id');
-               
-               if(action === 'login'){
-                var url = "{{ url_for('static', filename='js/jquery_login.js') }}";
-                $.getScript(url , function(params) {
-                    login();
-                });
-                }
-
-                if(action === 'logout'){
-                var url = "{{ url_for('static', filename='js/jquery_logout.js') }}";
-                $.getScript(url , function(params) {
-                    logout();
-                });
-                }          
-            });   
->>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
         });   
     </script>
 </body>
