@@ -1,13 +1,18 @@
 from flask import Blueprint
+
 from flask_login import login_required
+
 from flask import (flash,
                    redirect,
                    url_for,
                    render_template,
                    request)
+
 from flask_login import current_user
+
 from appi2c.ext.group.group_forms import (GroupForm,
                                           EditGroupForm)
+
 from appi2c.ext.group.group_controller import (create_group,
                                                list_all_group,
                                                list_group_id,
@@ -15,7 +20,8 @@ from appi2c.ext.group.group_controller import (create_group,
                                                delete_group_id,
                                                folder_admin,
                                                upload_files,
-                                               allowed_image_filesize)
+                                               allowed_image_filesize,
+                                               get_image)
 
 from appi2c.ext.device.device_controller import (list_num_devices_in_group,
                                                  list_device_in_group)
@@ -38,7 +44,6 @@ def register_group():
                 if not allowed_image_filesize(request.cookies["filesize"]):
                     flash("Filesize exceeded maximum limit of 10MB", "error")
                     return redirect(request.url)
-
             if upload_files(uploaded_file):
                 create_group(name=form.name.data.title(),
                              description=form.description.data,
@@ -109,11 +114,14 @@ def group_opts():
 @bp.route('/group/blueprint/<int:id>', methods=['GET', 'POST'])
 @login_required
 def content_group(id):
+    image = get_image(id)
     group = list_group_id(id)
     devices = list_device_in_group(group)
     icons = list_icon_in_device(devices)
     return render_template('group/group_content.html',
-                           group=group, obj=zip(devices, icons))
+                           image=image,
+                           group=group,
+                           obj=zip(devices, icons))
 
 
 @bp.route('/group/controller/<int:id>', methods=['GET', 'POST'])
@@ -126,10 +134,10 @@ def controller_group(id):
                            group=group, obj=zip(devices, icons))
 
 
-@bp.errorhandler(413)
-def too_large(e):
-    flash("The size of image Exceeds the 2 MB allowed", 'error')
-    return redirect(url_for('groups.register_group'))
+#@bp.errorhandler(413)
+#def too_large(e):
+#    flash("The size of image Exceeds the 2 MB allowed", 'error')
+#    return redirect(url_for('groups.register_group'))
 
 
 @bp.route('/upload', methods=['POST', 'GET'])

@@ -23,8 +23,6 @@
           </div>
         </div>
       </nav>
-
-
       <div class="column is-half is-offset-one-quarter">
         <div class="box has-text-centered">
           <input id="lock" value="Unlock Device" class="button is-medium is-dark" type="submit">
@@ -34,7 +32,7 @@
     <div class="section">
       <section class="hero is-medium">
         <figure class="image">
-          <img src="/static/img/plantacasa.jpg">
+          <img src="{{ image }}">
         </figure>
         {% for device, icon in obj %}
         {% if device.type_id == 1 %}

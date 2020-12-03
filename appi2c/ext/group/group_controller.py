@@ -29,7 +29,7 @@ def list_all_devices_in_group(group):
 
 def delete_group_id(id):
     from appi2c.ext.device.device_controller import list_num_devices_in_group
-    group = Group.query.filter_by(id=id).first() 
+    group = Group.query.filter_by(id=id).first()
     list_device = list_num_devices_in_group(group)
     if list_device == 0:
         db.session.delete(group)
@@ -65,17 +65,14 @@ def update_group(id: int, name: str, description: str):
     db.session.commit()
 
 
-LOCAL_FOLDER = 'uploads/blueprints/'
+LOCAL_FOLDER = 'static/uploads/blueprints/'
 
 
 def upload_files(uploaded_file):
-
     filename = secure_filename(uploaded_file.filename)
     if filename == '':
-        print("IS NONE")
         return False
     if "." not in filename:
-        print('Not Point')
         return False
 
     ext = filename.rsplit(".", 1)[1]
@@ -83,7 +80,6 @@ def upload_files(uploaded_file):
         return False
     #if ext != validate_image(uploaded_file.stream):
     #    return False
-    
     name_folder = current_user.username
     local_path = LOCAL_FOLDER + name_folder
     uploaded_file.save(os.path.join(local_path, filename))
@@ -113,3 +109,10 @@ def validate_image(stream):
     if not format:
         return None
     return '.' + (format if format != 'jpeg' else 'jpg')
+
+
+def get_image(id: int):
+    group = Group.query.filter_by(id=id).first()
+    username = str(current_user.username)
+    image = str('/'+LOCAL_FOLDER+username+'/'+group.file)
+    return image
