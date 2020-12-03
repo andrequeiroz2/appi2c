@@ -2,9 +2,199 @@
 
 {% block main %}
 
+<<<<<<< HEAD
 <h1>File Upload</h1>
     <form method="POST" action="" enctype="multipart/form-data">
       <p><input type="file" name="file"></p>
       <p><input type="submit" value="Submit" href="{{ url_for('groups.upload_files') }}"></p>
     </form>
+=======
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base href="/">
+    <base href="/">
+
+    <title>CSS Demos - Responsive Background Hero Image with Transparency</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .hero {
+            width: 100%;
+            height: 100%;
+            min-width: 100%;
+            min-height: 100%;
+            position: relative;
+        }
+
+        .hero::before {
+            background-image: url('static/img/plantacasa.jpg');
+            background-size: cover;
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.4;
+        }
+
+        .hero::after {
+
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .hero-message {
+            color: #fff;
+            text-shadow: #000000 2px 2px;
+            min-width: 10%;
+            min-height: 12em;
+            position: relative;
+        }
+
+        .hero-message::before {
+            content: "";
+            display: block;
+            position: absolute;
+            margin-left: 0;
+            min-width: 10%;
+            min-height: 12em;
+            z-index: -1;
+            opacity: 0.4;
+            background-color: #000000;
+        }
+
+        #button-on-off-1,
+        .hero-sub-title {
+            width: 8%;
+            display: block;
+            text-align: center;
+        }
+
+        #button-on-off-1 {
+            margin: 3% 0;
+            text-transform: uppercase;
+        } 
+    </style>
+ 
+   
+</head>
+
+<body>
+
+    <div class="hero flex-center">
+        <div id="app" class="row columns is-multiline">
+            {% for device, icon in obj %}
+            {% if device.type_id == 1 %}
+            <div class="content">
+                {% if device.last_command == device.command_on %}
+                <form id="pub{{device.id}}" method="POST">
+                    <p><i id="color{{device.id}}" class="{{icon}}" color="#ff6600"></i></p>
+                    <input value="{{device.id}}/{{device.command_off}}" type="hidden" name="command"
+                        id="commandjs{{device.id}}">
+                    <input type="submit" class="button is-normal is-primary" id="nextcommand{{device.id}}" value="Off">
+                </form>
+                {% else %}
+                <form id="pub{{device.id}}" method="POST">
+                    <p><i id="color{{device.id}}" class="{{icon}}" color="#E9E2E0"></i></p>
+                    <input value="{{device.id}}/{{device.command_on}}" type="hidden" name="command"
+                        id="commandjs{{device.id}}">
+                    <input type="submit" class="button is-normal is-primary" id="nextcommand{{device.id}}" value="On">
+                </form>
+                {% endif %}
+                <script>
+                    function addSubmit(ev) {
+                        ev.preventDefault();
+                        var request = new XMLHttpRequest();
+                        request.addEventListener('load', addShow);
+                        request.open('POST', {{ url_for('devices.pub_device')| tojson }});
+                    request.send(new FormData(this));
+                  }
+                    function addShow() {
+                        var data = JSON.parse(this.responseText);
+
+                        var last_date_concat = "lastdate".concat(data.id);
+                        var last_date_txt = document.getElementById(last_date_concat);
+                        last_date_txt.innerText = data.last_date
+
+                        var next_command_concat = "nextcommand".concat(data.id);
+                        document.getElementById(next_command_concat).setAttribute('value', data.next_command);
+
+                        var device_command_concat = "commandjs".concat(data.id);
+                        var device_command_txt = data.id.concat("/", data.device_command)
+                        document.getElementById(device_command_concat).setAttribute('value', device_command_txt);
+
+                        var device_color_concat = "color".concat(data.id);
+                        document.getElementById(device_color_concat).setAttribute('color', data.device_color);
+
+                    }
+                    var form = document.getElementById('pub{{device.id}}');
+                    form.addEventListener('submit', addSubmit);
+
+                    $(".js-device-detail-{{device.id}}").click(function (event) {
+                        $.confirm({
+                            useBootstrap: false,
+                            scrollToPreviousElementAnimate: true,
+                            draggable: false,
+                            bgOpacity: 0.90,
+                            boxWidth: '60%',
+                            title: 'Device detail',
+                            type: 'blue',
+                            btnClass: 'btn-blue',
+                            content:
+                                '' +
+                                '<div class="field">' +
+                                '<p>Name: <em>{{device.name}}</em></p>' +
+                                '<p>Topic Pub: <em>{{device.topic_pub}}</em></p>' +
+                                '<p>Topic Sub: <em>{{device.topic_sub}}</em></p>' +
+                                '<p>Command On: <em>{{device.command_on}}</em></p>' +
+                                '<p>Command Off: <em>{{device.command_off}}</em></p>' +
+                                '<p>Qos: <em>{{device.qos}}</em></p>' +
+                                '<p>Retain: <em>{{device.retained}}</em></p>' +
+                                '</div>' +
+                                '',
+                            buttons: {
+                                OK: {
+                                    text: " Ok ",
+                                    btnClass: 'btn-blue',
+                                    keys: ['enter'],
+                                    action: function () {
+                                    }
+                                },
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+
+
+
+</html>
+>>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
 {% endblock main %}

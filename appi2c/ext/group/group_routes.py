@@ -1,10 +1,14 @@
 from flask import Blueprint
 from flask_login import login_required
+<<<<<<< HEAD
 from flask import (flash,
                    redirect,
                    url_for,
                    render_template,
                    request)
+=======
+from flask import flash, redirect, url_for, render_template, request
+>>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
 from flask_login import current_user
 from appi2c.ext.group.group_forms import (GroupForm,
                                           EditGroupForm)
@@ -30,6 +34,7 @@ bp = Blueprint('groups', __name__, template_folder="appi2c/templates/group")
 @login_required
 def register_group():
     form = GroupForm()
+<<<<<<< HEAD
     if request.method == "POST":
         if form.validate_on_submit():
             uploaded_file = request.files['file']
@@ -48,6 +53,12 @@ def register_group():
                 return redirect(url_for('groups.group_opts'))
             flash('That file extension is not allowed', 'error')
             return redirect(request.url)
+=======
+    if form.validate_on_submit():
+        create_group(name=form.name.data.title(), description=form.description.data, user=current_user.id)
+        flash('Group ' + form.name.data + ' has benn created!', 'success')
+        return redirect(url_for('groups.group_opts'))
+>>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
     return render_template('group/group_create.html', title='Group Register', form=form)
 
 
@@ -112,8 +123,12 @@ def content_group(id):
     group = list_group_id(id)
     devices = list_device_in_group(group)
     icons = list_icon_in_device(devices)
+<<<<<<< HEAD
     return render_template('group/group_content.html',
                            group=group, obj=zip(devices, icons))
+=======
+    return render_template('group/group_content.html', group=group, obj=zip(devices, icons))
+>>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
 
 
 @bp.route('/group/controller/<int:id>', methods=['GET', 'POST'])
@@ -122,6 +137,7 @@ def controller_group(id):
     group = list_group_id(id)
     devices = list_device_in_group(group)
     icons = list_icon_in_device(devices)
+<<<<<<< HEAD
     return render_template('group/group_controller.html',
                            group=group, obj=zip(devices, icons))
 
@@ -135,3 +151,6 @@ def too_large(e):
 @bp.route('/upload', methods=['POST', 'GET'])
 def upload():
     return render_template('testejs.html')
+=======
+    return render_template('group/group_controller.html', group=group, obj=zip(devices, icons))
+>>>>>>> b56e7bbe3ab0bb42627a837baea6c1d9adc6eef8
