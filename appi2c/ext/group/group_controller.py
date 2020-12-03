@@ -1,9 +1,17 @@
+from werkzeug.wrappers import Response
 from appi2c.ext.database import db
-from appi2c.ext.group.group_models import Group 
+from appi2c.ext.group.group_models import Group
+from flask import abort 
+from flask.globals import current_app
+from werkzeug.utils import secure_filename
+from flask_login import current_user
+import os
+import imghdr
+from flask import Response
 
 
-def create_group(name: str, description: str, user: int):
-    group = Group(name=name, description=description, user_id=user)
+def create_group(name: str, description: str, file: str, user: int):
+    group = Group(name=name, description=description, file=file, user_id=user)
     db.session.add(group)
     db.session.commit()
     return group
@@ -56,3 +64,52 @@ def update_group(id: int, name: str, description: str):
     Group.query.filter_by(id=id).update(dict(name=name, description=description))
     db.session.commit()
 
+
+LOCAL_FOLDER = 'uploads/blueprints/'
+
+
+def upload_files(uploaded_file):
+
+    filename = secure_filename(uploaded_file.filename)
+    if filename == '':
+        print("IS NONE")
+        return False
+    if "." not in filename:
+        print('Not Point')
+        return False
+
+    ext = filename.rsplit(".", 1)[1]
+    if ext.upper() not in current_app.config['ALLOWED_IMAGE_EXTENSIONS']:
+        return False
+    #if ext != validate_image(uploaded_file.stream):
+    #    return False
+    
+    name_folder = current_user.username
+    local_path = LOCAL_FOLDER + name_folder
+    uploaded_file.save(os.path.join(local_path, filename))
+    return True
+
+
+def allowed_image_filesize(filesize):
+    if int(filesize) <= current_app.config["MAX_IMAGE_FILESIZE"]:
+        return True
+    else:
+        return False
+
+
+def folder_admin():
+    name_folder = current_user.username
+    local_path = LOCAL_FOLDER + name_folder
+    if os.path.isdir(local_path):
+        pass
+    else:
+        os.mkdir(local_path)
+
+
+def validate_image(stream):
+    header = stream.read(512)
+    stream.seek(0)
+    format = imghdr.what(None, header)
+    if not format:
+        return None
+    return '.' + (format if format != 'jpeg' else 'jpg')

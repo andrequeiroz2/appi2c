@@ -31,9 +31,9 @@ def connect(client):
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
-    #print('===On Msg===')
-    #print('Topic: ', message.topic)
-    #print('Payload: ', message.payload.decode())
+    print('===On Msg===')
+    print('Topic: ', message.topic)
+    print('Payload: ', message.payload.decode())
     topic = message.topic  
     data = dict(topic=message.topic, payload=message.payload.decode(), qos=message.qos)
     socketio.emit(topic, data=data)
@@ -41,12 +41,11 @@ def handle_mqtt_message(client, userdata, message):
 
 @mqtt.on_log()
 def handle_logging(client, userdata, level, buf):
-    #print("===ON LOG===")
-    #print('Client: ', client)
-    #print('User: ', userdata)
-    #print('Level: ', level)
-    #print('Buf: ', buf)
-    pass
+    print("===ON LOG===")
+    print('Client: ', client)
+    print('User: ', userdata)
+    print('Level: ', level)
+    print('Buf: ', buf)
 
 
 @mqtt.on_disconnect()

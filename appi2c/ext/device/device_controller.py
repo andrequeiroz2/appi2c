@@ -20,6 +20,8 @@ def create_device_switch(name: str,
                          last_will_topic: str,
                          qos: int,
                          retained: bool,
+                         position_left: str,
+                         position_top: str,
                          type_id: int,
                          icon_id: int,
                          user: int,
@@ -35,6 +37,8 @@ def create_device_switch(name: str,
                     last_will_topic=last_will_topic,
                     qos=qos,
                     retained=retained,
+                    position_left=position_left,
+                    position_top=position_top,
                     icon_id=icon_id,
                     type_id=type_id,
                     user_id=user,
@@ -52,10 +56,11 @@ def create_device_sensor(group: int,
                          last_will_topic: str,
                          qos: int,
                          retained: bool,
+                         position_left: str,
+                         position_top: str,
                          icon_id: int,
                          type_id: int,
-                         user: int,
-                         ):
+                         user: int,):
 
     device = Device(group_id=group,
                     name=name,
@@ -66,6 +71,8 @@ def create_device_sensor(group: int,
                     last_will_topic=last_will_topic,
                     qos=qos,
                     retained=retained,
+                    position_left=position_left,
+                    position_top=position_top,
                     icon_id=icon_id,
                     type_id=type_id,
                     user_id=user)
@@ -83,7 +90,7 @@ def convert_boolean(result: str):
         return value
 
 
-def convert_qos(qos: str):
+def convert_qos(qos: str) -> int:
     if qos == '0':
         value = 0
     elif qos == '1':
@@ -205,6 +212,19 @@ def update_device_switch(id: int,
 
 
 def delete_device_id(id):
-    device = Device.query.filter_by(id=id).first() 
+    device = Device.query.filter_by(id=id).first()
     db.session.delete(device)
+    db.session.commit()
+
+
+def get_position_icon(id: int, left: str, top: str):
+    device = Device.query.filter_by(id=id).first()
+    if device.position_left == left:
+        pass
+    else:
+        device.position_left = left
+    if device.position_top == top:
+        pass
+    else:
+        device.position_top = top
     db.session.commit()

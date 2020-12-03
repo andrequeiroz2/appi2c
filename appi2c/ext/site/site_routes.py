@@ -5,14 +5,11 @@ from appi2c.ext.group.group_controller import (num_group_user,
                                                num_group)
 
 from appi2c.ext.device.device_controller import (num_device,
-                                                 #list_device_in_goup,
-                                                 list_all_device,
                                                  num_device_in_user)
 
 from appi2c.ext.mqtt.mqtt_controller import num_broker
-
 from appi2c.ext.auth.auth_controller import num_user
-
+from appi2c.ext.mqtt.mqtt_controller import get_client_mqtt
 from flask_login import current_user
 
 
@@ -27,8 +24,10 @@ def index():
         total_group = num_group_user(current_user)
         total_device = num_device_in_user(current_user)
         groups = list_all_group(current_user)
+        client = get_client_mqtt()
         return render_template("index.html",
                                user=user,
+                               client=client,
                                total_device=total_device,
                                total_group=total_group,
                                groups=groups
@@ -43,3 +42,8 @@ def index():
                            total_user=total_user,
                            total_group=total_group,
                            total_broker=total_broker)
+
+
+@bp.route("/maps")
+def maps():
+    return render_template("testejs.html")

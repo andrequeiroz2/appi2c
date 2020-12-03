@@ -14,218 +14,219 @@ onload="enable_text_sub(false)"
 {% endblock body %}
 
 {% block main %}
+<form name=f1 method=post>
+    <div class="container">
+        <div class="columns is-centered is-vcentered is-mobile">
 
-<div class="container">
-    <div class="columns is-centered is-vcentered is-mobile">
-
-        <section class="section">
-            <form name=f1 method="POST" action="">
-                {{ form.hidden_tag() }}
-                <nav class="panel">
-                    <p class="panel-heading">
-                        {{title}}
-                    </p>
-
-                    <section class="section">
-
-                        <div class="field">
-                            {{ form.name.label }}
-                            {% if form.name.errors %}
-                            {{ form.name(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.name.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.name(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
-
-                        <div class="field">
-                            {{ form.topic_pub.label }}
-                            {% if form.topic_pub.errors %}
-                            {{ form.topic_pub(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.topic_pub.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.topic_pub(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
-
-
-                        <p>
-                            <label class="checkbox">
-                                <input type="checkbox" name=others onclick="enable_text_sub(this.checked)">
-                                Topic Subscrib
-                            </label>
+            <section class="section">
+                <form name=f1 method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <nav class="panel">
+                        <p class="panel-heading">
+                            {{title}}
                         </p>
-                        <div class="field">
-                            {% if form.topic_sub.errors %}
-                            {{ form.topic_sub(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.topic_sub.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.topic_sub(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
 
-                        <div class="field">
-                            {{ form.command_on.label }}
-                            {% if form.command_on.errors %}
-                            {{ form.command_on(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.command_on.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.command_on(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
+                        <section class="section">
 
-                        <div class="field">
-                            {{ form.command_off.label }}
-                            {% if form.command_off.errors %}
-                            {{ form.command_off(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.command_off.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
+                            <div class="field">
+                                {{ form.name.label }}
+                                {% if form.name.errors %}
+                                {{ form.name(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.name(class="input is-info", type="text") }}
+                                {% endif %}
                             </div>
-                            {% else %}
-                            {{ form.command_off(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
 
-                        <div class="field">
-                            {{ form.last_will_topic.label }}
-                            {% if form.last_will_topic.errors %}
-                            {{ form.last_will_topic(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.last_will_topic.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
+                            <div class="field">
+                                {{ form.topic_pub.label }}
+                                {% if form.topic_pub.errors %}
+                                {{ form.topic_pub(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.topic_pub.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.topic_pub(class="input is-info", type="text") }}
+                                {% endif %}
                             </div>
-                            {% else %}
-                            {{ form.last_will_topic(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
 
-                        <div class="field">
-                            {{ form.qos.label }}
-                            {% if form.qos.errors %}
+
                             <p>
-                            <div class="select is-info">
-                                {{ form.qos(class="select is-info", type="text") }}
-                            </div>
+                                <label class="checkbox">
+                                    <input type="checkbox" name=others onclick="enable_text_sub(this.checked)">
+                                    Topic Subscrib
+                                </label>
                             </p>
-                            <div class="invalid-feedback">
-                                {% for error in form.qos.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
+                            <div class="field">
+                                {% if form.topic_sub.errors %}
+                                {{ form.topic_sub(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.topic_sub.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.topic_sub(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.command_on.label }}
+                                {% if form.command_on.errors %}
+                                {{ form.command_on(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.command_on.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.command_on(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.command_off.label }}
+                                {% if form.command_off.errors %}
+                                {{ form.command_off(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.command_off.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.command_off(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.last_will_topic.label }}
+                                {% if form.last_will_topic.errors %}
+                                {{ form.last_will_topic(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.last_will_topic.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.last_will_topic(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.qos.label }}
+                                {% if form.qos.errors %}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.qos(class="select is-info", type="text") }}
+                                </div>
                                 </p>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            <p>
-                            <div class="select is-info">
-                                {{ form.qos(class="select is-info", type="text") }}
-                            </div>
-                            </p>
-                            {% endif %}
-                        </div>
-
-                        <div class="field">
-                            {{ form.retained.label }}
-                            {% if form.retained.errors %}
-                            <p>
-                            <div class="select is-info">
-                                {{ form.retained(class="select is-info", type="text") }}
-                            </div>
-                            </p>
-                            <div class="invalid-feedback">
-                                {% for error in form.retained.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
+                                <div class="invalid-feedback">
+                                    {% for error in form.qos.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.qos(class="select is-info", type="text") }}
+                                </div>
                                 </p>
-                                {% endfor %}
+                                {% endif %}
                             </div>
-                            {% else %}
-                            <p>
-                            <div class="select is-info">
-                                {{ form.retained(class="select is-info", type="text") }}
-                            </div>
-                            </p>
-                            {% endif %}
-                        </div>
 
-                        <div class="field">
-                            {{ form.groups.label }}
-                            {% if form.groups.errors %}
-                            <p>
-                            <div class="select is-info">
-                                {{ form.groups(class="select is-info", type="text") }}
-                            </div>
-                            </p>
-                            <div class="invalid-feedback">
-                                {% for error in form.groups.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
+                            <div class="field">
+                                {{ form.retained.label }}
+                                {% if form.retained.errors %}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.retained(class="select is-info", type="text") }}
+                                </div>
                                 </p>
-                                {% endfor %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.retained.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.retained(class="select is-info", type="text") }}
+                                </div>
+                                </p>
+                                {% endif %}
                             </div>
-                            {% else %}
-                            <p>
-                            <div class="select is-info">
-                                {{ form.groups(class="select is-info", type="text") }}
+
+                            <div class="field">
+                                {{ form.groups.label }}
+                                {% if form.groups.errors %}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.groups(class="select is-info", type="text") }}
+                                </div>
+                                </p>
+                                <div class="invalid-feedback">
+                                    {% for error in form.groups.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <p>
+                                <div class="select is-info">
+                                    {{ form.groups(class="select is-info", type="text") }}
+                                </div>
+                                </p>
+                                {% endif %}
                             </div>
-                            </p>
-                            {% endif %}
-                        </div>
-                        </br>
+                            </br>
 
-                        <div class="field">
-                            <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
-                        </div>
+                            <div class="field">
+                                <a type="submit" class="js-select-icon button is-normal is-dark">Select Icon</a>
+                                <i id="icon_class" aria-hidden="true"></i>
+                            </div>
 
-                        <div class="field">
-                            {{ form.icon_id(id="iconid", class="input is-info", type="text", style="visibility:hidden", value=selected) }}
-                        </div>
+                            <div class="field">
+                                {{ form.icon_id(id="iconid", class="input is-info", type="text", style="visibility:hidden", value=selected) }}
+                            </div>
 
-                        <div class="field">
-                            <p class="control">
-                                {{ form.submit(class="button is-primary") }}
-                            </p>
-                        </div>
+                            <div class="field">
+                                <p class="control">
+                                    {{ form.submit(class="button is-primary") }}
+                                </p>
+                            </div>
 
-                        </br>
+                            </br>
 
-                    </section>
-                </nav>
-            </form>
-        </section>
+                        </section>
+                    </nav>
+                </form>
+            </section>
+        </div>
     </div>
-</div>
-
+</form>
 <script>
     $(".js-select-icon").click(function (event) {
         $.confirm({
@@ -236,8 +237,6 @@ onload="enable_text_sub(false)"
             boxWidth: '50%',
             title: 'Icon',
             type: 'blue',
-            backgroundDismiss: 'buttonName',
-            btnClass: 'btn-blue',
             content:
                 '' +
                 '<table class="table" style="width:70%">' +
@@ -251,7 +250,7 @@ onload="enable_text_sub(false)"
                 '<tr>' +
                 '<td>' +
                 '<div class="radio">' +
-                '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select">' +
+                '<input type="radio" id="{{icon.id}}" value={{icon.id}} name="icon-select" identify="{{ icon.html_class }}">' +
                 '</div>' +
                 '</td>' +
                 '<td>' +
@@ -265,13 +264,40 @@ onload="enable_text_sub(false)"
                 '</table>' +
                 '',
             buttons: {
-                Select:
-                    function () {
+                formSubmit: {
+                    text: 'Select',
+                    btnClass: 'btn-blue',
+                    action: function () {
                         var selected = $('input[name=icon-select]:checked').val();
                         document.getElementById("iconid").value = selected;
-                    },
+                        var icon_class = $('input[name=icon-select]:checked').attr('identify');
+                        if (!selected) {
+                            $.alert({
+                                useBootstrap: false,
+                                scrollToPreviousElementAnimate: false,
+                                draggable: false,
+                                bgOpacity: 0.90,
+                                boxWidth: '40%',
+                                icon: 'far fa-frown',
+                                title: 'Ooo nooo!',
+                                content: 'Select a Icon',
+                                type: 'red',
+                            });
+                            return false;
+                        }
+                        $("iconid").value = selected;
+                        $("#icon_class").addClass(icon_class);
+                    }
+                },
                 close: function () {
-                }
+                },
+            },
+            onContentReady: function () {
+                var jc = this;
+                this.$content.find('form').on('submit', function (e) {
+                    e.preventDefault();
+                    jc.$$formSubmit.trigger('click');
+                });
             }
         });
     });

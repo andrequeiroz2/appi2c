@@ -1,4 +1,5 @@
 from flask import flash, redirect, url_for, render_template, request
+from flask_login import login_required
 from flask import Blueprint
 from appi2c.ext.icon.icon_forms import IconForm, EditIconForm
 from appi2c.ext.icon.icon_controller import (list_all_icon,
@@ -11,6 +12,7 @@ bp = Blueprint('icons', __name__, template_folder="appi2c/templates/icon")
 
 
 @bp.route("/register/icon", methods=['GET', 'POST'])
+@login_required
 def register_icon():
     form = IconForm()
     if form.validate_on_submit():
@@ -21,6 +23,7 @@ def register_icon():
 
 
 @bp.route("/admin/icon", methods=['GET', 'POST'])
+@login_required
 def admin_icon():
     icons = list_all_icon()
     if not icons:
@@ -30,6 +33,7 @@ def admin_icon():
 
 
 @bp.route('/edit/icon/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_icon(id):
     form = EditIconForm()
     current_icon = list_icon_id(id)
@@ -41,9 +45,3 @@ def edit_icon(id):
     elif request.method == 'GET':
         form.html_class.data = current_icon.html_class
     return render_template('icon/edit_icon.html', title='Edit Icon', form=form)
-
-
-@bp.route('/teste', methods=['GET', 'POST'])
-def teste():
-    icons = list_all_icon()
-    return render_template('testemodal2.html', icons=icons)

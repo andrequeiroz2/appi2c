@@ -16,7 +16,7 @@ def load_ser(user_id):
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column("id", db.Integer, primary_key=True)
-    username = db.Column("username", db.String(20), index=True, nullable=False) 
+    username = db.Column("username", db.String(30), index=True, nullable=False) 
     email = db.Column("email", db.String(120), index=True, nullable=False)
     password = db.Column(db.String(128))
     admin = db.Column("admin", db.Boolean, default=False)
@@ -37,8 +37,8 @@ class User(db.Model, UserMixin):
         #    raise AssertionError('Username is already in use')
 
 
-        if len(username) < 5 or len(username) > 20:
-            raise AssertionError('Username must be between 5 and 20 characters')
+        if len(username) < 5 or len(username) > 30:
+            raise AssertionError('Username must be between 5 and 30 characters')
         return username
 
     @validates('email')

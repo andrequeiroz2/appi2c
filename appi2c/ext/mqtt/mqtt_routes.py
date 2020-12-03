@@ -4,6 +4,7 @@ from flask import (Blueprint,
                    flash,
                    redirect,
                    request)
+from flask_login import login_required
 from appi2c.ext.mqtt.mqtt_forms import MqttClientForm, EditMqttForm
 from appi2c.ext.mqtt.mqtt_controller import (create_client_mqtt,
                                              deactivate_client_mqtt,
@@ -23,21 +24,11 @@ t = str(t)
 bp = Blueprint('mqtt', __name__, template_folder='appi2c/templates/mqtt')
 
 
-@bp.route("/aboult/mqtt")
-def aboult_mqtt():
-    return render_template('mqtt/mqtt_aboult.html')
-
-
 @bp.route("/register/mqtt", methods=['GET', 'POST'])
+@login_required
 def register_mqtt():
     form = MqttClientForm()
     if form.validate_on_submit():
-
-        #if not form.password.data:
-        #    hash_password = form.password.data
-        #else:
-        #    hash_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        #print(form.last_will_topic)
 
         if form.last_will_topic is None:
             retain = False
@@ -61,11 +52,12 @@ def register_mqtt():
                 last_will_retain=retain
                 )
         flash('Client MQTT ' + form.name.data + ' has benn created!', 'success')
-        return redirect(url_for('mqtt.list_mqtt'))
+        return redirect(url_for('mqtt.admin_mqtt'))
     return render_template('mqtt/mqtt_create.html', title='Register Broker MQTT', form=form)
 
 
 @bp.route("/list/mqtt", methods=['GET', 'POST'])
+@login_required
 def list_mqtt():
     clients = list_all_client_mqtt()
     if not clients:
@@ -75,6 +67,7 @@ def list_mqtt():
 
 
 @bp.route("/admin/mqtt", methods=['GET', 'POST'])
+@login_required
 def admin_mqtt():
     clients = list_all_client_mqtt()
     if not clients:
@@ -84,6 +77,7 @@ def admin_mqtt():
 
 
 @bp.route("/activate/mqtt/<int:id>", methods=['GET', 'POST'])
+@login_required
 def activate_mqtt(id):
     from appi2c.ext.device.device_controller import get_inf_all_device_sub
     client = list_client_mqtt_id(id)
@@ -93,6 +87,7 @@ def activate_mqtt(id):
 
 
 @bp.route("/deactivate/mqtt/<int:id>", methods=['GET', 'POST'])
+@login_required
 def deactivate_mqtt(id):
     client = list_client_mqtt_id(id)
     deactivate_client_mqtt(client)
@@ -100,6 +95,7 @@ def deactivate_mqtt(id):
 
 
 @bp.route('/edit/mqtt/<int:id>', methods=['GET', 'POST'])
+@login_required
 def edit_mqtt(id):
     form = EditMqttForm()
     mqtt_client = list_client_mqtt_id(id)
@@ -157,5 +153,6 @@ def delete_mqtt(id):
 
 
 @bp.route("/options/mqtt", methods=['GET', 'POST'])
+@login_required
 def mqtt_opts():
     return render_template("mqtt/mqtt_opts.html", title='Mqtt Options')

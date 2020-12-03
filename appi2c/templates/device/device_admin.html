@@ -1,8 +1,5 @@
 {% extends "base.html" %}
-
 {% block main %}
-
-
 <div class="column is-mobile">
     <div class="column is-half is-offset-one-quarter">
 
@@ -26,25 +23,24 @@
                             {% for device in devices %}
                             <tbody>
                                 <tr>
-                                   
+
                                     <td>{{ device.name }}</td>
                                     <td> {{ device.type_id.name }} </td>
                                     <td>
-                                        <a class="button is-black is-small"
-                                            href=""> 
-                                            Details 
+                                        <a class="button is-black is-small" href="">
+                                            Details
                                         </a>
                                         <a class="button is-black is-small"
                                             href="{{ url_for('devices.edit_device', id=device['id']) }}">
-                                             Edit 
+                                            Edit
                                         </a>
-                                        <a class="js-delete-confirm button is-black is-small"
+                                        <a class="js-delete-confirm button is-black is-small" id={{device.id}} 
                                             href="{{ url_for('devices.delete_device', id=device['id']) }}">
-                                             Delete 
+                                            Delete
                                             {% set msg = device.name %}
                                         </a>
                                     </td>
-                                   
+
                                 </tr>
                             </tbody>
                             {% endfor %}
@@ -57,31 +53,14 @@
 </div>
 
 <script>
-    $(".js-delete-confirm").click(function (event) {
+      $(".js-delete-confirm").click(function (event) {
       event.preventDefault();
       let URL = $(this).attr('href');
-      $.confirm({
-        useBootstrap: false,
-        scrollToPreviousElementAnimate: true,
-        bgOpacity:0.90,
-        boxWidth: '40%',
-        title: 'Attention',
-        content: 'Do you confirm the deletion of the Device?',
-        type: 'red',
-        buttons: {
-          ok: {
-            text: "Ok",
-            btnClass: 'btn-red',
-            keys: ['enter'],
-            action: function () {
-              window.location.href = URL
-            }
-          },
-          cancel: function () {
-  
-          }
-        }
+      let _url = "{{ url_for('static', filename='js/jquery_delete.js') }}";
+      params = {'msg': 'Do you confirm the deletion of the Device?', 'href': URL};
+      $.getScript(_url , function(params) {
+                    
+                });
       });
-    })
 </script>
 {% endblock main %}

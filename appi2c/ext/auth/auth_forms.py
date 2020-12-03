@@ -6,9 +6,9 @@ from flask_login import current_user
 
 
 class UserForm(FlaskForm):
-    username = StringField('Name', validators=[InputRequired(), Length(min=5, max=20, message=('Min 5 digits and Max 20 digits'))])
+    username = StringField('Name', validators=[InputRequired(), Length(min=5, max=30, message=('Min 5 digits and Max 30 digits'))])
     email = StringField('Email', validators=[InputRequired(), Email()])
-    password = PasswordField('Password', validators=[InputRequired(), Length(min=5, max=20, message=('Min 5 digits and Max 20 digits'))])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=5, max=30, message=('Min 5 digits and Max 30 digits'))])
     confirm_password = PasswordField('Confirm Password', validators=[InputRequired(), EqualTo('password')])
     admin = BooleanField('Admin')
     submit = SubmitField('Signup')
@@ -30,9 +30,9 @@ class UserForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(),
-                            Length(min=5, max=20, message=('Min 5 digits and Max 20 digts'))])
+                            Length(min=5, max=30, message=('Min 5 digits and Max 30 digts'))])
     password = PasswordField('Password', validators=[InputRequired(),
-                              Length(min=5, max=20, message=('Min 5 digits and Max 20 digts'))])
+                              Length(min=5, max=30, message=('Min 5 digits and Max 30 digts'))])
     submit = SubmitField('Login')
 
 

@@ -16,6 +16,9 @@ class Device(db.Model):
     postfix = db.Column('postfix', db.String(10))
     qos = db.Column('qos', db.Integer, nullable=False)
     retained = db.Column("retained", db.Boolean, default=True)
+    position_left = db.Column('position_left', db.String(120))
+    position_top = db.Column('position_top', db.String(120))
+
     type_id = db.Column('type_id', db.Integer, db.ForeignKey('device_type.id'), nullable=False)
     icon_id = db.Column('icon_id', db.Integer, db.ForeignKey('icon.id'), nullable=False)
     group_id = db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False)
@@ -35,7 +38,6 @@ class DeviceType(db.Model):
     id = db.Column('id', db.Integer, primary_key=True)
     name = db.Column('name', db.String(60))
     devices = db.relationship('Device', backref='device', lazy=True)
-
 
     def __repr__(self):
         return f"'{self.name}'"
