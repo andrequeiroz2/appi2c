@@ -30,3 +30,4 @@ class ClientMqtt(db.Model):
                              '{self.port}',\
                              '{self.keep_alive}',\
                              '{self.status}')"
+

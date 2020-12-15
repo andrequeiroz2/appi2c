@@ -8,4 +8,3 @@ from appi2c.ext.mqtt.mqtt_admin import MqttAdmin
 def init_app(app):
     app.register_blueprint(bp)
     admin.add_view(MqttAdmin(ClientMqtt, db.session))
-    

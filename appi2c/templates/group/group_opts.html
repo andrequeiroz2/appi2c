@@ -1,63 +1,53 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="column is-mobile">
-<div class="column is-half is-offset-one-quarter">
-    <form method="POST" action="">
-        <nav class="panel">
-            <p class="panel-heading">
-                {{ title }}
-            </p>
-            <section class="section">
-                <p>
-                    <a href="{{ url_for('groups.register_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Add Group</a>
+    <div class="column is-half is-offset-one-quarter">
+        <form method="POST" action="">
+            <nav class="panel">
+                <p class="panel-heading">
+                    {{ title }}
                 </p>
-                </br>       
-                <p>
-                    <a href="{{ url_for('groups.list_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">List Group</a>
-                </p>
-                
-                </br>
-                <p>
-                    <a href="{{ url_for('groups.admin_group') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Admin Group</a>
-                </p>
-                </br>
-                <p>
-                    <a type="submit" class="js-aboult-group button is-medium is-fullwidth is-primary">Aboult Group</a>
-                </p>
-            </section>
-        </nav>
-    </form>
-    
-</div>
+                <section class="section">
+                    <p>
+                        <a href="{{ url_for('groups.register_group') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Add Group</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a href="{{ url_for('groups.list_group') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">List Group</a>
+                    </p>
+
+                    </br>
+                    <p>
+                        <a href="{{ url_for('groups.admin_group') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Admin Group</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a type="submit" class="js-about button is-medium is-fullwidth is-primary">About Group</a>
+                    </p>
+                </section>
+            </nav>
+        </form>
+
+    </div>
 </div>
 
 <script>
-    $(".js-aboult-group").click(function (event) {
-      event.preventDefault();
-      
-      $.confirm({
-        useBootstrap: false,
-        scrollToPreviousElementAnimate: true,
-        draggable: false,
-        bgOpacity:0.90,
-        boxWidth: '60%',
-        title: 'Aboult Group',
-        type: 'blue',
-        content: 
-            '<p>Groups are containers for devices.</p>'+
-            '<p>Group your devices into a group and control them on a single screen.</p>'+
-            '<p>When starting the application, you will be required to register a group.</p>'+
-            '<p>A group can only be deleted if it does not contain any devices.</p>',
-        type: 'blue',
-        buttons: {
-          ok: {
-            text: "Ok",
-            btnClass: 'btn-blue',
-            keys: ['enter']
-            
-            }
-          },
-      });
-    })
-  </script>
+    $(".js-about").click(function (event) {
+        event.preventDefault();
+        let _url = "{{ url_for('static', filename='js/jquery_about.js') }}";
+        params = {
+            'about_me': 'About Group',
+            'msg': '<p>Groups are containers for devices.</p>' +
+                '<p>Group your devices into a group and control them on a single screen.</p>' +
+                '<p>When starting the application, you will be required to register a group.</p>' +
+                '<p>A group can only be deleted if it does not contain any devices.</p>'
+        };
+        $.getScript(_url, function (params) {
+
+        });
+    });
+</script>
 {% endblock main %}

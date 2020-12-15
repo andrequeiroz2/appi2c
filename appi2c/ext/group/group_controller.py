@@ -1,13 +1,10 @@
-from werkzeug.wrappers import Response
 from appi2c.ext.database import db
 from appi2c.ext.group.group_models import Group
-from flask import abort 
 from flask.globals import current_app
 from werkzeug.utils import secure_filename
 from flask_login import current_user
 import os
 import imghdr
-from flask import Response
 
 
 def create_group(name: str, description: str, file: str, user: int):
@@ -60,8 +57,8 @@ def choice_query():
     return Group.query
 
 
-def update_group(id: int, name: str, description: str):
-    Group.query.filter_by(id=id).update(dict(name=name, description=description))
+def update_group(id: int, name: str, description: str, file: str):
+    Group.query.filter_by(id=id).update(dict(name=name, description=description, file=file))
     db.session.commit()
 
 
@@ -72,14 +69,15 @@ def upload_files(uploaded_file):
     filename = secure_filename(uploaded_file.filename)
     if filename == '':
         return False
+    if filename.isspace():
+        return False
     if "." not in filename:
         return False
 
     ext = filename.rsplit(".", 1)[1]
     if ext.upper() not in current_app.config['ALLOWED_IMAGE_EXTENSIONS']:
         return False
-    #if ext != validate_image(uploaded_file.stream):
-    #    return False
+
     name_folder = current_user.username
     local_path = LOCAL_FOLDER + name_folder
     uploaded_file.save(os.path.join(local_path, filename))

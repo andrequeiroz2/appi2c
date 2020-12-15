@@ -5,7 +5,7 @@ $.confirm({
     bgOpacity: 0.90,
     boxWidth: '40%',
     icon: "far fa-grimace",
-    title: 'Attention',
+    title: 'Attention!',
     content: params['msg'],
     type: 'red',
     buttons: {
@@ -17,7 +17,12 @@ $.confirm({
                 window.location.href = params['href'];
             }
         },
-        cancel: function () {
+        cancel:{ 
+            text: "Cancel",
+            keys: ['esc'],
+            action: function () {
+
+            }
         },
     }
 });

@@ -1,65 +1,53 @@
 {% extends "base.html" %}
 {% block main %}
 <div class="column is-mobile">
-<div class="column is-half is-offset-one-quarter">
-    <form method="POST" action="">
-        <nav class="panel">
-            <p class="panel-heading">
-                {{ title }}
-            </p>
-            <section class="section">
-                <p>
-                    <a href="{{ url_for('mqtt.register_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Add Mqtt</a>
+    <div class="column is-half is-offset-one-quarter">
+        <form method="POST" action="">
+            <nav class="panel">
+                <p class="panel-heading">
+                    {{ title }}
                 </p>
-                </br>       
-                <p>
-                    <a href="{{ url_for('mqtt.list_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">List Mqtt</a>
-                </p>
-                
-                </br>
-                <p>
-                    <a href="{{ url_for('mqtt.admin_mqtt') }}"  type="submit" class="button is-medium is-fullwidth is-primary">Admin Mqtt</a>
-                </p>
-                </br>
-                <p>
-                    <a type="submit" class="js-aboult-mqtt button is-medium is-fullwidth is-primary">Aboult Mqtt</a>
-                </p>
-            </section>
-        </nav>
-    </form>
-    
-</div>
+                <section class="section">
+                    <p>
+                        <a href="{{ url_for('mqtt.register_mqtt') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Add Mqtt</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a href="{{ url_for('mqtt.list_mqtt') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">List Mqtt</a>
+                    </p>
+
+                    </br>
+                    <p>
+                        <a href="{{ url_for('mqtt.admin_mqtt') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Admin Mqtt</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a type="submit" class="js-about button is-medium is-fullwidth is-primary">About Mqtt</a>
+                    </p>
+                </section>
+            </nav>
+        </form>
+
+    </div>
 </div>
 
 <script>
-    $(".js-aboult-mqtt").click(function (event) {
-      event.preventDefault();
-      
-      $.confirm({
-        useBootstrap: false,
-        scrollToPreviousElementAnimate: true,
-        draggable: false,
-        bgOpacity:0.90,
-        boxWidth: '60%',
-        title: 'Aboult Mqtt',
-        type: 'blue',
-        content:
-            ''+ 
-            '<p>The Appi2c uses the Mqtt protocol to exchange messages between managed devices.</p>'+
-            '<p>Flask-mqtt is a Flask extension meant to facilitate the integration of a devices MQTT client into webapplication Appi2c.</p>'+
-            '<p>Register an mqtt client and make sure it is connected. Before sending or receiving information from your devices.</p>'+
-            '<p>More explanations see <a href="https://flask-mqtt.readthedocs.io/en/latest/">Flask-MQTT</a></p>'+
-            '',
-        type: 'blue',
-        buttons: {
-          ok: {
-            text: "Ok",
-            btnClass: 'btn-blue',
-            keys: ['enter']
-            
-            }
-          },
-      });
-    })
-  </script>
+    $(".js-about").click(function (event) {
+        event.preventDefault();
+        let _url = "{{ url_for('static', filename='js/jquery_about.js') }}";
+        params = {
+            'about_me': 'About Mqtt',
+            'msg': '<p>The Appi2c uses the Mqtt protocol to exchange messages between managed devices.</p>' +
+                '<p>Flask-mqtt is a Flask extension meant to facilitate the integration of a devices MQTT client into webapplication Appi2c.</p>' +
+                '<p>Register an mqtt client and make sure it is connected. Before sending or receiving information from your devices.</p>' +
+                '<p>More explanations see <a href="https://flask-mqtt.readthedocs.io/en/latest/">Flask-MQTT</a></p>'
+        };
+        $.getScript(_url, function (params) {
+
+        });
+    });
+</script>
 {% endblock main %}

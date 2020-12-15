@@ -21,7 +21,8 @@ from appi2c.ext.group.group_controller import (create_group,
                                                folder_admin,
                                                upload_files,
                                                allowed_image_filesize,
-                                               get_image)
+                                               get_image,
+                                               num_group_user)
 
 from appi2c.ext.device.device_controller import (list_num_devices_in_group,
                                                  list_device_in_group)
@@ -56,6 +57,38 @@ def register_group():
     return render_template('group/group_create.html', title='Group Register', form=form)
 
 
+@bp.route('/edit/group/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_group(id):
+    form = EditGroupForm()
+    current_group = list_group_id(id)
+    img = get_image(id)
+    if form.validate_on_submit():
+        uploaded_file = request.files['file']
+        current_group.name = form.name.data
+        current_group.description = form.description.data
+
+        if "filesize" in request.cookies:
+            if not allowed_image_filesize(request.cookies["filesize"]):
+                flash("Filesize exceeded maximum limit of 10MB", "error")
+                return redirect(request.url)
+
+        if upload_files(uploaded_file):
+            update_group(id, current_group.name, current_group.description, uploaded_file.filename)
+            flash('Your changes have been saved.', 'success')
+            return redirect(url_for('groups.group_opts'))
+        else:
+            name_img = current_group.file
+            update_group(id, current_group.name, current_group.description, name_img)
+            flash('Your changes have been saved.', 'success')
+            return redirect(url_for('groups.group_opts'))
+    elif request.method == 'GET':
+        form.name.data = current_group.name
+        form.description.data = current_group.description
+        form.file.data = current_group.file    
+    return render_template('group/group_edit.html', title='Edit Group', form=form, img=img)
+
+
 @bp.route("/list/group", methods=['GET', 'POST'])
 @login_required
 def list_group():
@@ -77,29 +110,15 @@ def admin_group():
     return render_template('group/group_admin.html', title='Group Admin', groups=groups)
 
 
-@bp.route('/edit/group/<int:id>', methods=['GET', 'POST'])
-@login_required
-def edit_group(id):
-    form = EditGroupForm()
-    current_group = list_group_id(id)
-    if form.validate_on_submit():
-        current_group.name = form.name.data
-        current_group.description = form.description.data
-        update_group(id, current_group.name, current_group.description)
-        flash('Your changes have been saved.', 'success')
-        return redirect(url_for('groups.group_opts'))
-    elif request.method == 'GET':
-        form.name.data = current_group.name
-        form.description.data = current_group.description
-    return render_template('group/edit_group.html', title='Edit Group', form=form)
-
-
 @bp.route('/delete/group/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_group(id):
     delete = delete_group_id(id)
     if delete:
-        flash('Group successfully deleted.', 'success')
+        if num_group_user(current_user) > 0:
+            return redirect(url_for('groups.admin_group'))
+        else:
+            return redirect(url_for('groups.group_opts'))
     else:
         flash('The group contains devices. First remove the devices.', 'error')
     return redirect(url_for('groups.admin_group'))

@@ -34,6 +34,3 @@ def num_user():
     user = User.query.all()
     num_user = len(user)
     return num_user
-
-
-

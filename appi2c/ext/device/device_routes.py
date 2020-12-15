@@ -1,6 +1,6 @@
-from typing import NoReturn
+from appi2c.ext.database import db
+from appi2c.ext.device.device_models import DeviceType, Device
 from flask_login import login_required
-from appi2c.ext.device.device_models import DeviceType
 from flask import (Blueprint,
                    flash,
                    redirect,
@@ -28,7 +28,7 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  get_position_icon)
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
-
+from appi2c.ext.mqtt.mqtt_connect import handle_subscribe
 
 bp = Blueprint('devices', __name__, template_folder='appi2c/templates/device')
 
@@ -40,15 +40,15 @@ def register_device_switch():
     icons = list_all_icon()
     if not group:
         flash('There are no records. Register a Group', 'error')
-        return redirect(url_for('groups.register_group'))
+        return redirect(url_for('devices.device_opts'))
+
     client_mqtt = list_all_client_mqtt()
     if not client_mqtt:
         flash('There are no records. Register a Broker Mqtt', 'error')
-        return redirect(url_for('mqtt.register_mqtt'))
+        return redirect(url_for('devices.device_opts'))
 
     form = DeviceSwitchForm()
     if form.validate_on_submit():
-
         qos_int = convert_qos(form.qos.data)
         retain_bool = convert_boolean(form.retained.data)
         create_device_switch(name=form.name.data,
@@ -80,11 +80,13 @@ def register_device_sensor():
     icons = list_all_icon()
     if not group:
         flash('There are no records. Register a Group', 'error')
-        return redirect(url_for('groups.register_group'))
+        return redirect(url_for('devices.device_opts'))
+
     client_mqtt = list_all_client_mqtt()
     if not client_mqtt:
         flash('There are no records. Register a Broker Mqtt', 'error')
-        return redirect(url_for('mqtt.register_mqtt'))
+        return redirect(url_for('devices.device_opts'))
+
     form = DeviceSensorForm()
     if form.validate_on_submit():
         qos_int = convert_qos(form.qos.data)
@@ -133,6 +135,16 @@ def device_opts():
                            types=types)
 
 
+#@bp.route("/get/types/device", methods=['GET', 'POST'])
+#@login_required
+#def get_types():
+#    type_list = list_all_deviceType()
+#    types = type_list
+#    if not types:
+#        print("Types: ", types)
+#    return jsonify(types=types)
+
+
 @bp.route("/admin/device", methods=['GET', 'POST'])
 @login_required
 def admin_device():
@@ -148,31 +160,50 @@ def admin_device():
 @bp.route("/pub", methods=['GET', 'POST'])
 @login_required
 def pub_device():
-    action = request.form.get("command")
-    print(action)
-    s = action.split('/')
-    command_device = s[1]
-    id_device = int(s[0])
-    device = list_device_id(id_device)
-    get_inf_for_pub(device, command_device)
+    _json = request.json
+    _id = _json["id"]
+    _value = _json["value"]
+    _pub = _json["pub"]
 
-    device_id = str(device.id)
-    device_last_date = device.last_date
+    device = list_device_id(_id)
+    if device:
+        if (_value == device.command_on) or (_value == device.command_off):
+            if _value != device.last_command:
+                if _value == 'Off':
+                    command = device.command_off
+                    next_command = "On"
+                    color = "#E9E2E0"
+                else:
+                    command = device.command_on
+                    next_command = "Off"
+                    color = "#ff6600"
+                if _pub:
+                    get_inf_for_pub(device, command)
+                    return jsonify(id=_id, next_command=next_command, color=color)
+                else:
+                    return jsonify(id=_id, next_command=next_command, color=color)
+    resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/pub)'})
+    resp.status_code = 400
+    return resp
 
-    last_command = device.last_command
-    if last_command == device.command_on:
-        device_next_command = "Off"
-        devive_commad = device.command_off
-        device_color = "#ff6600"
-    else:
-        device_next_command = "On"
-        devive_commad = device.command_on
-        device_color = "#E9E2E0"
-    return jsonify(id=device_id,
-                   last_date=device_last_date,
-                   next_command=device_next_command,
-                   device_command=devive_commad,
-                   device_color=device_color)
+
+@bp.route("/pub/socket", methods=['GET', 'POST'])
+@login_required
+def pub_device_socket():
+    _json = request.json
+    _id = _json["id"]
+    _value = _json["value"]
+
+    device = list_device_id(_id)
+    if device:
+        get_inf_for_pub(device, _value)
+        resp = jsonify({'message': 'Ajax Success'})
+        resp.status_code = 200
+        return resp
+
+    resp = jsonify({'message': 'Ajax Bad Request - Erro device_routes.py @bp.route(/pub/socket)'})
+    resp.status_code = 400
+    return resp
 
 
 @bp.route("/get_position", methods=['POST'])
@@ -195,22 +226,23 @@ def register_device(id):
         return redirect(url_for('groups.register_group'))
 
     deviceType = list_deviceType_id(id)
-    if deviceType.name == "Switch":
-        return redirect(url_for('devices.register_device_switch'))
-    else:
-        deviceType.name == "Sensor"
-        return redirect(url_for('devices.register_device_sensor'))
+    if deviceType: 
+        if deviceType.name == "Switch":
+            return redirect(url_for('devices.register_device_switch'))
+        else:
+            deviceType.name == "Sensor"
+            return redirect(url_for('devices.register_device_sensor'))
+    flash('Type of device not registered', 'error')
+    return redirect(url_for('devices.device_opts'))
 
 
 @bp.route('/edit/device/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit_device(id):
-    device_type = list_device_id(id)
-    print("Device:", device_type.type_id)
-    if device_type.type_id == 1:
-        form = EditSwitchForm()
-        current_device = list_device_id(id)
+    current_device = list_device_id(id)
 
+    if current_device.type_id == 1:
+        form = EditSwitchForm()
         if form.validate_on_submit():
             qos_int = convert_qos(form.qos.data)
             retain_bool = convert_boolean(form.retained.data)
@@ -253,10 +285,8 @@ def edit_device(id):
                                title='Edit Device Switch',
                                form=form)
 
-    if device_type.type_id == 2:
+    if current_device.type_id == 2:
         form = EditSensorForm()
-        current_device = list_device_id(id)
-
         if form.validate_on_submit():
             current_device.name = form.name.data
             current_device.topic_pub = form.topic_pub.data
@@ -304,5 +334,4 @@ def edit_device(id):
 def delete_device(id):
     _id = int(id)
     delete_device_id(_id)
-    flash('Device successfully deleted.', 'success')
-    return redirect(url_for('devices.admin_device'))
+    return redirect(url_for('devices.device_opts'))

@@ -7,6 +7,7 @@ from wtforms import (StringField,
                      SelectField)
 from wtforms.validators import InputRequired, Length, ValidationError
 from appi2c.ext.mqtt.mqtt_models import ClientMqtt
+from appi2c.ext.device.device_forms import Device
 
 
 def validator_topic_not_imput(form, field):
@@ -56,3 +57,5 @@ class EditMqttForm(FlaskForm):
 
     status = BooleanField('Status')
     submit = SubmitField('Confirm')
+
+

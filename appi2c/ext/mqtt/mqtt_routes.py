@@ -1,3 +1,4 @@
+from appi2c.ext.database import db
 from flask import (Blueprint,
                    render_template,
                    url_for,
@@ -18,6 +19,7 @@ from appi2c.ext.encrypt import bcrypt
 import time
 
 
+
 t = int(time.time())
 t = str(t)
 
@@ -35,8 +37,10 @@ def register_mqtt():
         else:
             if form.last_will_retain.data == 'True':
                 retain = True
+                print('e true')
             else:
                 retain = False
+                print('e false')
 
         create_client_mqtt(
                 name=form.name.data,
@@ -62,7 +66,7 @@ def list_mqtt():
     clients = list_all_client_mqtt()
     if not clients:
         flash('There are no records. Register a Broker MQTT', 'error')
-        return redirect(url_for('mqtt.register_mqtt'))
+        return redirect(url_for('mqtt.mqtt_opts'))
     return render_template('mqtt/mqtt_list.html', title='Mqtt List', clients=clients)
 
 
@@ -72,7 +76,7 @@ def admin_mqtt():
     clients = list_all_client_mqtt()
     if not clients:
         flash('There are no records. Register a Broker MQTT', 'error')
-        return redirect(url_for('mqtt.register_mqtt'))
+        return redirect(url_for('mqtt.mqtt_opts'))
     return render_template('mqtt/mqtt_admin.html', title='Mqtt Admin', clients=clients)   
 
 

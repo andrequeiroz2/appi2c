@@ -5,6 +5,7 @@ from appi2c.ext.mqtt.mqtt_connect import (connect,
                                           handle_disconnect,
                                           handle_publish)
 
+
 def get_date():
     date_now = datetime.now()
     date_time_now = date_now.strftime('%d/%m/%Y %H:%M')
@@ -70,7 +71,7 @@ def activate_client_mqtt(client):
     client_is_activit = ClientMqtt.query.filter_by(status=True).first()
     if client_is_activit is None:
         connect(client)
-        handle_publish(client.last_will_topic, client.msg_online, 1, True)
+        handle_publish(topic=client.last_will_topic, payload=client.msg_online, qos=1, retain=True)
         client.status = True
         client.last_state = client.msg_online
         
@@ -78,7 +79,7 @@ def activate_client_mqtt(client):
         handle_disconnect()
         client_is_activit.status = False
         connect(client)
-        handle_publish(client.last_will_topic, client.msg_online, 1, True)
+        handle_publish(topic=client.last_will_topic, payload=client.msg_online, qos=1, retain=True)
         client.status = True
         client.last_state = client.msg_online
         
@@ -129,3 +130,16 @@ def update_client_mqtt(id: int,
                                         last_will_qos=last_will_qos,
                                         last_will_retain=last_will_retain))
     db.session.commit()
+
+
+
+def get_msg_reseived():
+    topic = message.topic
+    data = message.payload.decode()
+    devices = Device.query.filter_by(topic_sub=topic).all()
+    if devices is not None:
+        record_list = []
+        for x in devices:
+            print(x)
+            #record_list[x] = 
+        #db.engine.execute(Data.__table__.insert(), devices)

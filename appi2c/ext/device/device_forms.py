@@ -1,3 +1,4 @@
+from appi2c.ext.device.device_models import Device
 from flask_wtf import FlaskForm
 from wtforms import (StringField,
                      SubmitField,
@@ -5,7 +6,6 @@ from wtforms import (StringField,
                      IntegerField)
 from wtforms.validators import InputRequired, Length, ValidationError
 from wtforms_sqlalchemy.fields import QuerySelectField
-from appi2c.ext.device.device_models import Device
 from appi2c.ext.group.group_controller import choice_query
 
 

@@ -8,7 +8,6 @@
   }
 </style>
 
-
 <div class="column is-mobile">
   <div class="container">
     <div class="container">
@@ -36,52 +35,41 @@
         </figure>
         {% for device, icon in obj %}
         {% if device.type_id == 1 %}
+
         <div id="draggable {{device.id}}" class="column is-1 ui-widget-content" value={{device.id}}
           style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
+
           {% if device.last_command == device.command_on %}
-          <form id="pub{{device.id}}" method="POST">
-            <p><i id="color{{device.id}}" class="{{icon}}" color="#ff6600"></i></p>
-            <input value="{{device.id}}/{{device.command_off}}" type="hidden" name="command"
-              id="commandjs{{device.id}}">
-            <input type="submit" class="button is-normal is-primary" id="nextcommand{{device.id}}" value="Off">
-          </form>
+          <p><i id="color{{device.id}}" class="{{icon}}" color="#ff6600"></i></p>
+          <input type="submit" class="button is-normal is-primary" id="{{device.id}}" value="Off">
           {% else %}
-          <form id="pub{{device.id}}" method="POST">
-            <p><i id="color{{device.id}}" class="{{icon}}" color="#E9E2E0"></i></p>
-            <input value="{{device.id}}/{{device.command_on}}" type="hidden" name="command" id="commandjs{{device.id}}">
-            <input type="submit" class="button is-normal is-primary" id="nextcommand{{device.id}}" value="On">
-          </form>
+          <p><i id="color{{device.id}}" class="{{icon}}" color="#E9E2E0"></i></p>
+          <input type="submit" class="button is-normal is-primary" id="{{device.id}}" value="On">
           {% endif %}
+
           <script>
-            function addSubmit(ev) {
+            $("#{{device.id}}").click(function (ev) {
               ev.preventDefault();
-              var request = new XMLHttpRequest();
-              request.addEventListener('load', addShow);
-              request.open('POST', {{ url_for('devices.pub_device')| tojson }});
-            request.send(new FormData(this));
-                  }
-            function addShow() {
-              var data = JSON.parse(this.responseText);
+              let param = { 'id': this.id, 'value': this.value, 'pub': true };
+              deviceClickPub(param);
+            });
 
-              //var last_date_concat = "lastdate".concat(data.id);
-              //var last_date_txt = document.getElementById(last_date_concat);
-              //last_date_txt.innerText = data.last_date
-
-              var next_command_concat = "nextcommand".concat(data.id);
-              document.getElementById(next_command_concat).setAttribute('value', data.next_command);
-
-              var device_command_concat = "commandjs".concat(data.id);
-              var device_command_txt = data.id.concat("/", data.device_command)
-              document.getElementById(device_command_concat).setAttribute('value', device_command_txt);
-
-              var device_color_concat = "color".concat(data.id);
-              document.getElementById(device_color_concat).setAttribute('color', data.device_color);
-
+            function deviceClickPub(param) {
+              $.ajax({
+                method: "POST",
+                url: "/pub",
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify(param),
+                dataType: "json",
+                success: function (data) {
+                  let _id_data = data['id'];
+                  document.getElementById(_id_data).setAttribute('value', data["next_command"]);
+                  let _color_data = "color".concat(data['id']);
+                  document.getElementById(_color_data).setAttribute('color', data["color"]);
+                }
+              });
             }
-            var form = document.getElementById('pub{{device.id}}');
-            form.addEventListener('submit', addSubmit);
           </script>
-
         </div>
         {% endif %}
 
@@ -91,7 +79,7 @@
         <div id="draggable {{device.id}}" class="column is-1 ui-widget-content" value={{device.id}}
           style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
-  
+
           <p><i class="{{icon}}" color="#ff6600"></i></p>
           <p>
             <em>{{ device.prefix }}</em>
@@ -101,12 +89,12 @@
 
           <script type="text/javascript" charset="utf-8">
             socket.on('{{device.topic_sub}}', function (dataio) {
-              console.log(dataio)
-              if (dataio['topic'] == '{{device.topic_sub}}') {
+              if (dataio['topic'] === '{{device.topic_sub}}') {
                 $('#receive{{device.id}}').text(dataio['payload']);
               }
             });
           </script>
+
         </div>
         {% endif %}
         {% endfor %}
@@ -114,6 +102,10 @@
     </div>
   </div>
 </div>
+
+
+
+
 
 <script>
   //Draggable Icon
@@ -127,7 +119,7 @@
   //Lock and Unlock draggable Icon
   $(function () {
     //init state locked
-    if ($("#lock").val() === "Unlock Device"){
+    if ($("#lock").val() === "Unlock Device") {
       $(".ui-widget-content").draggable("disable");
     }
 

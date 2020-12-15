@@ -7,6 +7,7 @@ from appi2c.ext.icon.icon_models import Icon
 
 def init_app(app):
 
+
     @app.cli.command()
     def create_db():
         """Starting Data Base"""
@@ -51,7 +52,13 @@ def init_app(app):
     def populate_icon():
         """Populate Table Icon"""
         icon = Icon.query.all()
-        insert_icon = ['fas fa-power-off','fas fa-lightbulb','fas fa-plug','fas fa-thermometer-three-quarters','fas fa-door-open','fas fa-coffee', 'fas fa-lock']
+        insert_icon = ['fas fa-power-off',
+                       'fas fa-lightbulb',
+                       'fas fa-plug',
+                       'fas fa-thermometer-three-quarters',
+                       'fas fa-door-open',
+                       'fas fa-coffee',
+                       'fas fa-lock']
         insert_icon_len = len(insert_icon)
         if not icon:
             for x in range(insert_icon_len):
@@ -60,3 +67,5 @@ def init_app(app):
                 db.session.add(icon_class)
                 db.session.commit()
         click.echo(click.style("Success", fg="green")+": Populate Table Icon")
+
+    

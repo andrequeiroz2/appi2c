@@ -17,7 +17,7 @@
                         <div class="field">
                             {{ form.name.label }}
                             {% if form.name.errors %}
-                            {{ form.name(class="input is-info is-invalid") }}
+                            {{ form.name(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.name.errors %}
                                 <p class="help is-danger">
@@ -30,11 +30,10 @@
                             {% endif %}
                         </div>
 
-
                         <div class="field">
                             {{ form.address_url.label }}
                             {% if form.address_url.errors %}
-                            {{ form.address_url(class="input is-info is-invalid") }}
+                            {{ form.address_url(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.address_url.errors %}
                                 <p class="help is-danger">
@@ -50,7 +49,7 @@
                         <div class="field">
                             {{ form.port.label }}
                             {% if form.port.errors %}
-                            {{ form.port(class="input is-info is-invalid") }}
+                            {{ form.port(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.port.errors %}
                                 <p class="help is-danger">
@@ -63,11 +62,10 @@
                             {% endif %}
                         </div>
 
-
                         <div class="field">
                             {{ form.username.label }}
                             {% if form.username.errors %}
-                            {{ form.username(class="input is-info is-invalid") }}
+                            {{ form.username(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.username.errors %}
                                 <p class="help is-danger">
@@ -80,12 +78,10 @@
                             {% endif %}
                         </div>
 
-
-
                         <div class="field">
                             {{ form.password.label }}
                             {% if form.password.errors %}
-                            {{ form.password(class="input is-info is-invalid") }}
+                            {{ form.password(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.password.errors %}
                                 <p class="help is-danger">
@@ -101,7 +97,7 @@
                         <div class="field">
                             {{ form.keep_alive.label }}
                             {% if form.keep_alive.errors %}
-                            {{ form.keep_alive(class="input is-info is-invalid") }}
+                            {{ form.keep_alive(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.keep_alive.errors %}
                                 <p class="help is-danger">
@@ -117,7 +113,7 @@
                         <div class="field">
                             {{ form.last_will_topic.label }}
                             {% if form.last_will_topic.errors %}
-                            {{ form.last_will_topic(class="input is-info is-invalid") }}
+                            {{ form.last_will_topic(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.last_will_topic.errors %}
                                 <p class="help is-danger">
@@ -133,7 +129,7 @@
                         <div class="field">
                             {{ form.last_will_message.label }}
                             {% if form.last_will_message.errors %}
-                            {{ form.last_will_message(class="input is-info is-invalid") }}
+                            {{ form.last_will_message(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.last_will_message.errors %}
                                 <p class="help is-danger">
@@ -149,7 +145,7 @@
                         <div class="field">
                             {{ form.last_will_qos.label }}
                             {% if form.last_will_qos.errors %}
-                            {{ form.last_will_qos(class="input is-info is-invalid") }}
+                            {{ form.last_will_qos(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.last_will_qos.errors %}
                                 <p class="help is-danger">
@@ -169,7 +165,7 @@
                         <div class="field">
                             {{ form.last_will_retain.label }}
                             {% if form.last_will_retain.errors %}
-                            {{ form.last_will_retain(class="input is-info is-invalid") }}
+                            {{ form.last_will_retain(class="input is-danger") }}
                             <div class="invalid-feedback">
                                 {% for error in form.last_will_retain.errors %}
                                 <p class="help is-danger">

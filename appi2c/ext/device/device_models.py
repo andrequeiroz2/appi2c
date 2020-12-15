@@ -11,7 +11,8 @@ class Device(db.Model):
     command_on = db.Column('command_on', db.String(60))
     command_off = db.Column('command_off', db.String(60))
     last_command = db.Column('last_command', db.String(60))
-    last_date = db.Column('last_date', db.String(60))
+    last_date = db.Column('last_date', db.DateTime, nullable=False)
+    last_data = db.Column('last_data', db.String(120))
     prefix = db.Column('prefix', db.String(10))
     postfix = db.Column('postfix', db.String(10))
     qos = db.Column('qos', db.Integer, nullable=False)
@@ -23,6 +24,8 @@ class Device(db.Model):
     icon_id = db.Column('icon_id', db.Integer, db.ForeignKey('icon.id'), nullable=False)
     group_id = db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    data = db.relationship('Data', backref='data_device', lazy=True)
 
     def __repr__(self):
         return f"Device('{self.name}',\
@@ -40,10 +43,25 @@ class DeviceType(db.Model):
     devices = db.relationship('Device', backref='device', lazy=True)
 
     def __repr__(self):
-        return f"'{self.name}'"
+        return f"('{self.name}')"
 
     def validate_name(self, key, name):
         if not name:
             raise AssertionError('No name provided')
-        if DeviceType.query.filter(DeviceType.name == name).first():
+        if DeviceType.query.filter_by(DeviceType.name == name).first():
             raise AssertionError('Name is already in use')
+
+    @property
+    def serialize(self):
+        return {"name": self.name}
+
+
+class Data(db.Model):
+    __tablename__ = "data"
+    id = db.Column('id', db.Integer, primary_key=True)
+    data = db.Column('data', db.String(60))
+    date_time = db.Column('date_time', db.DateTime, nullable=False)
+    device_id = db.Column('device_id', db.Integer, db.ForeignKey('device.id'), nullable=False)
+
+    def __repr__(self):
+        return f"('{self.data, self.data, self.device_id}')"

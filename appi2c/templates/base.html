@@ -25,7 +25,7 @@
     <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
         integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous">
         </script>
-    
+
     <script src="//rawgit.com/ngryman/jquery.finger/v0.1.2/dist/jquery.finger.js"></script>
 
     {% endblock head %}
@@ -35,10 +35,6 @@
 
     <script type=text/javascript>
         $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-      </script>
-
-    <script type="text/javascript" charset="utf-8">
-        var socket = io();
     </script>
 
 </head>
@@ -89,6 +85,11 @@
                         </div>
                     </div>
                 </div>
+
+                <script type="text/javascript" charset="utf-8">
+                    var socket = io();
+                </script>
+
                 {% else %}
                 <div class="navbar-end">
                     <div class="navbar-item">
@@ -150,40 +151,23 @@
     {% endblock footer %}
 
     <script>
-        //get tag ".user" and set "id" in action
         $(document).ready(function () {
-            $(".user").click(function () {
-                var action = $(this).attr('id');
-
-                if (action === 'login') {
-                    var url = "{{ url_for('static', filename='js/jquery_login.js') }}";
-                    $.getScript(url, function (params) {
-                        login();
-                    });
-                }
-
-                if (action === 'logout') {
-                    var url = "{{ url_for('static', filename='js/jquery_logout.js') }}";
-                    $.getScript(url, function (params) {
-                        logout();
-                    });
-                }
+            $("#login").click(function () {
+                let url = "{{ url_for('static', filename='js/jquery_login.js') }}";
+                $.getScript(url, function () {
+                });
             });
-        });   
+        });
+
+        $(document).ready(function () {
+            $("#logout").click(function () {
+                let url = "{{ url_for('static', filename='js/jquery_logout.js') }}";
+                $.getScript(url, function () {
+                });
+            });
+        });
     </script>
+
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

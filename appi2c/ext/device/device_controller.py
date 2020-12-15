@@ -1,6 +1,6 @@
-from appi2c.ext.group.group_models import Group
 from appi2c.ext.database import db
-from appi2c.ext.device.device_models import Device, DeviceType
+from appi2c.ext.group.group_models import Group
+from appi2c.ext.device.device_models import Device, Data, DeviceType
 from datetime import datetime
 from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
                                           handle_subscribe)
@@ -8,8 +8,8 @@ from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
 
 def get_date():
     date_now = datetime.now()
-    date_time_now = date_now.strftime('%d/%m/%Y %H:%M')
-    return date_time_now
+    #date_time_now = date_now.strftime('%d/%m/%Y %H:%M')
+    return date_now
 
 
 def create_device_switch(name: str,
@@ -33,7 +33,7 @@ def create_device_switch(name: str,
                     command_on=command_on,
                     command_off=command_off,
                     last_command=command_off,
-                    last_date='',
+                    last_date=get_date(),
                     last_will_topic=last_will_topic,
                     qos=qos,
                     retained=retained,
@@ -45,6 +45,9 @@ def create_device_switch(name: str,
                     group_id=group)
     db.session.add(device)
     db.session.commit()
+    #handle_subscribe(topic_pub, qos)
+    if last_will_topic is not None:
+        handle_subscribe(last_will_topic, qos)
 
 
 def create_device_sensor(group: int,
@@ -60,12 +63,14 @@ def create_device_sensor(group: int,
                          position_top: str,
                          icon_id: int,
                          type_id: int,
-                         user: int,):
+                         user: int):
 
     device = Device(group_id=group,
                     name=name,
                     topic_pub=topic_pub,
                     topic_sub=topic_sub,
+                    last_date=get_date(),
+                    last_data='',
                     prefix=prefix,
                     postfix=postfix,
                     last_will_topic=last_will_topic,
@@ -78,8 +83,90 @@ def create_device_sensor(group: int,
                     user_id=user)
     db.session.add(device)
     db.session.commit()
-    handle_subscribe(topic_sub, qos)
 
+    handle_subscribe(topic_sub, qos)
+    if last_will_topic is not None:
+        handle_subscribe(last_will_topic, qos)
+
+
+def update_device_switch(id: int,
+                         name: str,
+                         topic_pub: str,
+                         topic_sub: str,
+                         command_on: str,
+                         command_off: str,
+                         last_will_topic: str,
+                         qos: int,
+                         retained: bool,
+                         group_id: int):
+
+    Device.query.filter_by(id=id).update(dict(name=name,
+                                              topic_pub=topic_pub,
+                                              topic_sub=topic_sub,
+                                              command_on=command_on,
+                                              command_off=command_off,
+                                              last_will_topic=last_will_topic,
+                                              qos=qos,
+                                              retained=retained,
+                                              group_id=group_id))
+    db.session.commit()
+
+
+def update_device_sensor(id: int,
+                         name: str,
+                         topic_pub: str,
+                         topic_sub: str,
+                         prefix: str,
+                         postfix: str,
+                         last_will_topic: str,
+                         qos: int,
+                         retained: bool,
+                         group_id: int):
+
+    Device.query.filter_by(id=id).update(dict(name=name,
+                                              topic_pub=topic_pub,
+                                              topic_sub=topic_sub,
+                                              prefix=prefix,
+                                              postfix=postfix,
+                                              last_will_topic=last_will_topic,
+                                              qos=qos,
+                                              retained=retained,
+                                              group_id=group_id))
+    db.session.commit()
+
+
+def get_data(topic, payload):
+    if not payload or not payload.strip():
+        pass
+    else:
+        device = Device.query.filter_by(topic_sub=topic).all()
+        device_list = []
+        if device:
+            for x in device:
+                device_data_dict = {'data': payload,
+                                    'date_time': get_date(),
+                                    'device_id': x.id}
+                device_list.append(device_data_dict)
+            db.engine.execute(Data.__table__.insert(), device_list)
+
+        #device_pub = Device.query.filter_by(topic_pub=topic).all()
+        #if device_pub:
+        #    insert_inf_in_devices(device_pub, payload)
+
+
+#def insert_inf_in_devices(device: list, payload: str):
+    #if device:
+    #    for x in device:
+    #        device_obj = list_device_id(x.id)
+    #        if device_obj.type_id == 1:
+    #            if (device_obj.command_on == payload) or (device_obj.command_off == payload):
+    #                device_obj.last_command = payload
+    #                device_obj.last_date = get_date()
+    #        if device_obj.type_id == 2:
+    #            device_obj.last_data = payload
+    #            device_obj.last_date = get_date()
+    #        db.session.commit()
+#    return ''
 
 def convert_boolean(result: str):
     if result == 'True':
@@ -158,62 +245,59 @@ def list_deviceType_id(id: int):
 
 
 def get_inf_for_pub(device, command):
-    topic = device.topic_pub
+    topic_pub = device.topic_pub
     qos = device.qos
     retain = device.retained
+
     if command == device.command_off:
+        print('Command', command)
         msg = device.command_off
         device.last_command = device.command_off
     else:
+        print('Command', command)
         msg = device.command_on
         device.last_command = device.command_on
-    handle_publish(topic, msg, qos, retain)
+
     date_now = get_date()
     device.last_date = date_now
     db.session.commit()
-
+    handle_publish(topic_pub, msg, qos, retain)
+ 
 
 def get_inf_all_device_sub():
     devices = list_all_device_init()
-    if not devices:
-        pass
-    else:
+    if devices:
         for device in devices:
-            if not device.topic_sub:
-                pass
-            else:
+            if device.type_id == 1:
+                topic = device.topic_pub
+                qos = device.qos
+                handle_subscribe(topic, qos)
+
+            if device.type_id == 2:
                 topic = device.topic_sub
                 qos = device.qos
-                print(qos)
                 handle_subscribe(topic, qos)
 
 
-def update_device_switch(id: int,
-                         name: str,
-                         topic_pub: str,
-                         topic_sub: str,
-                         prefix: str,
-                         postfix: str,
-                         last_will_topic: str,
-                         qos: int,
-                         retained: bool,
-                         group_id: int):
-
-    Device.query.filter_by(id=id).update(dict(name=name, 
-                                              topic_pub=topic_pub,
-                                              topic_sub=topic_sub,
-                                              prefix=prefix,
-                                              postfix=postfix,
-                                              last_will_topic=last_will_topic,
-                                              qos=qos,
-                                              retained=retained,
-                                              group_id=group_id))
+def delete_device_id(id: int):
+    delete_data_id(id)
+    device = Device.query.filter_by(id=id).first()
+    db.session.delete(device)
     db.session.commit()
 
 
-def delete_device_id(id):
-    device = Device.query.filter_by(id=id).first()
-    db.session.delete(device)
+def delete_data_id(id: int):
+    #data = Data.query_filter_by(id=id).all()
+    #data_list = []
+    #if data:
+    #    for x in data:
+    #        device_data_dict = {'data': payload,
+    #                                'date_time': get_date(),
+    #                                'device_id': x.id}
+    #        data_list.append(device_data_dict)
+    #    db.engine.execute(Data.__table__.insert(), device_list)
+    delete = Data.__table__.delete().where(Data.device_id == id)
+    db.session.execute(delete)
     db.session.commit()
 
 

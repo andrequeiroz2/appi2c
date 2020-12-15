@@ -13,7 +13,7 @@ if (data['status'] === 'error') {
             calcel: {
                 text: " Ok ",
                 btnClass: 'btn-red',
-                keys: ['enter'],
+                keys: ['enter', 'esc'],
                 action: function () {
                 }
             },
@@ -35,7 +35,7 @@ else {
             cancel: {
                 text: " Ok ",
                 btnClass: 'btn-blue',
-                keys: ['enter'],
+                keys: ['enter', 'esc'],
                 action: function () {
                 }
             },

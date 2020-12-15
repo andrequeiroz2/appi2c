@@ -1,6 +1,5 @@
-#from flask import json
+from appi2c.ext.database import db
 from appi2c.ext.socketio import socketio
-from flask_socketio import emit
 from flask import current_app
 from flask_mqtt import Mqtt
 import uuid
@@ -34,9 +33,12 @@ def handle_mqtt_message(client, userdata, message):
     print('===On Msg===')
     print('Topic: ', message.topic)
     print('Payload: ', message.payload.decode())
-    topic = message.topic  
+    topic = message.topic
     data = dict(topic=message.topic, payload=message.payload.decode(), qos=message.qos)
-    socketio.emit(topic, data=data)
+    socketio.emit(topic, data)
+
+    from appi2c.ext.device.device_controller import get_data
+    get_data(topic=topic, payload=message.payload.decode())
 
 
 @mqtt.on_log()
@@ -54,10 +56,11 @@ def handle_disconnect():
 
 
 @mqtt.on_publish()
-def handle_publish(topic: str, msg: str, qos: int, retain: bool):
-    mqtt.publish(topic=topic, payload=msg, qos=qos, retain=retain)
+def handle_publish(topic: str, payload: str, qos: int, retain: bool):
+    mqtt.publish(topic=topic, payload=payload, qos=qos, retain=retain)
 
 
 @socketio.on('subscribe')
 def handle_subscribe(topic: str, qos: int):
+    print('Device Sub Topic: ', topic)
     mqtt.subscribe(topic=topic, qos=qos)

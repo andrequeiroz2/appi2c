@@ -20,7 +20,7 @@
                   <th>Html Class</th>
                 </tr>
               </thead>
-              
+
               {% for icon in icons %}
               <tbody>
                 <tr>
@@ -36,7 +36,7 @@
       <div class="panel-block">
         <div class="column is-4 is-offset-8">
           <div class="buttons are-medium">
-            <a class="js-help-icon button is-primary">
+            <a class="js-help button is-primary">
               Help
             </a>
             </br>
@@ -47,26 +47,17 @@
         </div>
       </div>
       <script>
-        $(".js-help-icon").click(function (event) {
-            event.preventDefault();
-            $.confirm({
-                useBootstrap: false,
-                scrollToPreviousElementAnimate: true,
-                draggable: false,
-                bgOpacity: 0.90,
-                boxWidth: '50%',
-                title: 'Help Add Icon',
-                type: 'blue',
-                content: '<p><span>The icons are provided by Font-Awesome!</span></p>' +
-                         '<p><span>Access: <a href="https://fontawesome.com/">Font-Awesome</a></span></p> ' +
-                         '',
-            buttons: {
-                        ok: function () {
-      
-                                            }
-                     }
-                 });
-            })           
+        $(".js-help").click(function (event) {
+          event.preventDefault();
+          let _url = "{{ url_for('static', filename='js/jquery_icon_help.js') }}";
+          params = {
+            'help_me': 'Help Add Icon',
+            'msg': '<p><span>The icons are provided by Font-Awesome!</span></p>' +
+                   '<p><span>Access: <a href="https://fontawesome.com/">Font-Awesome</a></span></p>'
+          };
+          $.getScript(_url, function (params) {
+          });
+        });           
       </script>
     </nav>
   </div>

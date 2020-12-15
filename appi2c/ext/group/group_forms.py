@@ -28,5 +28,6 @@ class GroupForm(FlaskForm):
 class EditGroupForm(FlaskForm):
     id = IntegerField('id')
     name = StringField('Name', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
-    description = StringField('Description', widget=TextArea())
+    description = StringField('Description', widget=TextArea())  
+    file = FileField('Blue Print', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
     submit = SubmitField('Confirm')

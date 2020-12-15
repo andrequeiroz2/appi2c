@@ -32,7 +32,6 @@ def signup():
         hash_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         create_user(username=form.username.data, email=form.email.data, password=hash_password, admin=form.admin.data)
         flash('Your account has benn created! Congratulations', 'success')
-        #return redirect(url_for('login.login'))
         return redirect(url_for('site.index'))
     return render_template('login/signup.html', title='Signup', form=form)
 
@@ -54,7 +53,8 @@ def signup():
 #        return redirect(next_page)        
 #    return render_template('login/login.html', title='Login', form=form)
 
-@bp.route("/login", methods=["POST"])
+
+@bp.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('site.index'))
@@ -66,30 +66,23 @@ def login():
     if _username and _password:
         user = login_check_user(username=_username)
         if user is None or not login_check_password_hash(user.password, _password):
-            resp = jsonify({'message': 'Bad Request - invalid credendtials'})
+            resp = jsonify({'message': 'Ajax Bad Request - Error auth_routes.py @bp.route(/login)'})
             resp.status_code = 400
             return resp
         else:
             login_user(user)
-            return jsonify({'message': 'User logged in successfully'})
+            return jsonify({'message': 'user successfully logged'})
     else:
         resp = jsonify({'message': 'Invalid credendtials'})
         resp.status_code = 400
         return resp
 
 
-@bp.route("/logout", methods=["POST"])
+@bp.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
     logout_user()
-    _json = request.json
-    msg = _json['action']
-    if msg:
-        return jsonify({'message': 'logout'})
-    else:
-        resp = jsonify({'message': 'Bad Request - error logout'})
-        resp.status_code = 400
-        return resp
+    return redirect(url_for('site.index'))
 
 
 @bp.route('/editProfile', methods=['GET', 'POST'])
