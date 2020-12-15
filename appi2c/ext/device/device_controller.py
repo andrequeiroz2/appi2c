@@ -262,7 +262,7 @@ def get_inf_for_pub(device, command):
     device.last_date = date_now
     db.session.commit()
     handle_publish(topic_pub, msg, qos, retain)
- 
+
 
 def get_inf_all_device_sub():
     devices = list_all_device_init()
@@ -287,15 +287,6 @@ def delete_device_id(id: int):
 
 
 def delete_data_id(id: int):
-    #data = Data.query_filter_by(id=id).all()
-    #data_list = []
-    #if data:
-    #    for x in data:
-    #        device_data_dict = {'data': payload,
-    #                                'date_time': get_date(),
-    #                                'device_id': x.id}
-    #        data_list.append(device_data_dict)
-    #    db.engine.execute(Data.__table__.insert(), device_list)
     delete = Data.__table__.delete().where(Data.device_id == id)
     db.session.execute(delete)
     db.session.commit()
