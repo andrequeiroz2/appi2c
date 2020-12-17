@@ -4,7 +4,8 @@
 
 <style>
   img {
-    filter: grayscale(100%);
+    filter: grayscale(180%);
+  
   }
 </style>
 
@@ -40,7 +41,7 @@
           style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
           {% if device.last_command == device.command_on %}
-          <p><i id="color{{device.id}}" class="{{icon}}" color="#ff6600"></i></p>
+          <p><i id="color{{device.id}}" class="{{icon}}" color="#ffff00"></i></p>
           <input type="submit" class="button is-normal is-primary" id="{{device.id}}" value="Off">
           {% else %}
           <p><i id="color{{device.id}}" class="{{icon}}" color="#E9E2E0"></i></p>
@@ -50,7 +51,7 @@
           <script>
             $("#{{device.id}}").click(function (ev) {
               ev.preventDefault();
-              let param = { 'id': this.id, 'value': this.value, 'pub': true };
+              param = { "id": this.id, "value": this.value };
               deviceClickPub(param);
             });
 
@@ -80,10 +81,10 @@
           style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
 
-          <p><i class="{{icon}}" color="#ff6600"></i></p>
+          <p><i class="{{icon}}" color="#ffff00"></i></p>
           <p>
             <em>{{ device.prefix }}</em>
-            <strong id="receive{{device.id}}" class="is-primary"> Waiting... </strong>
+            <span id="receive{{device.id}}" class="is-primary" style="color:rgb(255, 255, 255);"> Waiting... </span>
             <em style="font-size:16px;">{{ device.postfix }}</em>
           </p>
 

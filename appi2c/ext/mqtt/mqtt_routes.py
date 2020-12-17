@@ -11,11 +11,11 @@ from appi2c.ext.mqtt.mqtt_controller import (create_client_mqtt,
                                              deactivate_client_mqtt,
                                              list_all_client_mqtt,
                                              list_client_mqtt_id,
-                                             activate_client_mqtt,
+                                             activate_client_mqtt, num_broker,
                                              update_client_mqtt,
-                                             reinitialise_client_mqtt)
+                                             reinitialise_client_mqtt,
+                                             delete_client_mqtt)
 
-from appi2c.ext.encrypt import bcrypt
 import time
 
 
@@ -37,10 +37,8 @@ def register_mqtt():
         else:
             if form.last_will_retain.data == 'True':
                 retain = True
-                print('e true')
             else:
                 retain = False
-                print('e false')
 
         create_client_mqtt(
                 name=form.name.data,
@@ -153,7 +151,13 @@ def edit_mqtt(id):
 
 @bp.route("/delete/mqtt/<int:id>", methods=['GET', 'POST'])
 def delete_mqtt(id):
-    return 'OIIIIII'
+    if delete_client_mqtt(id):
+        if num_broker() > 0:
+            return redirect(url_for('mqtt.admin_mqtt'))
+        else:
+            return redirect(url_for('mqtt.mqtt_opts'))
+    flash('Mqtt client is activated. First deactivation.', 'error')
+    return redirect(url_for('mqtt.admin_mqtt'))
 
 
 @bp.route("/options/mqtt", methods=['GET', 'POST'])

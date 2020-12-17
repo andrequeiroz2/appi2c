@@ -8,7 +8,6 @@ from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
 
 def get_date():
     date_now = datetime.now()
-    #date_time_now = date_now.strftime('%d/%m/%Y %H:%M')
     return date_now
 
 
@@ -52,13 +51,11 @@ def create_device_switch(name: str,
 
 def create_device_sensor(group: int,
                          name: str,
-                         topic_pub: str,
                          topic_sub: str,
                          prefix: str,
                          postfix: str,
                          last_will_topic: str,
                          qos: int,
-                         retained: bool,
                          position_left: str,
                          position_top: str,
                          icon_id: int,
@@ -67,7 +64,6 @@ def create_device_sensor(group: int,
 
     device = Device(group_id=group,
                     name=name,
-                    topic_pub=topic_pub,
                     topic_sub=topic_sub,
                     last_date=get_date(),
                     last_data='',
@@ -75,7 +71,6 @@ def create_device_sensor(group: int,
                     postfix=postfix,
                     last_will_topic=last_will_topic,
                     qos=qos,
-                    retained=retained,
                     position_left=position_left,
                     position_top=position_top,
                     icon_id=icon_id,
@@ -85,8 +80,10 @@ def create_device_sensor(group: int,
     db.session.commit()
 
     handle_subscribe(topic_sub, qos)
-    if last_will_topic is not None:
+    if last_will_topic:
         handle_subscribe(last_will_topic, qos)
+    else:
+        pass
 
 
 def update_device_switch(id: int,
@@ -114,25 +111,26 @@ def update_device_switch(id: int,
 
 def update_device_sensor(id: int,
                          name: str,
-                         topic_pub: str,
                          topic_sub: str,
                          prefix: str,
                          postfix: str,
                          last_will_topic: str,
                          qos: int,
-                         retained: bool,
                          group_id: int):
 
     Device.query.filter_by(id=id).update(dict(name=name,
-                                              topic_pub=topic_pub,
                                               topic_sub=topic_sub,
                                               prefix=prefix,
                                               postfix=postfix,
                                               last_will_topic=last_will_topic,
                                               qos=qos,
-                                              retained=retained,
                                               group_id=group_id))
     db.session.commit()
+    handle_subscribe(topic_sub, qos)
+    if last_will_topic:
+        handle_subscribe(last_will_topic, qos)
+    else:
+        pass
 
 
 def get_data(topic, payload):

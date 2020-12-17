@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
 {% block main %}
+
+<style>
+  .button {
+    border: none;
+    padding: 15px 32px;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 80px;
+  }
+</style>
+
 <div class="column is-mobile">
   <div class="column is-half is-offset-one-quarter">
 
@@ -36,11 +48,11 @@
       <div class="panel-block">
         <div class="column is-4 is-offset-8">
           <div class="buttons are-medium">
-            <a class="js-help button is-primary">
+            <a class="js-help button is-primary is-normal">
               Help
             </a>
             </br>
-            <a class="button is-primary" href="{{ url_for('icons.register_icon') }}">
+            <a class="button is-primary is-normal" href="{{ url_for('icons.register_icon') }}">
               Add
             </a>
           </div>

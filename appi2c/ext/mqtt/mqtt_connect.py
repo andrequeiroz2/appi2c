@@ -64,3 +64,7 @@ def handle_publish(topic: str, payload: str, qos: int, retain: bool):
 def handle_subscribe(topic: str, qos: int):
     print('Device Sub Topic: ', topic)
     mqtt.subscribe(topic=topic, qos=qos)
+
+
+def handle_unsubscribe_all():
+    mqtt.unsubscribe_all()

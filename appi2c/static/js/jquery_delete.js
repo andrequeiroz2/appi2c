@@ -8,6 +8,7 @@ $.confirm({
     title: 'Attention!',
     content: params['msg'],
     type: 'red',
+    autoClose: 'cancel|10000',
     buttons: {
         ok: {
             text: "Ok",

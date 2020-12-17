@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 
 {% block main %}
+
+<style>
+  .is-black {
+    border: none;
+    padding: 15px 32px;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    width: 80px;
+  }
+</style>
+
 <div class="column is-mobile">
   <div class="column is-half is-offset-one-quarter">
 
@@ -17,9 +29,6 @@
               <thead>
                 <tr>
                   <th>Name</th>
-                  <th>URL</th>
-                  <th>Port</th>
-                  <th>Keep Alive</th>
                   <th>Activate?</th>
                   <th>Administration</th>
                 </tr>
@@ -32,14 +41,9 @@
               <tbody>
                 <tr class="is-selected">
                   <td>{{ client.name }}</td>
-                  <td>{{ client.address_url }}</td>
-                  <td>{{ client.port }}</td>
-                  <td>{{ client.keep_alive }}</td>
                   <td>{{ client.status }}</td>
                   <td>
-                    <a class="button is-black is-small" href="{{ url_for('mqtt.edit_mqtt', id=client['id']) }}">
-                      Edit
-                    </a>
+                   
 
                     <a class="button is-black is-small" href="{{ url_for('mqtt.activate_mqtt', id=client['id']) }}">
                       Activate
@@ -48,7 +52,15 @@
                     <a class="button is-black is-small" href="{{ url_for('mqtt.deactivate_mqtt', id=client['id']) }}">
                       Deactivate
                     </a>
+                    
+                    <a class="button is-black is-small" id="{{client.id}}">
+                      Details
+                    </a>
 
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.edit_mqtt', id=client['id']) }}">
+                      Edit
+                    </a>
+                    
                     <a class="js-delete-confirm button is-black is-small"
                       href="{{ url_for('mqtt.delete_mqtt', id=client['id']) }}">
                       Delete
@@ -56,18 +68,13 @@
                   </td>
                 </tr>
               </tbody>
+
               {% else %}
               <tbody>
                 <tr>
                   <td>{{ client.name }}</td>
-                  <td>{{ client.address_url }}</td>
-                  <td>{{ client.port }}</td>
-                  <td>{{ client.keep_alive }}</td>
                   <td>{{ client.status }}</td>
                   <td>
-                    <a class="button is-black is-small" href="{{ url_for('mqtt.edit_mqtt', id=client['id']) }}">
-                      Edit
-                    </a>
                     <a class="button is-black is-small" href="{{ url_for('mqtt.activate_mqtt', id=client['id']) }}">
                       Activate
                     </a>
@@ -75,14 +82,47 @@
                       Deactivate
                     </a>
 
+                    <a class="button is-black is-small" id="{{client.id}}">
+                      Details
+                    </a>
+
+                    <a class="button is-black is-small" href="{{ url_for('mqtt.edit_mqtt', id=client['id']) }}">
+                      Edit
+                    </a>
+                    
                     <a class="js-delete-confirm button is-black is-small"
                       href="{{ url_for('mqtt.delete_mqtt', id=client['id']) }}">
                       Delete
                     </a>
+
                   </td>
                 </tr>
               </tbody>
               {% endif %}
+
+              <script>
+                $("#{{client.id}}").click(function (event) {
+                    event.preventDefault();
+                    let _url = "{{ url_for('static', filename='js/jquery_details.js') }}";
+                    params = {
+                      'title': 'Details',
+                      'msg': '<p><strong>Name: </strong><span>{{client.name}}</span></p>' +
+                             '<p><strong>ID: </strong><span>{{client.client_id}}</span></p>' +
+                             '<p><strong>Address URL: </strong><span>{{client.address_url}}</span></p>' +
+                             '<p><strong>Port: </strong><span>{{client.port}}</span></p>' +
+                             '<p><strong>Username: </strong><span>{{client.username}}</span></p>' +
+                             '<p><strong>Keep Alive: </strong><span>{{client.keep_alive}}</span></p>' +
+                             '<p><strong>Last Will Topic: </strong><span>{{client.last_will_topic}}</span></p>' +
+                             '<p><strong>Last Will Msg: </strong><span>{{client.last_will_message}}</span></p>' +
+                             '<p><strong>Last Will Qos: </strong><span>{{client.last_will_qos}}</span></p>' +
+                             '<p><strong>Last Will Retain: </strong><span>{{client.last_will_retain}}</span></p>'
+                    };
+                    $.getScript(_url, function (params) {
+                    
+                    });
+                });
+              </script>
+
               {% endfor %}
             </table>
           </div>

@@ -19,12 +19,10 @@ class Device(db.Model):
     retained = db.Column("retained", db.Boolean, default=True)
     position_left = db.Column('position_left', db.String(120))
     position_top = db.Column('position_top', db.String(120))
-
     type_id = db.Column('type_id', db.Integer, db.ForeignKey('device_type.id'), nullable=False)
     icon_id = db.Column('icon_id', db.Integer, db.ForeignKey('icon.id'), nullable=False)
     group_id = db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False)
-
     data = db.relationship('Data', backref='data_device', lazy=True)
 
     def __repr__(self):

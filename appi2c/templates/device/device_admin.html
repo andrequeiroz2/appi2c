@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 {% block main %}
+
+<style>
+    .is-black {
+      border: none;
+      padding: 15px 32px;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      width: 80px;
+    }
+</style>
+
 <div class="column is-mobile">
     <div class="column is-half is-offset-one-quarter">
 
@@ -27,7 +39,7 @@
                                     <td>{{ device.name }}</td>
                                     <td> {{ device.type_id.name }} </td>
                                     <td>
-                                        <a class="button is-black is-small" href="">
+                                        <a class="button is-black is-small" id="{{device.id}}">
                                             Details
                                         </a>
                                         <a class="button is-black is-small"
@@ -43,6 +55,47 @@
 
                                 </tr>
                             </tbody>
+                            
+                            <script>
+                                $("#{{device.id}}").click(function (event) {
+                                    event.preventDefault();
+                                    let _url = "{{ url_for('static', filename='js/jquery_details.js') }}";
+                                    if ("{{device.type_id}}" === '1'){
+                                        console.log('Igual e 1')
+                                        params = {
+                                            'title': 'Details',
+                                            'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
+                                                   '<p><strong>Type: </strong><span>Switch</span></p>' +
+                                                   '<p><strong>Topic Pub: </strong><span>{{device.topic_pub}}</span></p>' +
+                                                   '<p><strong>Command On: </strong><span>{{device.command_on}}</span></p>' +
+                                                   '<p><strong>Command Off: </strong><span>{{device.command_off}}</span></p>' +
+                                                   '<p><strong>Last Will: </strong><span>{{device.last_will_topic}}</span></p>' +
+                                                   '<p><strong>Qos: </strong><span>{{device.qos}}</span></p>' +
+                                                   '<p><strong>Retain: </strong><span>{{device.retained}}</span></p>'
+                                                };
+
+                                    }
+
+                                    if ("{{device.type_id}}" === '2'){
+                                        console.log('Igual e 2')
+                                        params = {
+                                            'title': 'Details',
+                                            'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
+                                                   '<p><strong>Type: </strong><span>Sensor</span></p>' +       
+                                                   '<p><strong>Topic Sub: </strong><span>{{device.topic_sub}}</span></p>' +
+                                                   '<p><strong>Prefix: </strong><span>{{device.prefix}}</span></p>' +
+                                                   '<p><strong>Postfix: </strong><span>{{device.postfix}}</span></p>' +
+                                                   '<p><strong>Last Will: </strong><span>{{device.last_will_topic}}</span></p>' +
+                                                   '<p><strong>Qos: </strong><span>{{device.qos}}</span></p>'
+                                                };
+
+                                    }
+
+                                    $.getScript(_url, function (params) {
+                                    
+                                    });
+                                });
+                            </script>
                             {% endfor %}
                         </table>
                     </div>
@@ -53,14 +106,14 @@
 </div>
 
 <script>
-      $(".js-delete-confirm").click(function (event) {
-      event.preventDefault();
-      let URL = $(this).attr('href');
-      let _url = "{{ url_for('static', filename='js/jquery_delete.js') }}";
-      params = {'msg': 'Do you confirm the deletion of the Device?', 'href': URL};
-      $.getScript(_url , function(params) {
+    $(".js-delete-confirm").click(function (event) {
+        event.preventDefault();
+        let URL = $(this).attr('href');
+        let _url = "{{ url_for('static', filename='js/jquery_delete.js') }}";
+        params = {'msg': 'Do you confirm the deletion of the Device?', 'href': URL};
+        $.getScript(_url , function(params) {
                     
-                });
-      });
+        });
+    });
 </script>
 {% endblock main %}

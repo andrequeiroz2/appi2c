@@ -3,7 +3,8 @@ from appi2c.ext.database import db
 from appi2c.ext.mqtt.mqtt_models import ClientMqtt
 from appi2c.ext.mqtt.mqtt_connect import (connect,
                                           handle_disconnect,
-                                          handle_publish)
+                                          handle_publish,
+                                          handle_unsubscribe_all)
 
 
 def get_date():
@@ -58,13 +59,13 @@ def list_client_mqtt_id(id: int):
 
 def delete_client_mqtt(id: int):
     client_mqtt = ClientMqtt.query.filter_by(id=id).first()
-    if client_mqtt.status == 0:
-        pass
+    if client_mqtt.status is False:
+        handle_unsubscribe_all()
+        db.session.delete(client_mqtt)
+        db.session.commit()
+        return True
     else:
-        #todo: desconect client mqtt
-        pass
-    client_mqtt.delete()
-    db.session.commit()
+        return False
 
 
 def activate_client_mqtt(client):
@@ -74,7 +75,7 @@ def activate_client_mqtt(client):
         handle_publish(topic=client.last_will_topic, payload=client.msg_online, qos=1, retain=True)
         client.status = True
         client.last_state = client.msg_online
-        
+
     else:
         handle_disconnect()
         client_is_activit.status = False
@@ -82,7 +83,7 @@ def activate_client_mqtt(client):
         handle_publish(topic=client.last_will_topic, payload=client.msg_online, qos=1, retain=True)
         client.status = True
         client.last_state = client.msg_online
-        
+
     db.session.commit()
 
 
@@ -92,14 +93,6 @@ def deactivate_client_mqtt(client):
     handle_disconnect()
     client.status = False
     db.session.commit()
-
-
-def reinitialise_client_mqtt(broker):
-    if broker.status is True:
-        #get_reinitialise(broker)
-        ""
-    else:
-        pass
 
 
 def num_broker():
@@ -132,14 +125,20 @@ def update_client_mqtt(id: int,
     db.session.commit()
 
 
+def reinitialise_client_mqtt(client):
+    if client and client.status is True:
+        deactivate_client_mqtt(client)
+        activate_client_mqtt(client)
+    else:
+        pass
 
-def get_msg_reseived():
-    topic = message.topic
-    data = message.payload.decode()
-    devices = Device.query.filter_by(topic_sub=topic).all()
-    if devices is not None:
-        record_list = []
-        for x in devices:
-            print(x)
+#def get_msg_reseived():
+#    topic = message.topic
+#    data = message.payload.decode()
+#    devices = Device.query.filter_by(topic_sub=topic).all()
+#    if devices is not None:
+#        record_list = []
+#        for x in devices:
+#            print(x)
             #record_list[x] = 
         #db.engine.execute(Data.__table__.insert(), devices)

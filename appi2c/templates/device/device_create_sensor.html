@@ -60,27 +60,7 @@ onload="enable_text_pub(false)"
                                 {% endif %}
                             </div>
 
-                            <p>
-                                <label class="checkbox">
-                                    <input type="checkbox" name=others onclick="enable_text_pub(this.checked)">
-                                    Topic Publish
-                                </label>
-                            </p>
-                            <div class="field">
-                                {% if form.topic_pub.errors %}
-                                {{ form.topic_pub(class="input is-info is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.topic_pub.errors %}
-                                    <p class="help is-danger">
-                                        <span>{{ error }}</span>
-                                    </p>
-                                    {% endfor %}
-                                </div>
-                                {% else %}
-                                {{ form.topic_pub(class="input is-info", type="text") }}
-                                {% endif %}
-                            </div>
-
+                           
                             <div class="field">
                                 {{ form.prefix.label }}
                                 {% if form.prefix.errors %}
@@ -149,25 +129,7 @@ onload="enable_text_pub(false)"
                                 {% endif %}
                             </div>
 
-                            <div class="field">
-                                {{ form.retained.label }}
-                                {% if form.retained.errors %}
-                                {{ form.retained(class="input is-info is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.retained.errors %}
-                                    <p class="help is-danger">
-                                        <span>{{ error }}</span>
-                                    </p>
-                                    {% endfor %}
-                                </div>
-                                {% else %}
-                                <p>
-                                <div class="select is-info">
-                                    {{ form.retained(class="select is-info", type="text") }}
-                                </div>
-                                </p>
-                                {% endif %}
-                            </div>
+                            
 
                             <div class="field">
                                 {{ form.groups.label }}
