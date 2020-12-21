@@ -8,10 +8,12 @@ from flask import (Blueprint,
                    url_for,
                    request,
                    jsonify)
+
 from appi2c.ext.device.device_forms import (DeviceSwitchForm,
                                             DeviceSensorForm,
                                             EditSwitchForm,
                                             EditSensorForm)
+
 from appi2c.ext.group.group_controller import list_all_group
 from appi2c.ext.mqtt.mqtt_controller import list_all_client_mqtt
 from appi2c.ext.device.device_controller import (create_device_switch,
@@ -26,7 +28,9 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  update_device_switch,
                                                  update_device_sensor,
                                                  delete_device_id,
-                                                 get_position_icon)
+                                                 get_position_icon,
+                                                 get_clear_topic)
+
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
 from appi2c.ext.mqtt.mqtt_connect import handle_subscribe
@@ -266,6 +270,22 @@ def pub_device():
         return jsonify(id=_id, next_command=next_command, color=color)
 
     resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/pub)'})
+    resp.status_code = 400
+    return resp
+
+
+@bp.route("/clear", methods=['POST'])
+@login_required
+def clear_topic():
+    _json = request.json
+    _topic = _json["topic"]
+
+    if get_clear_topic(_topic):
+        resp = jsonify({'message': 'success'})
+        resp.status_code = 200
+        return resp
+
+    resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/clear)'})
     resp.status_code = 400
     return resp
 

@@ -301,3 +301,9 @@ def get_position_icon(id: int, left: str, top: str):
     else:
         device.position_top = top
     db.session.commit()
+
+
+def get_clear_topic(topic: str):
+    handle_publish(topic, '', qos=2, retain=True)
+    return True
+   

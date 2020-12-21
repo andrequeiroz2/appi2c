@@ -76,6 +76,8 @@
               let _url = "{{ url_for('static', filename='js/jquery_dashboard.js') }}";
               params = {
                 'title': 'Details',
+                'type': 'switch',
+                'pub': '{{device.topic_pub}}',
                 'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
                   '<p><strong>Type: </strong><span>Switch</span></p>' +
                   '<p><strong>Topic Pub: </strong><span>{{device.topic_pub}}</span></p>' +
@@ -118,6 +120,8 @@
               let _url = "{{ url_for('static', filename='js/jquery_dashboard.js') }}";
               params = {
                 'title': 'Details',
+                'type': 'sensor',
+                'pub': '{{device.topic_sub}}',
                 'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
                   '<p><strong>Type: </strong><span>Sensor</span></p>' +
                   '<p><strong>Topic Sub: </strong><span>{{device.topic_sub}}</span></p>' +
