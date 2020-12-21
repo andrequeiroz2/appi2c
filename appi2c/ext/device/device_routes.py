@@ -260,7 +260,6 @@ def pub_device():
         else:
             command = device.command_on
             next_command = "Off"
-            #color = "#ff6600"
             color = "#ffff00"
 
         get_inf_for_pub(device, command)

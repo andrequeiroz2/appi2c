@@ -4,8 +4,8 @@
 
 <style>
   img {
-    filter: grayscale(180%);
-  
+    filter: grayscale(100%);
+
   }
 </style>
 
@@ -37,7 +37,7 @@
         {% for device, icon in obj %}
         {% if device.type_id == 1 %}
 
-        <div id="draggable {{device.id}}" class="column is-1 ui-widget-content" value={{device.id}}
+        <div id="draggable {{device.id}}" class="column is-1 ui-widget-content {{device.id}}" value={{device.id}}
           style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
           {% if device.last_command == device.command_on %}
@@ -70,14 +70,32 @@
                 }
               });
             }
+
+            //Double click: request dashboard modal
+            $('.{{device.id}}').on('doubletap', function (e) {
+              let _url = "{{ url_for('static', filename='js/jquery_dashboard.js') }}";
+              params = {
+                'title': 'Details',
+                'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
+                  '<p><strong>Type: </strong><span>Switch</span></p>' +
+                  '<p><strong>Topic Pub: </strong><span>{{device.topic_pub}}</span></p>' +
+                  '<p><strong>Command On: </strong><span>{{device.command_on}}</span></p>' +
+                  '<p><strong>Command Off: </strong><span>{{device.command_off}}</span></p>' +
+                  '<p><strong>Last Will: </strong><span>{{device.last_will_topic}}</span></p>' +
+                  '<p><strong>Qos: </strong><span>{{device.qos}}</span></p>' +
+                  '<p><strong>Retain: </strong><span>{{device.retained}}</span></p>'
+              };
+              $.getScript(_url, function (params) {
+
+              });
+            });
           </script>
+
         </div>
         {% endif %}
 
-
-
         {% if device.type_id == 2 %}
-        <div id="draggable {{device.id}}" class="column is-1 ui-widget-content" value={{device.id}}
+        <div id="draggable {{device.id}}" class="column is-1 ui-widget-content {{device.id}}" value={{device.id}}
           style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
 
@@ -94,8 +112,25 @@
                 $('#receive{{device.id}}').text(dataio['payload']);
               }
             });
-          </script>
 
+            //Double click: request dashboard modal
+            $('.{{device.id}}').on('doubletap', function (e) {
+              let _url = "{{ url_for('static', filename='js/jquery_dashboard.js') }}";
+              params = {
+                'title': 'Details',
+                'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
+                  '<p><strong>Type: </strong><span>Sensor</span></p>' +
+                  '<p><strong>Topic Sub: </strong><span>{{device.topic_sub}}</span></p>' +
+                  '<p><strong>Prefix: </strong><span>{{device.prefix}}</span></p>' +
+                  '<p><strong>Postfix: </strong><span>{{device.postfix}}</span></p>' +
+                  '<p><strong>Last Will: </strong><span>{{device.last_will_topic}}</span></p>' +
+                  '<p><strong>Qos: </strong><span>{{device.qos}}</span></p>'
+              };
+              $.getScript(_url, function (params) {
+
+              });
+            });
+          </script>
         </div>
         {% endif %}
         {% endfor %}
@@ -103,10 +138,6 @@
     </div>
   </div>
 </div>
-
-
-
-
 
 <script>
   //Draggable Icon
@@ -139,7 +170,7 @@
 
 
 <script>
-  //Event drag *indetermined time 
+  //Event drag indetermined time 
   //get inf. the position Icon
   $('.ui-widget-content').on('drag', function (e) {
     var _id = this.id;
