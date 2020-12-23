@@ -21,7 +21,6 @@ def create_app():
     config.init_app(app)
     db.init_app(app)
     db.app = app
-    #db.create_all()
     db_commands.init_app(app)
     mqtt.init_app(app)
     device.init_app(app)
@@ -33,5 +32,9 @@ def create_app():
     site.init_app(app)
     group.init_app(app)
     icon.init_app(app)
-    
+
+    with app.app_context():
+        from appi2c.ext.mqtt.mqtt_controller import connect_init_app
+        connect_init_app()
+
     return app

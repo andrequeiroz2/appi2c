@@ -88,6 +88,8 @@ def activate_mqtt(id):
     return redirect(url_for('mqtt.admin_mqtt'))
 
 
+
+
 @bp.route("/deactivate/mqtt/<int:id>", methods=['GET', 'POST'])
 @login_required
 def deactivate_mqtt(id):

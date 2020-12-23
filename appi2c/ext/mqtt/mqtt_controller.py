@@ -132,6 +132,15 @@ def reinitialise_client_mqtt(client):
     else:
         pass
 
+
+def connect_init_app():
+    client = ClientMqtt.query.filter_by(status=True).first()
+    if client:
+        connect(client)
+    else:
+        pass
+
+
 #def get_msg_reseived():
 #    topic = message.topic
 #    data = message.payload.decode()

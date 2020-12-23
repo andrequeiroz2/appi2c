@@ -53,7 +53,7 @@ $(function () {
           title: '',
           content:
             '' +
-            '<div id="chart" style="width:90%; height="90%""></div>' +
+            '<div id="chart" style="width:90%; height=90%"></div>' +
             '',
           buttons: {
             close: function () {
@@ -155,15 +155,6 @@ $(function () {
 });
 
 
-
-
-
-
-
-
-
-
-
 $(function () {
   $("#clear").click(function (ev) {
     ev.preventDefault();
@@ -171,7 +162,7 @@ $(function () {
       useBootstrap: false,
       scrollToPreviousElementAnimate: true,
       draggable: false,
-      bgOpacity: 0.90,
+      bgOpacity: 0.10,
       boxWidth: '60%',
       title: 'Clear Topic',
       content:
@@ -234,7 +225,6 @@ $(function () {
 });
 
 
-
 $(function () {
   $("#details").click(function (ev) {
     ev.preventDefault();
@@ -242,7 +232,7 @@ $(function () {
       useBootstrap: false,
       scrollToPreviousElementAnimate: true,
       draggable: false,
-      bgOpacity: 0.90,
+      bgOpacity: 0.10,
       boxWidth: '60%',
       title: params['title'],
       content: params['msg'],
