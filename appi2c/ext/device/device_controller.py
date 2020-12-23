@@ -147,24 +147,18 @@ def get_data(topic, payload):
                 device_list.append(device_data_dict)
             db.engine.execute(Data.__table__.insert(), device_list)
 
-        #device_pub = Device.query.filter_by(topic_pub=topic).all()
-        #if device_pub:
-        #    insert_inf_in_devices(device_pub, payload)
 
+def get_data_id(id: int, payload: str):
+    if not payload or not payload.strip():
+        pass
+    else:
+        device = Device.query.filter_by(id=id).first()
+        if device:
+            device_data_dict = {'data': payload,
+                                'date_time': get_date(),
+                                'device_id': device.id}
+            db.engine.execute(Data.__table__.insert(), device_data_dict)
 
-#def insert_inf_in_devices(device: list, payload: str):
-    #if device:
-    #    for x in device:
-    #        device_obj = list_device_id(x.id)
-    #        if device_obj.type_id == 1:
-    #            if (device_obj.command_on == payload) or (device_obj.command_off == payload):
-    #                device_obj.last_command = payload
-    #                device_obj.last_date = get_date()
-    #        if device_obj.type_id == 2:
-    #            device_obj.last_data = payload
-    #            device_obj.last_date = get_date()
-    #        db.session.commit()
-#    return ''
 
 def convert_boolean(result: str):
     if result == 'True':

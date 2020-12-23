@@ -31,7 +31,8 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  get_position_icon,
                                                  get_clear_topic,
                                                  get_data_historic,
-                                                 get_datetime)
+                                                 get_datetime,
+                                                 get_data_id)
 
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
@@ -269,6 +270,8 @@ def pub_device():
             color = "#ffff00"
 
         get_inf_for_pub(device, command)
+        get_data_id(_id, _value)
+
         return jsonify(id=_id, next_command=next_command, color=color)
 
     resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/pub)'})
