@@ -8,8 +8,6 @@ $.confirm({
   boxWidth: '50%',
   type: 'blue',
   content:
-    '' +
-    '<form action="">' +
     '<div class="form-group">' +
     '<section class="section">' +
     '<div class="field">' +
@@ -22,9 +20,8 @@ $.confirm({
     '<a href=""  type="submit" class="button is-medium is-fullwidth is-primary" id="clear">Clear Topic</a>' +
     '</div>' +
     '</section>' +
-    '</div>' +
-    '</form>' +
-    '',
+    '</div>',
+
   buttons: {
     ok: {
       isHidden: true
@@ -34,31 +31,137 @@ $.confirm({
 
 
 $(function () {
-  $("#nada").click(function (ev) {
+  $("#dashboard").click(function (ev) {
     ev.preventDefault();
-    $.confirm({
-      useBootstrap: false,
-      scrollToPreviousElementAnimate: true,
-      draggable: false,
-      bgOpacity: 0.90,
-      boxWidth: '70%',
-      type: 'blue',
-      title: '',
-      content:
-        '' +
-        '<div id="chart" class="size"></div>' +
-        '',
+    let param = { 'id': params['id'] };
 
-      buttons: {
-        close: function () {
-        },
+    $.ajax({
+      method: "POST",
+      url: "/data/historic",
+      contentType: 'application/json;charset=UTF-8',
+      data: JSON.stringify(param),
+      dataType: "json",
+
+      success: function (data_json) {
+        $.confirm({
+          useBootstrap: false,
+          scrollToPreviousElementAnimate: true,
+          draggable: false,
+          bgOpacity: 0.10,
+          boxWidth: '70%',
+          type: 'blue',
+          title: '',
+          content:
+            '' +
+            '<div id="chart" style="width:90%; height="90%""></div>' +
+            '',
+          buttons: {
+            close: function () {
+            },
+          },
+          onContentReady: function () {
+
+            var options = {
+              series: [
+                {
+                  data: data_json.data.data,
+                },
+              ],
+              chart: {
+                height: 350,
+                type: 'line',
+                dropShadow: {
+                  enabled: true,
+                  color: '#000',
+                  top: 18,
+                  left: 7,
+                  blur: 10,
+                  opacity: 0.2
+                },
+                toolbar: {
+                  show: false
+                }
+              },
+
+              colors: ['#77B6EA'],
+              dataLabels: {
+                enabled: true,
+              },
+              stroke: {
+                curve: 'smooth'
+              },
+
+              grid: {
+                borderColor: '#e7e7e7',
+                row: {
+                  colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                  opacity: 0.5
+                },
+              },
+              markers: {
+                size: 1
+              },
+              xaxis: {
+                categories: data_json.data.date,
+                title: {
+                  text: 'Date'
+                }
+              },
+              yaxis: {
+                min: -60,
+                max: 120
+              },
+              legend: {
+                position: 'top',
+                horizontalAlign: 'right',
+                floating: true,
+                offsetY: -25,
+                offsetX: -5
+              }
+            };
+            var chart = new ApexCharts(document.querySelector("#chart"), options);
+            chart.render();
+          },
+        });
       },
-      onContentReady: function () {
-
+      statusCode: {
+        405: function () {
+          $.alert({
+            useBootstrap: false,
+            scrollToPreviousElementAnimate: false,
+            draggable: false,
+            bgOpacity: 0.90,
+            boxWidth: '40%',
+            icon: 'far fa-frown',
+            title: 'Ooo nooo!',
+            content: 'This device has no data to display!',
+            type: 'red',
+            buttons: {
+              ok: {
+                text: "Ok",
+                keys: ['enter', 'esc'],
+                action: function () {
+                }
+              },
+            }
+          });
+        },
+        error: function (err) {
+          console.log(err);
+        }
       },
     });
   });
 });
+
+
+
+
+
+
+
+
+
 
 
 $(function () {
@@ -108,8 +211,8 @@ $(function () {
         $(function () {
           $("#cleartopic").click(function (ev) {
             ev.preventDefault();
-            
-            let param = {'topic': params['pub']};
+
+            let param = { 'topic': params['pub'] };
 
             $.ajax({
               method: "POST",
@@ -120,7 +223,7 @@ $(function () {
 
               success: function () {
                 $("#success").append("Yess clean topic.");
-                $("#cleartopic").prop("disabled",true);
+                $("#cleartopic").prop("disabled", true);
               },
             });
           });

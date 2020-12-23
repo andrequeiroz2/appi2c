@@ -29,7 +29,9 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  update_device_sensor,
                                                  delete_device_id,
                                                  get_position_icon,
-                                                 get_clear_topic)
+                                                 get_clear_topic,
+                                                 get_data_historic,
+                                                 get_datetime)
 
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
@@ -286,6 +288,27 @@ def clear_topic():
         return resp
 
     resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/clear)'})
+    resp.status_code = 400
+    return resp
+
+
+@bp.route("/data/historic", methods=['POST'])
+@login_required
+def data_historic():
+    _json = request.json
+    _id = _json["id"]
+    print(_id)
+
+    if _id:
+        data_historic = get_data_historic(_id)
+        data = get_datetime(data_historic)
+        if data["data"] and data["date"]:
+            return jsonify(data=data)
+        else:
+            resp = jsonify({'message': 'No Data'})
+            resp.status_code = 405
+            return resp
+    resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/data/historic)'})
     resp.status_code = 400
     return resp
 

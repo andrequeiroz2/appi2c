@@ -1,13 +1,13 @@
 from appi2c.ext.database import db
 from appi2c.ext.group.group_models import Group
 from appi2c.ext.device.device_models import Device, Data, DeviceType
-from datetime import datetime
+import datetime
 from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
                                           handle_subscribe)
 
 
 def get_date():
-    date_now = datetime.now()
+    date_now = datetime.datetime.now()
     return date_now
 
 
@@ -306,4 +306,18 @@ def get_position_icon(id: int, left: str, top: str):
 def get_clear_topic(topic: str):
     handle_publish(topic, '', qos=2, retain=True)
     return True
-   
+
+
+def get_data_historic(id: int):
+    data = Data.query.filter_by(device_id=id).all()
+    return data
+
+
+def get_datetime(data: list):
+    data_dict = {"data": [], "date": []}
+    for x in data:
+        date = x.date_time.strftime("%Y"+"/"+"%m"+"/"+"%d"+" "+"%H"+":"+"%M")
+        print(date)
+        data_dict["data"].append(x.data)
+        data_dict["date"].append(date)
+    return data_dict

@@ -62,4 +62,4 @@ class Data(db.Model):
     device_id = db.Column('device_id', db.Integer, db.ForeignKey('device.id'), nullable=False)
 
     def __repr__(self):
-        return f"('{self.data, self.data, self.device_id}')"
+        return f'{self.data, self.date_time}'
