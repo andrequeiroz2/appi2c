@@ -18,6 +18,7 @@
     display: inline-block;
     padding-left: 10px;
   }
+
 </style>
 
 <div class="column is-mobile">
@@ -38,7 +39,7 @@
       {% for device, icon in obj %}
       {% if device.type_id == 1 %}
 
-      <div id="draggable {{device.id}}" class="column is-1 ui-widget-content {{device.id}}" value={{device.id}}
+      <div id="draggable {{device.id}}" class="draggable column is-1 ui-widget-content {{device.id}}" value={{device.id}}
         style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
         {% if device.last_command == device.command_on %}
@@ -99,14 +100,14 @@
       {% endif %}
 
       {% if device.type_id == 2 %}
-      <div id="draggable {{device.id}}" class="column is-1 ui-widget-content {{device.id}}" value={{device.id}}
+      <div id="draggable {{device.id}}" class="draggable column is-1 ui-widget-content {{device.id}}" value={{device.id}}
         style="position: relative; left: {{device.position_left}}; top: {{device.position_top}};">
 
 
         <p class="center"><i class="{{icon}}" color="#ffff00"></i></p>
-        <p>
+        <p class="center">
           <em>{{ device.prefix }}</em>
-          <span id="receive{{device.id}}" class="is-primary" style="color:rgb(255, 255, 255);"> Waiting... </span>
+          <span id="receive{{device.id}}" class="is-primary" style="color:rgb(255, 255, 255);"> {{device.last_data}} </span>
           <em style="font-size:16px;">{{ device.postfix }}</em>
         </p>
 

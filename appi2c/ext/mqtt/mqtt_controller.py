@@ -75,7 +75,6 @@ def activate_client_mqtt(client):
         handle_publish(topic=client.last_will_topic, payload=client.msg_online, qos=1, retain=True)
         client.status = True
         client.last_state = client.msg_online
-
     else:
         handle_disconnect()
         client_is_activit.status = False
@@ -136,7 +135,9 @@ def reinitialise_client_mqtt(client):
 def connect_init_app():
     client = ClientMqtt.query.filter_by(status=True).first()
     if client:
-        connect(client)
+        activate_client_mqtt(client)
+        from appi2c.ext.device.device_controller import get_inf_all_device_sub
+        get_inf_all_device_sub()
     else:
         pass
 

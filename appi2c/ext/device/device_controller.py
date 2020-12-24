@@ -145,6 +145,8 @@ def get_data(topic, payload):
                                     'date_time': get_date(),
                                     'device_id': x.id}
                 device_list.append(device_data_dict)
+                x.last_data = payload
+                db.session.commit()
             db.engine.execute(Data.__table__.insert(), device_list)
 
 
