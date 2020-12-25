@@ -16,6 +16,9 @@ Register your MQTT Brokers, register your mqtt devices can be sensors or actuato
 Distribute your devices in groups and manage information in real time.
 Drag and position the representation of your devices on a blue print,
 click on them to publish commands, double-click and follow the information.
+![](img/blue_print.jpg)
+
+![](img/data_sensor.jpg)
 
 ### Installation
 
