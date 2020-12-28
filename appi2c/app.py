@@ -34,6 +34,7 @@ def create_app():
     icon.init_app(app)
 
     with app.app_context():
+        db.create_all()
         from appi2c.ext.mqtt.mqtt_controller import connect_init_app
         connect_init_app()
 
