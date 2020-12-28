@@ -12,7 +12,7 @@ setup(
     version="0.1.0",
     description="",
     homepage="Andre Queiroz",
-    platform="raspberry",
+    platform="web",
     packages=find_packages(exclude="/__pycache__, /.vscode"),
     include_package_data=True,
     install_requirements=read("requirements.txt"),

@@ -26,6 +26,12 @@ Clone the project.
 ```sh
 git clone https://github.com/andrequeiroz2/appi2c.git
 ```
+Install and activate virtulenv
+```sh
+$ cd appi2c
+$ pip install virtualenv
+$ source env/bin/activate
+```
 Insttal requeriments
 ```sh
 $ pip install -r requirements.txt 
@@ -33,7 +39,6 @@ $ pip install -r requirements.txt
 Starting Data Base and Populate tables
 ```sh
 $ cd appi2c
-$ flask create-db
 $ flask populate-type
 $ flask populate-icon
 ```
