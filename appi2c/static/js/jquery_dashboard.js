@@ -11,9 +11,7 @@ $.confirm({
     '<div class="form-group">' +
     '<section class="section">' +
     '<div class="field">' +
-    '<a href=""  type="submit" class="button is-medium is-fullwidth is-primary" id="dashboard">Dashboard</a>' +
-    '</br>' +
-    '<a href=""  type="submit" class="button is-medium is-fullwidth is-primary" id="realtime">Real Time</a>' +
+    '<a href=""  type="submit" class="button is-medium is-fullwidth is-primary" id="dashboard">Historic</a>' +
     '</br>' +
     '<a href=""  type="submit" class="button is-medium is-fullwidth is-primary" id="details">Details</a>' +
     '</br>' +
@@ -61,124 +59,124 @@ $(function () {
           },
           onContentReady: function () {
 
-          if (params['type'] === 'sensor'){
-            var options = {
-              series: [
-                {
-                  data: data_json.data.data,
+            if (params['type'] === 'sensor') {
+              var options = {
+                series: [
+                  {
+                    data: data_json.data.data,
+                  },
+                ],
+                chart: {
+                  height: 350,
+                  type: 'line',
+                  dropShadow: {
+                    enabled: true,
+                    color: '#000',
+                    top: 18,
+                    left: 7,
+                    blur: 10,
+                    opacity: 0.2
+                  },
+                  toolbar: {
+                    show: false
+                  }
                 },
-              ],
-              chart: {
-                height: 350,
-                type: 'line',
-                dropShadow: {
+
+                colors: ['#77B6EA'],
+                dataLabels: {
                   enabled: true,
-                  color: '#000',
-                  top: 18,
-                  left: 7,
-                  blur: 10,
-                  opacity: 0.2
                 },
-                toolbar: {
-                  show: false
-                }
-              },
-
-              colors: ['#77B6EA'],
-              dataLabels: {
-                enabled: true,
-              },
-              stroke: {
-                curve: 'smooth'
-              },
-
-              grid: {
-                borderColor: '#e7e7e7',
-                row: {
-                  colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-                  opacity: 0.5
+                stroke: {
+                  curve: 'smooth'
                 },
-              },
-              markers: {
-                size: 1
-              },
-              xaxis: {
-                categories: data_json.data.date,
-                title: {
-                  text: 'Date'
+
+                grid: {
+                  borderColor: '#e7e7e7',
+                  row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                  },
+                },
+                markers: {
+                  size: 1
+                },
+                xaxis: {
+                  categories: data_json.data.date,
+                  title: {
+                    text: 'Date'
+                  }
+                },
+                yaxis: {
+                  min: -60,
+                  max: 120
+                },
+                legend: {
+                  position: 'top',
+                  horizontalAlign: 'right',
+                  floating: true,
+                  offsetY: -25,
+                  offsetX: -5
                 }
-              },
-              yaxis: {
-                min: -60,
-                max: 120
-              },
-              legend: {
-                position: 'top',
-                horizontalAlign: 'right',
-                floating: true,
-                offsetY: -25,
-                offsetX: -5
-              }
-            };
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
-          }
-          if (params['type'] === 'switch'){
-            var options = {
-              series: [{
-              data: [21, 22, 10, 28, 16, 21, 13, 30]
-            }],
-              chart: {
-              height: 350,
-              type: 'bar',
-              events: {
-                click: function(chart, w, e) {
-                  // console.log(chart, w, e)
-                }
-              }
-            },
-            colors: colors,
-            plotOptions: {
-              bar: {
-                columnWidth: '45%',
-                distributed: true
-              }
-            },
-            dataLabels: {
-              enabled: false
-            },
-            legend: {
-              show: false
-            },
-            xaxis: {
-              categories: [
-                ['John', 'Doe'],
-                ['Joe', 'Smith'],
-                ['Jake', 'Williams'],
-                'Amber',
-                ['Peter', 'Brown'],
-                ['Mary', 'Evans'],
-                ['David', 'Wilson'],
-                ['Lily', 'Roberts'], 
-              ],
-              labels: {
-                style: {
-                  colors: colors,
-                  fontSize: '12px'
-                }
-              }
+              };
+              var chart = new ApexCharts(document.querySelector("#chart"), options);
+              chart.render();
             }
-            };
-    
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
-            chart.render();
+            if (params['type'] === 'switch') {
+              var options = {
+                series: [{
+                  data: [21, 22, 10, 28, 16, 21, 13, 30]
+                }],
+                chart: {
+                  height: 350,
+                  type: 'bar',
+                  events: {
+                    click: function (chart, w, e) {
+                      // console.log(chart, w, e)
+                    }
+                  }
+                },
+                colors: colors,
+                plotOptions: {
+                  bar: {
+                    columnWidth: '45%',
+                    distributed: true
+                  }
+                },
+                dataLabels: {
+                  enabled: false
+                },
+                legend: {
+                  show: false
+                },
+                xaxis: {
+                  categories: [
+                    ['John', 'Doe'],
+                    ['Joe', 'Smith'],
+                    ['Jake', 'Williams'],
+                    'Amber',
+                    ['Peter', 'Brown'],
+                    ['Mary', 'Evans'],
+                    ['David', 'Wilson'],
+                    ['Lily', 'Roberts'],
+                  ],
+                  labels: {
+                    style: {
+                      colors: colors,
+                      fontSize: '12px'
+                    }
+                  }
+                }
+              };
 
-          };
-        },
+              var chart = new ApexCharts(document.querySelector("#chart"), options);
+              chart.render();
+
+            };
+          },
         });
       },
 
-      
+
       statusCode: {
         405: function () {
           $.alert({
