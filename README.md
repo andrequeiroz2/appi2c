@@ -30,6 +30,7 @@ Install and activate virtulenv
 ```sh
 $ cd appi2c
 $ pip install virtualenv
+$ virtualenv env
 $ source env/bin/activate
 ```
 Insttal requeriments
