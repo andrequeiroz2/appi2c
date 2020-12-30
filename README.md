@@ -7,6 +7,7 @@ Technology.
   - SQLAlchemy
   - Python
   - Bulma
+  - Socket.IO
   - jquery-confirm, jquery-UI, jquery Finger, Ajax
   - ApexChart
   - MQTT
@@ -35,17 +36,17 @@ $ source env/bin/activate
 ```
 Insttal requeriments
 ```sh
-$ pip install -r requirements.txt 
+$ (env) pip install -r requirements.txt 
 ```
 Starting Data Base and Populate tables
 ```sh
-$ cd appi2c
-$ flask populate-type
-$ flask populate-icon
+$ (env) cd appi2c
+$ (env) flask populate-type
+$ (env) flask populate-icon
 ```
 Run appi2c
 ```sh
-$ flask run
+$ (env) flask run
 ```
 
 ### Todos
