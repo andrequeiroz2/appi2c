@@ -36,7 +36,7 @@ from appi2c.ext.device.device_controller import (create_device_switch,
 
 from appi2c.ext.icon.icon_controller import list_all_icon
 from flask_login import current_user
-from appi2c.ext.mqtt.mqtt_connect import handle_subscribe
+
 
 bp = Blueprint('devices', __name__, template_folder='appi2c/templates/device')
 
@@ -100,7 +100,6 @@ def register_device_sensor():
         qos_int = convert_qos(form.qos.data)
         create_device_sensor(name=form.name.data,
                              topic_sub=form.topic_sub.data,
-                             prefix=form.prefix.data,
                              postfix=form.postfix.data,
                              last_will_topic=form.last_will_topic.data,
                              qos=qos_int,
@@ -123,6 +122,7 @@ def register_device_sensor():
 @login_required
 def edit_device(id):
     current_device = list_device_id(id)
+    icons = list_all_icon()
 
     if current_device.type_id == 1:
         form = EditSwitchForm()
@@ -138,6 +138,7 @@ def edit_device(id):
             current_device.qos = qos_int
             current_device.retained = retain_bool
             current_device.groups = form.groups.data.id
+            current_device.icon_id = form.icon_id.data
 
             update_device_switch(id,
                                  current_device.name,
@@ -148,7 +149,8 @@ def edit_device(id):
                                  current_device.last_will_topic,
                                  current_device.qos,
                                  current_device.retained,
-                                 current_device.groups)
+                                 current_device.groups,
+                                 current_device.icon_id)
 
             flash('Your changes have been saved.', 'success')
             return redirect(url_for('devices.device_opts'))
@@ -166,6 +168,7 @@ def edit_device(id):
 
         return render_template('device/device_edit_switch.html',
                                title='Edit Device Switch',
+                               icons=icons,
                                form=form)
 
     if current_device.type_id == 2:
@@ -174,20 +177,20 @@ def edit_device(id):
             qos_int = convert_qos(form.qos.data)
             current_device.name = form.name.data
             current_device.topic_sub = form.topic_sub.data
-            current_device.prefix = form.prefix.data
             current_device.postfix = form.postfix.data
             current_device.last_will_topic = form.last_will_topic.data
             current_device.qos = qos_int
             current_device.groups = form.groups.data.id
+            current_device.icon_id = form.icon_id.data
 
             update_device_sensor(id,
                                  current_device.name,
                                  current_device.topic_sub,
-                                 current_device.prefix,
                                  current_device.postfix,
                                  current_device.last_will_topic,
                                  current_device.qos,
-                                 current_device.groups)
+                                 current_device.groups,
+                                 current_device.icon_id)
 
             flash('Your changes have been saved.', 'success')
             return redirect(url_for('devices.device_opts'))
@@ -195,7 +198,6 @@ def edit_device(id):
         elif request.method == 'GET':
             form.name.data = current_device.name
             form.topic_sub.data = current_device.topic_sub
-            form.prefix.data = current_device.prefix
             form.postfix.data = current_device.postfix
             form.last_will_topic.data = current_device.last_will_topic
             form.qos.data = current_device.qos
@@ -203,6 +205,7 @@ def edit_device(id):
 
         return render_template('device/device_edit_sensor.html',
                                title='Edit Device Sensor',
+                               icons=icons,
                                form=form)
     return 'No type device'
 
@@ -226,16 +229,6 @@ def device_opts():
     return render_template("device/device_opts.html",
                            title='Device Options',
                            types=types)
-
-
-#@bp.route("/get/types/device", methods=['GET', 'POST'])
-#@login_required
-#def get_types():
-#    type_list = list_all_deviceType()
-#    types = type_list
-#    if not types:
-#        print("Types: ", types)
-#    return jsonify(types=types)
 
 
 @bp.route("/admin/device", methods=['GET', 'POST'])

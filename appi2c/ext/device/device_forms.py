@@ -39,7 +39,7 @@ class DeviceSwitchForm(FlaskForm):
     last_will_topic = StringField('Topic Last Will', validators=[validator_topic_not_imput])
     command_on = StringField('On Command', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     command_off = StringField('Off Command', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
-    qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], default=0, validators=[InputRequired()])
+    qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()])
     retained = SelectField('Retained', choices=[(False, False), (True, True)], default=True)
     icon_id = IntegerField('icon_id', default=1)
     submit = SubmitField('Insert')
@@ -54,11 +54,10 @@ class DeviceSensorForm(FlaskForm):
     groups = QuerySelectField('Group', validators=[InputRequired(), validator_data_select], query_factory=choice_query, get_label='name', blank_text='Select a Group...')
     name = StringField('Name', validators=[InputRequired(), Length(min=1, max=60, message=('Max 60 digits'))])
     topic_sub = StringField('Topic Subscrib', validators=[InputRequired(), validator_topic])
-    prefix = StringField('Prefix', validators=[Length(max=10, message=('Max 10 digits'))])
     postfix = StringField('Postfix', validators=[Length(max=10, message=('Max 10 digits'))])
     last_will_topic = StringField('Topic Last Will', validators=[validator_topic_not_imput])
-    qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()], default=0)
-    icon_id = IntegerField('icon_id', default=4)
+    qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()])
+    icon_id = IntegerField('icon_id')
     submit = SubmitField('Insert')
 
     def validate_name(self, name):
@@ -77,6 +76,7 @@ class EditSwitchForm(FlaskForm):
     command_off = StringField('Off Command', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()], default=0)
     retained = SelectField('Retained', validators=[InputRequired(), validator_data_select], choices=[(False, False), (True, True)])
+    icon_id = IntegerField('icon_id')
 
     submit = SubmitField('Confirm')
 
@@ -85,9 +85,9 @@ class EditSensorForm(FlaskForm):
     groups = QuerySelectField('Group', validators=[InputRequired(), validator_data_select], query_factory=choice_query, get_label='name', blank_text='Select a Group...')
     name = StringField('Name', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
     topic_sub = StringField('Topic Subscrib', validators=[InputRequired(), validator_topic])
-    prefix = StringField('Prefix', validators=[Length(max=10, message=('Max 10 digits'))])
     postfix = StringField('Postfix', validators=[Length(max=10, message=('Max 10 digits'))])
     last_will_topic = StringField('Topic Last Will', validators=[validator_topic_not_imput])
-    qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()], default=0)
+    qos = SelectField("Qos", choices=[(0, 0), (1, 1), (2, 2)], validators=[InputRequired()])
+    icon_id = IntegerField('icon_id')
 
     submit = SubmitField('Confirm')

@@ -13,7 +13,6 @@ class Device(db.Model):
     last_command = db.Column('last_command', db.String(60))
     last_date = db.Column('last_date', db.DateTime, nullable=False)
     last_data = db.Column('last_data', db.String(120))
-    prefix = db.Column('prefix', db.String(10))
     postfix = db.Column('postfix', db.String(10))
     qos = db.Column('qos', db.Integer, nullable=False)
     retained = db.Column("retained", db.Boolean, default=True)

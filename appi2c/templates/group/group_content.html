@@ -106,7 +106,6 @@
 
         <p class="center"><i class="{{icon}}" color="#ffff00"></i></p>
         <p class="center">
-          <em>{{ device.prefix }}</em>
           <span id="receive{{device.id}}" class="is-primary" style="color:rgb(255, 255, 255);"> {{device.last_data}} </span>
           <em style="font-size:16px;">{{ device.postfix }}</em>
         </p>
@@ -129,7 +128,6 @@
               'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
                 '<p><strong>Type: </strong><span>Sensor</span></p>' +
                 '<p><strong>Topic Sub: </strong><span>{{device.topic_sub}}</span></p>' +
-                '<p><strong>Prefix: </strong><span>{{device.prefix}}</span></p>' +
                 '<p><strong>Postfix: </strong><span>{{device.postfix}}</span></p>' +
                 '<p><strong>Last Will: </strong><span>{{device.last_will_topic}}</span></p>' +
                 '<p><strong>Qos: </strong><span>{{device.qos}}</span></p>'

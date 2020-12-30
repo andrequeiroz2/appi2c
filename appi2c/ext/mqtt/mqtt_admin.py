@@ -3,25 +3,10 @@ from flask_admin.contrib.sqla import ModelView
 
 class MqttAdmin(ModelView):
     """Interface Mqtt Admin"""
-
-    column_list = ('name',
-                   'address_url',
-                   'port',
-                   'keep_alive',
-                   'username',
-                   'password',
-                   'last_will_topic',
-                   'last_will_message',
-                   'last_will_qos',
-                   'last_will_retain')
-                   
-    column_searchable_list = ['name',
-                              'address_url',
-                              'port',
-                              'keep_alive',
-                              'username',
-                              'password',
-                              'last_will_topic',
-                              'last_will_message',
-                              'last_will_qos',
-                              'last_will_retain']
+    can_delete = False
+    can_edit = False
+    can_delete = False
+    can_create = False
+    page_size = 50
+    form_excluded_columns = ['user_id']
+    column_searchable_list = ['name', 'address_url']

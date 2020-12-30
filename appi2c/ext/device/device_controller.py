@@ -52,7 +52,6 @@ def create_device_switch(name: str,
 def create_device_sensor(group: int,
                          name: str,
                          topic_sub: str,
-                         prefix: str,
                          postfix: str,
                          last_will_topic: str,
                          qos: int,
@@ -67,7 +66,6 @@ def create_device_sensor(group: int,
                     topic_sub=topic_sub,
                     last_date=get_date(),
                     last_data='',
-                    prefix=prefix,
                     postfix=postfix,
                     last_will_topic=last_will_topic,
                     qos=qos,
@@ -95,7 +93,8 @@ def update_device_switch(id: int,
                          last_will_topic: str,
                          qos: int,
                          retained: bool,
-                         group_id: int):
+                         group_id: int,
+                         icon_id: int):
 
     Device.query.filter_by(id=id).update(dict(name=name,
                                               topic_pub=topic_pub,
@@ -105,26 +104,27 @@ def update_device_switch(id: int,
                                               last_will_topic=last_will_topic,
                                               qos=qos,
                                               retained=retained,
-                                              group_id=group_id))
+                                              group_id=group_id,
+                                              icon_id=icon_id))
     db.session.commit()
 
 
 def update_device_sensor(id: int,
                          name: str,
                          topic_sub: str,
-                         prefix: str,
                          postfix: str,
                          last_will_topic: str,
                          qos: int,
-                         group_id: int):
+                         group_id: int,
+                         icon_id: int):
 
     Device.query.filter_by(id=id).update(dict(name=name,
                                               topic_sub=topic_sub,
-                                              prefix=prefix,
                                               postfix=postfix,
                                               last_will_topic=last_will_topic,
                                               qos=qos,
-                                              group_id=group_id))
+                                              group_id=group_id,
+                                              icon_id=icon_id))
     db.session.commit()
     handle_subscribe(topic_sub, qos)
     if last_will_topic:

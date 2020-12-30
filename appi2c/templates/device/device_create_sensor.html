@@ -60,22 +60,6 @@ onload="enable_text_pub(false)"
                                 {% endif %}
                             </div>
 
-                           
-                            <div class="field">
-                                {{ form.prefix.label }}
-                                {% if form.prefix.errors %}
-                                {{ form.prefix(class="input is-info is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.prefix.errors %}
-                                    <p class="help is-danger">
-                                        <span>{{ error }}</span>
-                                    </p>
-                                    {% endfor %}
-                                </div>
-                                {% else %}
-                                {{ form.prefix(class="input is-info", type="text") }}
-                                {% endif %}
-                            </div>
 
                             <div class="field">
                                 {{ form.postfix.label }}
@@ -128,8 +112,6 @@ onload="enable_text_pub(false)"
                                 </p>
                                 {% endif %}
                             </div>
-
-                            
 
                             <div class="field">
                                 {{ form.groups.label }}
