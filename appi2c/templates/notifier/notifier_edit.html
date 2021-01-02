@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<style>
+    .button {
+        width: 80px;
+    }
+</style>
+
+<form method=post>
+    <div class="container">
+        <div class="columns is-centered is-vcentered is-mobile">
+
+            <section class="section">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <nav class="panel">
+                        <p class="panel-heading">
+                            {{title}}
+                        </p>
+
+                        <section class="section">
+
+                            <div class="field">
+                                {{ form.name.label }}
+                                {% if form.name.errors %}
+                                {{ form.name(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.name(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.token.label }}
+                                {% if form.token.errors %}
+                                {{ form.token(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.token.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.token(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.chat_id.label }}
+                                {% if form.chat_id.errors %}
+                                {{ form.chat_id(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.chat_id.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.chat_id(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+                            <br>
+
+                            <div class="field">
+                                <p class="control">
+                                    {{ form.submit(class="button is-primary") }}
+                                </p>
+                            </div>
+                        </section>
+                    </nav>
+                </form>
+            </section>
+        </div>
+    </div>
+</form>
+
+{% endblock main %}

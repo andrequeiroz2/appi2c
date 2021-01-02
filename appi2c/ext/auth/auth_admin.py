@@ -1,5 +1,4 @@
 from flask_admin.contrib.sqla import ModelView
-from flask_admin.actions import action
 
 
 class UserAdmin(ModelView):

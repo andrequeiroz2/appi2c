@@ -20,6 +20,7 @@ class User(db.Model, UserMixin):
     groups = db.relationship('Group', backref='user', lazy=True)
     devices = db.relationship('Device', backref='user', lazy=True)
     client_mqtt = db.relationship('ClientMqtt', backref='user', lazy='dynamic')
+    notifiers = db.relationship('Notifier', backref='user', lazy=True)
 
     def __repr__(self):
         return f"('{self.id}',{self.username},'{self.email}','{self.admin}')"

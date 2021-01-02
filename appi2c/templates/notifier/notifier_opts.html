@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+        <form method="POST" action="">
+            <nav class="panel">
+                <p class="panel-heading">
+                    {{ title }}
+                </p>
+                <section class="section">
+                    <p>
+                        <a href="{{ url_for('notifiers.register_notifier') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Add Notifier</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a href="{{ url_for('notifiers.list_notifier') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">List Notifier</a>
+                    </p>
+
+                    </br>
+                    <p>
+                        <a href="{{ url_for('notifiers.notifier_admin') }}" type="submit"
+                            class="button is-medium is-fullwidth is-primary">Admin Notifier</a>
+                    </p>
+                    </br>
+                    <p>
+                        <a type="submit" class="js-about button is-medium is-fullwidth is-primary">About Notifier</a>
+                    </p>
+                </section>
+            </nav>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(".js-about").click(function (event) {
+        event.preventDefault();
+        let _url = "{{ url_for('static', filename='js/jquery_about.js') }}";
+        params = {
+            'about_me': 'About Notifier',
+            'msg': '<p>The Notifier module implements a Telegram bot to send notifications of readings from mqtt devices.</p>' +
+                '<p>After creating your notifier, is necessary define the limits of accepted values,</p>' +
+                '<p> values above or below the limit will be notified by telegram from the notifier</p>' +
+                '<p>More explanations see <a href="https://core.telegram.org/bots">Telegram Bot</a></p>'
+        };
+
+        $.getScript(_url, function (params) {
+
+        });
+    });
+</script>
+{% endblock main %}

@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block main %}
+
+<style>
+    .is-black {
+      border: none;
+      padding: 15px 32px;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      width: 80px;
+    }
+</style>
+
+<div class="column is-mobile">
+    <div class="column is-half is-offset-one-quarter">
+
+        <nav class="panel">
+            <p class="panel-heading">
+                {{ title }}
+            </p>
+            <form method="POST" action="">
+
+                <div class="panel-block">
+                    <div class="table-container column is-12">
+                        <table class="table is-striped is-fullwidth">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Administration</th>
+                                </tr>
+                            </thead>
+                            {% set counter = 0 -%}
+                            {% for notifier in notifiers %}
+                            <tbody>
+                                <tr>
+
+                                    <td>{{ notifier.name }}</td>
+        
+                                    <td>
+                                        <a class="button is-black is-small" id="{{notifier.id}}">
+                                            Details
+                                        </a>
+                                        <a class="button is-black is-small"
+                                            href="{{ url_for('notifiers.edit_notifier', id=notifier['id']) }}">
+                                            Edit
+                                        </a>
+                                        <a class="js-delete-confirm button is-black is-small" id={{notifier.id}} 
+                                            href="{{ url_for('notifiers.delete_notifier', id=notifier['id']) }}">
+                                            Delete
+                                            {% set msg = notifier.name %}
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                            
+                            <script>
+                                $("#{{notifier.id}}").click(function (event) {
+                                    event.preventDefault();
+                                    let _url = "{{ url_for('static', filename='js/jquery_details.js') }}";
+                                    
+                                        params = {
+                                            'title': 'Details',
+                                            'msg': '<p><strong>Name: </strong><span>{{notifier.name}}</span></p>' +
+                                                   '<p><strong>Token: </strong><span>{{notifier.token}}</span></p>' +
+                                                   '<p><strong>Chat ID: </strong><span>{{notifier.chat_id}}</span></p>'
+                                                };
+                                    $.getScript(_url, function (params) {
+                                    
+                                    });
+                                });
+                            </script>
+
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </nav>
+    </div>
+</div>
+
+<script>
+    $(".js-delete-confirm").click(function (event) {
+        event.preventDefault();
+        let URL = $(this).attr('href');
+        let _url = "{{ url_for('static', filename='js/jquery_delete.js') }}";
+        params = {'msg': 'Do you confirm the deletion of the Notifier?', 'href': URL};
+        $.getScript(_url , function(params) {
+                    
+        });
+    });
+</script>
+{% endblock main %}

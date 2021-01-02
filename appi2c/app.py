@@ -13,6 +13,7 @@ from appi2c.ext import encrypt
 from appi2c.ext import site
 from appi2c.ext import group
 from appi2c.ext import icon
+from appi2c.ext import notifier
 
 
 def create_app():
@@ -23,6 +24,7 @@ def create_app():
     db.app = app
     db_commands.init_app(app)
     mqtt.init_app(app)
+    notifier.init_app(app)
     device.init_app(app)
     migrate.init_app(app)
     admin.init_app(app)
@@ -32,6 +34,7 @@ def create_app():
     site.init_app(app)
     group.init_app(app)
     icon.init_app(app)
+    
 
     with app.app_context():
         db.create_all()

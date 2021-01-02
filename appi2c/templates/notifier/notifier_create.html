@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<style>
+    .button {
+        width: 80px;
+    }
+</style>
+
+<form method=post>
+    <div class="container">
+        <div class="columns is-centered is-vcentered is-mobile">
+
+            <section class="section">
+                <form method="POST" action="">
+                    {{ form.hidden_tag() }}
+                    <nav class="panel">
+                        <p class="panel-heading">
+                            {{title}}
+                        </p>
+
+                        <section class="section">
+
+                            <div class="field">
+                                {{ form.name.label }}
+                                {% if form.name.errors %}
+                                {{ form.name(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.name(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.token.label }}
+                                {% if form.token.errors %}
+                                {{ form.token(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.token.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.token(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
+                                {{ form.chat_id.label }}
+                                {% if form.chat_id.errors %}
+                                {{ form.chat_id(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.chat_id.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.chat_id(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+                            <br>
+
+                            <div class="field">
+                                <p class="control">
+                                    <a class="js-help button is-primary is-normal">
+                                        Help
+                                    </a>
+                                </p>
+                            </div>
+                            <br>
+
+                            <div class="field">
+                                <p class="control">
+                                    {{ form.submit(class="button is-primary") }}
+                                </p>
+                            </div>
+                        </section>
+                    </nav>
+                </form>
+            </section>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(".js-help").click(function (event) {
+        event.preventDefault();
+        let _url = "{{ url_for('static', filename='js/jquery_icon_help.js') }}";
+        params = {
+            'help_me': 'Help Add Notifier',
+            'msg': '<p><span>Follow the instructions:</span></p>' +
+                '<p><span>1. Search for @BotFather and send the command /start .</span></p>' +
+                '<p><span>2. Send the command /newbot .</span></p>' +
+                '<p><span>3. Provide a name for your bot.</span></p>' +
+                '<p><span>4. Provide a username for your bot.</span></p>' +
+                '<p><span>5. @BotFather will return a Token.</span></p>' +
+                '<p><span>6. Add your new bot and click on the command /start .</span></p>' +
+                '<p><span>7. Access the site https://api.telegram.org/bot(YourBOTToken)>/getUpdates , </span></p>' +
+                '<p><span>   replace (YourBOTToken) with your Token, </p>' +
+                '<p><span>   what you are looking for is the value that is in "chat": {"id": xxxxx, this is chat_id.</span></p>',
+               
+      };
+        $.getScript(_url, function (params) {
+        });
+    });           
+</script>
+
+{% endblock main %}

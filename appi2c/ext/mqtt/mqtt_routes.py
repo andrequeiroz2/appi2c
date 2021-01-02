@@ -19,7 +19,6 @@ from appi2c.ext.mqtt.mqtt_controller import (create_client_mqtt,
 import time
 
 
-
 t = int(time.time())
 t = str(t)
 

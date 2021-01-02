@@ -13,6 +13,7 @@ class IconForm(FlaskForm):
         if icon is not None:
             raise ValidationError('Please use a different icon class.')
 
+
 class EditIconForm(FlaskForm):
     id = IntegerField('id')
     html_class = StringField('Html Class', validators=[InputRequired(), Length(max=60, message=('Max 60 digits'))])
