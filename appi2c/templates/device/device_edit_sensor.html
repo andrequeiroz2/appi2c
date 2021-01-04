@@ -1,8 +1,13 @@
 {% extends "base.html" %}
 
-
-
 {% block main %}
+
+<style>
+    .select {
+        width: 120px;
+    }
+</style>
+
 <form name=f1 method=post>
     <div class="container">
         <div class="columns is-centered is-vcentered is-mobile">
@@ -137,6 +142,8 @@
                                 </p>
                             </div>
 
+                            {{form.id}}
+
                         </section>
                     </nav>
                 </form>
@@ -146,6 +153,13 @@
 </form>
 
 <script>
+
+    //return selected values from select tags
+    $("#qos").val("{{device.qos}}").change();
+    $("#icon_class").addClass('{{current_icon.html_class}}');
+    $('#iconid').val('{{current_icon.id}}');
+
+
     $(".js-select-icon").click(function (event) {
         $.confirm({
             useBootstrap: false,

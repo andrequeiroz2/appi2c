@@ -1,19 +1,13 @@
 {% extends "base.html" %}
 
-{% block script %}
-<script language="JavaScript">
-    function enable_text_pub(status) {
-        status = !status;
-        document.f1.topic_pub.disabled = status;
-    }
-</script>
-{% endblock script %}
-
-{% block body %}
-onload="enable_text_pub(false)"
-{% endblock body %}
-
 {% block main %}
+
+<style>
+    .select {
+        width: 120px;
+    }
+</style>
+
 <form name=f1 method=post>
     <div class="container">
         <div class="columns is-centered is-vcentered is-mobile">

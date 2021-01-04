@@ -14,7 +14,7 @@ from appi2c.ext.device.device_forms import (DeviceSwitchForm,
                                             EditSwitchForm,
                                             EditSensorForm)
 
-from appi2c.ext.group.group_controller import list_all_group
+from appi2c.ext.group.group_controller import list_all_group, list_group_id
 from appi2c.ext.mqtt.mqtt_controller import list_all_client_mqtt
 from appi2c.ext.device.device_controller import (create_device_switch,
                                                  create_device_sensor,
@@ -34,7 +34,7 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  get_datetime,
                                                  get_data_id)
 
-from appi2c.ext.icon.icon_controller import list_all_icon
+from appi2c.ext.icon.icon_controller import list_all_icon, list_icon_id
 from flask_login import current_user
 
 
@@ -61,7 +61,6 @@ def register_device_switch():
         retain_bool = convert_boolean(form.retained.data)
         create_device_switch(name=form.name.data,
                              topic_pub=form.topic_pub.data,
-                             topic_sub=form.topic_sub.data,
                              command_on=form.command_on.data,
                              command_off=form.command_off.data,
                              last_will_topic=form.last_will_topic.data,
@@ -122,6 +121,8 @@ def register_device_sensor():
 @login_required
 def edit_device(id):
     current_device = list_device_id(id)
+    current_icon = list_icon_id(current_device.icon_id)
+    current_group = list_group_id(current_device.group_id)
     icons = list_all_icon()
 
     if current_device.type_id == 1:
@@ -131,7 +132,6 @@ def edit_device(id):
             retain_bool = convert_boolean(form.retained.data)
             current_device.name = form.name.data
             current_device.topic_pub = form.topic_pub.data
-            current_device.topic_sub = form.topic_sub.data
             current_device.command_on = form.command_on.data
             current_device.command_off = form.command_off.data
             current_device.last_will_topic = form.last_will_topic.data
@@ -143,7 +143,6 @@ def edit_device(id):
             update_device_switch(id,
                                  current_device.name,
                                  current_device.topic_pub,
-                                 current_device.topic_sub,
                                  current_device.command_on,
                                  current_device.command_off,
                                  current_device.last_will_topic,
@@ -158,23 +157,26 @@ def edit_device(id):
         elif request.method == 'GET':
             form.name.data = current_device.name
             form.topic_pub.data = current_device.topic_pub
-            form.topic_sub.data = current_device.topic_sub
             form.command_on.data = current_device.command_on
             form.command_off.data = current_device.command_off
             form.last_will_topic.data = current_device.last_will_topic
             form.qos.data = current_device.qos
             form.retained.data = current_device.retained
             form.groups.data = current_device.group_id
-
+        print(current_group)
         return render_template('device/device_edit_switch.html',
                                title='Edit Device Switch',
                                icons=icons,
+                               device=current_device,
+                               current_icon=current_icon,
+                               current_group=current_group,
                                form=form)
 
     if current_device.type_id == 2:
         form = EditSensorForm()
         if form.validate_on_submit():
             qos_int = convert_qos(form.qos.data)
+            current_device.id = form.id.data
             current_device.name = form.name.data
             current_device.topic_sub = form.topic_sub.data
             current_device.postfix = form.postfix.data
@@ -196,6 +198,7 @@ def edit_device(id):
             return redirect(url_for('devices.device_opts'))
 
         elif request.method == 'GET':
+            form.id.data = current_device.id
             form.name.data = current_device.name
             form.topic_sub.data = current_device.topic_sub
             form.postfix.data = current_device.postfix
@@ -205,6 +208,8 @@ def edit_device(id):
 
         return render_template('device/device_edit_sensor.html',
                                title='Edit Device Sensor',
+                               device=current_device,
+                               current_icon=current_icon,
                                icons=icons,
                                form=form)
     return 'No type device'

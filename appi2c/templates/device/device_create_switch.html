@@ -1,19 +1,13 @@
 {% extends "base.html" %}
 
-{% block script %}
-<script language="JavaScript">
-    function enable_text_sub(status) {
-        status = !status;
-        document.f1.topic_sub.disabled = status;
-    }
-</script>
-{% endblock script %}
-
-{% block body %}
-onload="enable_text_sub(false)"
-{% endblock body %}
-
 {% block main %}
+
+<style>
+    .select {
+        width: 120px;
+    }
+</style>
+
 <form name=f1 method=post>
     <div class="container">
         <div class="columns is-centered is-vcentered is-mobile">
@@ -57,28 +51,6 @@ onload="enable_text_sub(false)"
                                 </div>
                                 {% else %}
                                 {{ form.topic_pub(class="input is-info", type="text") }}
-                                {% endif %}
-                            </div>
-
-
-                            <p>
-                                <label class="checkbox">
-                                    <input type="checkbox" name=others onclick="enable_text_sub(this.checked)">
-                                    Topic Subscrib
-                                </label>
-                            </p>
-                            <div class="field">
-                                {% if form.topic_sub.errors %}
-                                {{ form.topic_sub(class="input is-info is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for error in form.topic_sub.errors %}
-                                    <p class="help is-danger">
-                                        <span>{{ error }}</span>
-                                    </p>
-                                    {% endfor %}
-                                </div>
-                                {% else %}
-                                {{ form.topic_sub(class="input is-info", type="text") }}
                                 {% endif %}
                             </div>
 

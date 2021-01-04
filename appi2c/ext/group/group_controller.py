@@ -43,7 +43,7 @@ def num_group():
 
 
 def num_group_user(user):
-    group = Group.query.filter_by(id=user.id).all()
+    group = Group.query.filter_by(user_id=user.id).all()
     num_group = len(group)
     return num_group
 

@@ -13,26 +13,22 @@ class UserForm(FlaskForm):
     admin = BooleanField('Admin')
     submit = SubmitField('Signup')
 
-
     #username is a unique register in user db
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('That username is taken. Please choose a different one.')
-        
 
     #email is a unique register in user db
     def validate_email(self, email):
         email_user = User.query.filter_by(email=email.data).first()
         if email_user is not None:
             raise ValidationError('That email is taken. Please choose a different one.')
-            
+
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[InputRequired(),
-                            Length(min=5, max=30, message=('Min 5 digits and Max 30 digts'))])
-    password = PasswordField('Password', validators=[InputRequired(),
-                              Length(min=5, max=30, message=('Min 5 digits and Max 30 digts'))])
+    username = StringField('Username', validators=[InputRequired(), Length(min=5, max=30, message=('Min 5 digits and Max 30 digts'))])
+    password = PasswordField('Password', validators=[InputRequired(), Length(min=5, max=30, message=('Min 5 digits and Max 30 digts'))])
     submit = SubmitField('Login')
 
 

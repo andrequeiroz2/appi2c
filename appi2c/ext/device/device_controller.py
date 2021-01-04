@@ -13,7 +13,6 @@ def get_date():
 
 def create_device_switch(name: str,
                          topic_pub: str,
-                         topic_sub: str,
                          command_on: str,
                          command_off: str,
                          last_will_topic: str,
@@ -28,7 +27,6 @@ def create_device_switch(name: str,
 
     device = Device(name=name,
                     topic_pub=topic_pub,
-                    topic_sub=topic_sub,
                     command_on=command_on,
                     command_off=command_off,
                     last_command=command_off,
@@ -44,7 +42,6 @@ def create_device_switch(name: str,
                     group_id=group)
     db.session.add(device)
     db.session.commit()
-    #handle_subscribe(topic_pub, qos)
     if last_will_topic is not None:
         handle_subscribe(last_will_topic, qos)
 
@@ -87,7 +84,6 @@ def create_device_sensor(group: int,
 def update_device_switch(id: int,
                          name: str,
                          topic_pub: str,
-                         topic_sub: str,
                          command_on: str,
                          command_off: str,
                          last_will_topic: str,
@@ -98,7 +94,6 @@ def update_device_switch(id: int,
 
     Device.query.filter_by(id=id).update(dict(name=name,
                                               topic_pub=topic_pub,
-                                              topic_sub=topic_sub,
                                               command_on=command_on,
                                               command_off=command_off,
                                               last_will_topic=last_will_topic,

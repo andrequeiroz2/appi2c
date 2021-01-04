@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 
-
-
 {% block main %}
+
+<style>
+    .select {
+        width: 120px;
+    }
+</style>
 
 <div class="container">
     <div class="columns is-centered is-vcentered is-mobile">
@@ -44,23 +48,6 @@
                             </div>
                             {% else %}
                             {{ form.topic_pub(class="input is-info", type="text") }}
-                            {% endif %}
-                        </div>
-
-                       
-                        <div class="field">
-                            {{ form.topic_sub.label }}
-                            {% if form.topic_sub.errors %}
-                            {{ form.topic_sub(class="input is-info is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in form.topic_sub.errors %}
-                                <p class="help is-danger">
-                                    <span>{{ error }}</span>
-                                </p>
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.topic_sub(class="input is-info", type="text") }}
                             {% endif %}
                         </div>
 
@@ -196,6 +183,15 @@
 </div>
 
 <script>
+    //return selected values from select tags
+    $("#qos").val("{{device.qos}}").change();
+    $("#retained").val("{{device.retained}}").change();
+    $("#icon_class").addClass('{{current_icon.html_class}}');
+    $('#iconid').val('{{current_icon.id}}');
+    //$('#groups').text('{{current_group.name}}');
+
+
+
     $(".js-select-icon").click(function (event) {
         $.confirm({
             useBootstrap: false,
