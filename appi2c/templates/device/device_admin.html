@@ -10,6 +10,14 @@
       cursor: pointer;
       width: 80px;
     }
+
+    
+    .input {
+        width: 30%;
+  }
+
+  
+
 </style>
 
 <div class="column is-mobile">
@@ -41,21 +49,42 @@
                                         <a class="button is-black is-small" id="{{device.id}}">
                                             Details
                                         </a>
+                                        
+                                        <a class="button is-black is-small" id="alert{{device.id}}">
+                                            Alert
+                                        </a>
+
                                         <a class="button is-black is-small"
                                             href="{{ url_for('devices.edit_device', id=device['id']) }}">
                                             Edit
                                         </a>
+                                        
                                         <a class="js-delete-confirm button is-black is-small" id={{device.id}} 
                                             href="{{ url_for('devices.delete_device', id=device['id']) }}">
                                             Delete
                                             {% set msg = device.name %}
                                         </a>
                                     </td>
-
                                 </tr>
                             </tbody>
                             
                             <script>
+                                $("#alert{{device.id}}").click(function (event) {
+                                    event.preventDefault();
+                                    let _url = "{{ url_for('static', filename='js/jquery_alert.js') }}";
+                                    
+                                    
+
+                                    params = {
+                                        'id': '{{device.id}}',
+                                        'measure': '{{device.measure}}',
+                                        'postfix': '{{device.postfix}}',  
+                                    };
+                                    $.getScript(_url, function (params) {
+                                    
+                                    });
+                                });
+
                                 $("#{{device.id}}").click(function (event) {
                                     event.preventDefault();
                                     let _url = "{{ url_for('static', filename='js/jquery_details.js') }}";
@@ -80,6 +109,7 @@
                                             'msg': '<p><strong>Name: </strong><span>{{device.name}}</span></p>' +
                                                    '<p><strong>Type: </strong><span>Sensor</span></p>' +       
                                                    '<p><strong>Topic Sub: </strong><span>{{device.topic_sub}}</span></p>' +
+                                                   '<p><strong>Measure: </strong><span>{{device.measure}}</span></p>' +
                                                    '<p><strong>Postfix: </strong><span>{{device.postfix}}</span></p>' +
                                                    '<p><strong>Last Will: </strong><span>{{device.last_will_topic}}</span></p>' +
                                                    '<p><strong>Qos: </strong><span>{{device.qos}}</span></p>'

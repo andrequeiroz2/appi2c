@@ -1,12 +1,13 @@
 from appi2c.ext.database import db
-from flask import flash, render_template, redirect, url_for, request, Blueprint
+from flask import flash, render_template, redirect, url_for, request, Blueprint, jsonify
 from flask_login import login_required, current_user
 from appi2c.ext.notifier.notifier_forms import NotifierForm, EditNotifierForm
 from appi2c.ext.notifier.notifier_controller import (create_notifier,
                                                      list_notifier_id,
                                                      list_all_notifier,
                                                      update_notifier,
-                                                     delete_notifier_id)
+                                                     delete_notifier_id,
+                                                     list_notifier_serializable_user)
 
 
 bp = Blueprint('notifiers', __name__, template_folder='appi2c/templates/notifier')
@@ -94,3 +95,10 @@ def notifier_admin():
 def delete_notifier(id):
     delete_notifier_id(id)
     return redirect(url_for('notifiers.notifier_opts'))
+
+
+@bp.route('/list/notifier/ajax', methods=['GET', 'POST'])
+@login_required
+def get_notifier():
+    notifiers = list_notifier_serializable_user(current_user)
+    return jsonify(notifiers)

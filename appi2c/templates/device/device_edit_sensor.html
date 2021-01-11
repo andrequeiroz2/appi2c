@@ -55,6 +55,22 @@
                             </div>
 
                             <div class="field">
+                                {{ form.measure.label }}
+                                {% if form.measure.errors %}
+                                {{ form.measure(class="input is-info is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.measure.errors %}
+                                    <p class="help is-danger">
+                                        <span>{{ error }}</span>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.measure(class="input is-info", type="text") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="field">
                                 {{ form.postfix.label }}
                                 {% if form.postfix.errors %}
                                 {{ form.postfix(class="input is-info is-invalid") }}

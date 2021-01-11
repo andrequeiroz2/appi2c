@@ -37,8 +37,9 @@ def handle_mqtt_message(client, userdata, message):
     data = dict(topic=message.topic, payload=message.payload.decode(), qos=message.qos)
     socketio.emit(topic, data)
 
-    from appi2c.ext.device.device_controller import get_data
+    from appi2c.ext.device.device_controller import get_data, check_data_limit
     get_data(topic=topic, payload=message.payload.decode())
+    check_data_limit(topic=topic, payload=message.payload.decode())
 
 
 @mqtt.on_log()

@@ -1,4 +1,5 @@
 from appi2c.ext.database import db
+from appi2c.ext.device.device_models import Limit
 
 
 class Notifier(db.Model):
@@ -9,5 +10,7 @@ class Notifier(db.Model):
     chat_id = db.Column("chat_id", db.String(120), index=True, nullable=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+    limit = db.relationship('Limit', backref='limit_Notifier', lazy=True)
+
     def __repr__(self):
-        return f"Notifier('{self.name}')"
+        return f'{self.name}'

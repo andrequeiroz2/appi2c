@@ -14,7 +14,8 @@ from appi2c.ext.device.device_forms import (DeviceSwitchForm,
                                             EditSwitchForm,
                                             EditSensorForm)
 
-from appi2c.ext.group.group_controller import list_all_group, list_group_id
+from appi2c.ext.group.group_controller import (list_all_group,
+                                               list_group_id)
 from appi2c.ext.mqtt.mqtt_controller import list_all_client_mqtt
 from appi2c.ext.device.device_controller import (create_device_switch,
                                                  create_device_sensor,
@@ -32,9 +33,16 @@ from appi2c.ext.device.device_controller import (create_device_switch,
                                                  get_clear_topic,
                                                  get_data_historic,
                                                  get_datetime,
-                                                 get_data_id)
+                                                 get_data_id,
+                                                 check_register_device,
+                                                 register_limits_device,
+                                                 update_limits_device,
+                                                 list_limit_device_id)
 
-from appi2c.ext.icon.icon_controller import list_all_icon, list_icon_id
+from appi2c.ext.icon.icon_controller import (list_all_icon,
+                                             list_icon_id)
+from appi2c.ext.notifier.notifier_controller import (list_notifier_id,
+                                                     list_notifier_name)
 from flask_login import current_user
 
 
@@ -99,6 +107,7 @@ def register_device_sensor():
         qos_int = convert_qos(form.qos.data)
         create_device_sensor(name=form.name.data,
                              topic_sub=form.topic_sub.data,
+                             measure=form.measure.data,
                              postfix=form.postfix.data,
                              last_will_topic=form.last_will_topic.data,
                              qos=qos_int,
@@ -179,6 +188,7 @@ def edit_device(id):
             current_device.id = form.id.data
             current_device.name = form.name.data
             current_device.topic_sub = form.topic_sub.data
+            current_device.measure = form.measure.data
             current_device.postfix = form.postfix.data
             current_device.last_will_topic = form.last_will_topic.data
             current_device.qos = qos_int
@@ -188,6 +198,7 @@ def edit_device(id):
             update_device_sensor(id,
                                  current_device.name,
                                  current_device.topic_sub,
+                                 current_device.measure,
                                  current_device.postfix,
                                  current_device.last_will_topic,
                                  current_device.qos,
@@ -201,6 +212,7 @@ def edit_device(id):
             form.id.data = current_device.id
             form.name.data = current_device.name
             form.topic_sub.data = current_device.topic_sub
+            form.measure.data = current_device.measure
             form.postfix.data = current_device.postfix
             form.last_will_topic.data = current_device.last_will_topic
             form.qos.data = current_device.qos
@@ -277,6 +289,43 @@ def pub_device():
     return resp
 
 
+@bp.route("/get/data/limit", methods=['POST'])
+@login_required
+def get_limit():
+    _json = request.json
+    _id_device = int(_json["id"])
+
+    limit = list_limit_device_id(_id_device)
+    if limit:
+        max = limit.limit_max
+        min = limit.limit_min
+        notifier = list_notifier_id(limit.notifier_id)
+        level_limit = limit.level
+        return jsonify(max=max, min=min, notifier=notifier.name, level_limit=level_limit)
+    else:
+        return jsonify(max='', min='', notifier='', level_limit='')
+
+
+@bp.route("/register/limits", methods=['POST'])
+@login_required
+def register_limits():
+    _json = request.json
+    _id_device = int(_json["id"])
+    _max = _json["max_limit"]
+    _min = _json["min_limit"]
+    _bot = _json["bot"]
+    _level = _json["level"]
+    id_notifier = list_notifier_name(_bot)
+    print(_id_device)
+    if check_register_device(_id_device):
+        update_limits_device(_max, _min, _level, _id_device, id_notifier)
+    else:
+        register_limits_device(_max, _min, _level, _id_device, id_notifier)
+    resp = jsonify({'message': 'Ajax Bad Request - Error device_routes.py @bp.route(/pub)'})
+    resp.status_code = 200
+    return resp
+
+
 @bp.route("/clear", methods=['POST'])
 @login_required
 def clear_topic():
@@ -298,7 +347,6 @@ def clear_topic():
 def data_historic():
     _json = request.json
     _id = _json["id"]
-    print(_id)
 
     if _id:
         data_historic = get_data_historic(_id)

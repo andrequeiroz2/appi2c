@@ -10,6 +10,7 @@ class Device(db.Model):
     last_will_topic = db.Column('last_will_topic', db.String(60))
     command_on = db.Column('command_on', db.String(60))
     command_off = db.Column('command_off', db.String(60))
+    measure = db.Column('measure', db.String(60))
     last_command = db.Column('last_command', db.String(60))
     last_date = db.Column('last_date', db.DateTime, nullable=False)
     last_data = db.Column('last_data', db.String(120))
@@ -23,6 +24,7 @@ class Device(db.Model):
     group_id = db.Column('group_id', db.Integer, db.ForeignKey('group.id'), nullable=False)
     user_id = db.Column('user_id', db.Integer, db.ForeignKey('user.id'), nullable=False)
     data = db.relationship('Data', backref='data_device', lazy=True)
+    limit = db.relationship('Limit', backref='limit_device', lazy=True)
 
     def __repr__(self):
         return f"Device('{self.name}',\
@@ -62,3 +64,17 @@ class Data(db.Model):
 
     def __repr__(self):
         return f'{self.data, self.date_time}'
+
+
+class Limit(db.Model):
+    __tablename__ = "limit"
+    id = db.Column('id', db.Integer, primary_key=True)
+    limit_max = db.Column('limit_max', db.Integer)
+    limit_min = db.Column('limit_min', db.Integer)
+    level = db.Column('level', db.String(60))
+    date_time = db.Column('date_time', db.DateTime)
+    device_id = db.Column('device_id', db.Integer, db.ForeignKey('device.id'), nullable=False)
+    notifier_id = db.Column('notifier_id', db.Integer, db.ForeignKey('notifier.id'), nullable=False)
+
+    def __repr__(self):
+        return f'{self.limit_max, self.limit_min, self.level, self.date_time, self.device_id, self.notifier_id}'

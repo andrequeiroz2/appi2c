@@ -1,9 +1,10 @@
 from appi2c.ext.database import db
 from appi2c.ext.group.group_models import Group
-from appi2c.ext.device.device_models import Device, Data, DeviceType
+from appi2c.ext.device.device_models import Device, Data, DeviceType, Limit
 import datetime
 from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
                                           handle_subscribe)
+from appi2c.ext.notifier.notifier_controller import notifier_sendtext
 
 
 def get_date():
@@ -49,6 +50,7 @@ def create_device_switch(name: str,
 def create_device_sensor(group: int,
                          name: str,
                          topic_sub: str,
+                         measure: str,
                          postfix: str,
                          last_will_topic: str,
                          qos: int,
@@ -63,6 +65,7 @@ def create_device_sensor(group: int,
                     topic_sub=topic_sub,
                     last_date=get_date(),
                     last_data='',
+                    measure=measure,
                     postfix=postfix,
                     last_will_topic=last_will_topic,
                     qos=qos,
@@ -107,6 +110,7 @@ def update_device_switch(id: int,
 def update_device_sensor(id: int,
                          name: str,
                          topic_sub: str,
+                         measure: str,
                          postfix: str,
                          last_will_topic: str,
                          qos: int,
@@ -115,6 +119,7 @@ def update_device_sensor(id: int,
 
     Device.query.filter_by(id=id).update(dict(name=name,
                                               topic_sub=topic_sub,
+                                              measure=measure,
                                               postfix=postfix,
                                               last_will_topic=last_will_topic,
                                               qos=qos,
@@ -143,6 +148,50 @@ def get_data(topic, payload):
                 x.last_data = payload
                 db.session.commit()
             db.engine.execute(Data.__table__.insert(), device_list)
+
+
+def check_data_limit(topic, payload):
+    if not payload or not payload.strip():
+        pass
+    else:
+        device = Device.query.filter_by(topic_sub=topic).all()
+        if device:
+            for x in device:
+                device_limit = Limit.query.filter_by(device_id=x.id).first()
+                if device_limit:
+                    device_type = DeviceType.query.filter_by(id=x.type_id).first()
+                    if device_type.name == 'Sensor':
+                        payload_int = int(payload)
+                        if device_limit.limit_max != '' and device_limit.limit_max < payload_int:
+                            message = create_sendtext(x, payload)
+                            notifier_sendtext(message)
+                        elif device_limit.limit_min != '' and device_limit.limit_min > payload_int:
+                            message = create_sendtext(x, payload)
+                            notifier_sendtext(message)
+
+
+def create_sendtext(device: Device, payload):
+    group = Group.query.filter_by(id=device.group_id).first()
+    limit = Limit.query.filter_by(device_id=device.id).first()
+    type = DeviceType.query.filter_by(id=device.type_id).first()
+
+    title = 'This is an automatic message from appi2c.\n'
+    attention = 'Attention device with readings outside the appropriate limits.\n'
+    space = '\n'
+    level = 'Warning level: ' + limit.level + '\n'
+    device_details = 'Name: ' + device.name + '\n'\
+                     'Type: ' + type.name + '\n'\
+                     'Meassure: ' + device.measure + '\n'\
+                     'Group: ' + group.name + '\n'
+
+    limit_details = 'Maximum limit: ' + str(limit.limit_max) + device.postfix + '\n'\
+                    'Minimum limit: ' + str(limit.limit_min) + device.postfix + '\n'
+
+    last_data = 'Last reading: ' + payload + device.postfix + '\n'
+
+    message = title+attention+space+level+space+device_details+limit_details+space+last_data
+
+    return message
 
 
 def get_data_id(id: int, payload: str):
@@ -312,3 +361,46 @@ def get_datetime(data: list):
         data_dict["data"].append(x.data)
         data_dict["date"].append(date)
     return data_dict
+
+
+def check_register_device(id: int) -> bool: 
+    check = Limit.query.filter_by(device_id=id).first()
+    if check:
+        return True
+    else:
+        return False
+
+
+def register_limits_device(limit_max: int,
+                           limit_min: int,
+                           level: str,
+                           device_id: int,
+                           notifier_id: int):
+
+    limit = Limit(limit_max=limit_max,
+                  limit_min=limit_min,
+                  level=level,
+                  device_id=device_id,
+                  notifier_id=notifier_id)
+
+    db.session.add(limit)
+    db.session.commit()
+
+
+def update_limits_device(limit_max: int,
+                         limit_min: int,
+                         level: str,
+                         device_id: int,
+                         notifier_id: int):
+
+    Limit.query.filter_by(device_id=device_id).update(dict(limit_max=limit_max,
+                                                            limit_min=limit_min,
+                                                            level=level,
+                                                            device_id=device_id,
+                                                            notifier_id=notifier_id))
+    db.session.commit()
+
+
+def list_limit_device_id(id: int) -> Limit:
+    limits = Limit.query.filter_by(device_id=id).first()
+    return limits
