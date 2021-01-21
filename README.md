@@ -11,6 +11,7 @@ Technology.
   - jquery-confirm, jquery-UI, jquery Finger, Ajax
   - ApexChart
   - MQTT
+  - bot Telegram
 
 ### What does it really do?
 Register your MQTT Brokers, register your mqtt devices can be sensors or actuators.
