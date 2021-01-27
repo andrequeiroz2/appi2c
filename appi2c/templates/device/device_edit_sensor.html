@@ -169,9 +169,9 @@
 </form>
 
 <script>
-
     //return selected values from select tags
     $("#qos").val("{{device.qos}}").change();
+    $("#groups").val("{{device.group_id}}").change();
     $("#icon_class").addClass('{{current_icon.html_class}}');
     $('#iconid').val('{{current_icon.id}}');
 

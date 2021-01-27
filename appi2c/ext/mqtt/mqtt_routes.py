@@ -147,7 +147,10 @@ def edit_mqtt(id):
         form.last_will_message.data = mqtt_client.last_will_message
         form.last_will_qos.data = mqtt_client.last_will_qos
         form.last_will_retain.data = mqtt_client.last_will_retain
-    return render_template('mqtt/mqtt_edit.html', title='Edit Client Mqtt', form=form)
+    return render_template('mqtt/mqtt_edit.html',
+                           title='Edit Client Mqtt',
+                           mqtt=mqtt_client,
+                           form=form)
 
 
 @bp.route("/delete/mqtt/<int:id>", methods=['GET', 'POST'])

@@ -27,14 +27,13 @@ def create_app():
     notifier.init_app(app)
     device.init_app(app)
     migrate.init_app(app)
-    admin.init_app(app)
     auth.init_app(app)
+    admin.init_app(app)
     login.init_app(app)
     encrypt.init_app(app)
     site.init_app(app)
     group.init_app(app)
     icon.init_app(app)
-    
 
     with app.app_context():
         db.create_all()

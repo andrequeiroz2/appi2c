@@ -87,3 +87,8 @@ def edit_profile():
         form.password.data = current_user.password
         form.confirm_password.data = current_user.password
     return render_template('login/edit_profile.html', title='Edit Profile', form=form)
+
+
+@bp.route('/admin')
+def index():
+    return render_template('admin.index.html')

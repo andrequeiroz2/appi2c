@@ -175,6 +175,7 @@
                             </p>
                         </div>
                         </br>
+                        {{form.id}}
                     </section>
                 </nav>
             </form>
@@ -186,9 +187,10 @@
     //return selected values from select tags
     $("#qos").val("{{device.qos}}").change();
     $("#retained").val("{{device.retained}}").change();
+    $("#groups").val("{{device.group_id}}").change();
     $("#icon_class").addClass('{{current_icon.html_class}}');
     $('#iconid').val('{{current_icon.id}}');
-    //$('#groups').text('{{current_group.name}}');
+
 
 
 

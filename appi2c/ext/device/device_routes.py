@@ -164,6 +164,7 @@ def edit_device(id):
             return redirect(url_for('devices.device_opts'))
 
         elif request.method == 'GET':
+            form.id.data = current_device.id
             form.name.data = current_device.name
             form.topic_pub.data = current_device.topic_pub
             form.command_on.data = current_device.command_on
@@ -172,7 +173,6 @@ def edit_device(id):
             form.qos.data = current_device.qos
             form.retained.data = current_device.retained
             form.groups.data = current_device.group_id
-        print(current_group)
         return render_template('device/device_edit_switch.html',
                                title='Edit Device Switch',
                                icons=icons,
@@ -217,11 +217,12 @@ def edit_device(id):
             form.last_will_topic.data = current_device.last_will_topic
             form.qos.data = current_device.qos
             form.groups.data = current_device.group_id
-
+        print('Group: ', current_group)
         return render_template('device/device_edit_sensor.html',
                                title='Edit Device Sensor',
                                device=current_device,
                                current_icon=current_icon,
+                               current_group=current_group,
                                icons=icons,
                                form=form)
     return 'No type device'
@@ -306,7 +307,7 @@ def get_limit():
         return jsonify(max='', min='', notifier='', level_limit='')
 
 
-@bp.route("/register/limits", methods=['POST'])
+@bp.route("/register/limits/sensor", methods=['POST'])
 @login_required
 def register_limits():
     _json = request.json
@@ -316,7 +317,6 @@ def register_limits():
     _bot = _json["bot"]
     _level = _json["level"]
     id_notifier = list_notifier_name(_bot)
-    print(_id_device)
     if check_register_device(_id_device):
         update_limits_device(_max, _min, _level, _id_device, id_notifier)
     else:
@@ -352,7 +352,8 @@ def data_historic():
         data_historic = get_data_historic(_id)
         data = get_datetime(data_historic)
         if data["data"] and data["date"]:
-            return jsonify(data=data)
+            device = list_device_id(_id)
+            return jsonify(name=device.name, measure=device.measure, postfix=device.postfix, data=data)
         else:
             resp = jsonify({'message': 'No Data'})
             resp.status_code = 405

@@ -46,7 +46,7 @@ def register_group():
                     flash("Filesize exceeded maximum limit of 10MB", "error")
                     return redirect(request.url)
             if upload_files(uploaded_file):
-                create_group(name=form.name.data.title(),
+                create_group(name=form.name.data,
                              description=form.description.data,
                              file=uploaded_file.filename,
                              user=current_user.id)
@@ -65,6 +65,7 @@ def edit_group(id):
     img = get_image(id)
     if form.validate_on_submit():
         uploaded_file = request.files['file']
+        current_group.id = form.id.data
         current_group.name = form.name.data
         current_group.description = form.description.data
 
@@ -83,6 +84,7 @@ def edit_group(id):
             flash('Your changes have been saved.', 'success')
             return redirect(url_for('groups.group_opts'))
     elif request.method == 'GET':
+        form.id.data = current_group.id
         form.name.data = current_group.name
         form.description.data = current_group.description
         form.file.data = current_group.file    

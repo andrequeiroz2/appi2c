@@ -16,7 +16,7 @@ class User(db.Model, UserMixin):
     username = db.Column("username", db.String(30), index=True, nullable=False)
     email = db.Column("email", db.String(120), index=True, nullable=False)
     password = db.Column(db.String(128))
-    admin = db.Column("admin", db.Boolean, default=False)
+    admin = db.Column("admin", db.Boolean())
     groups = db.relationship('Group', backref='user', lazy=True)
     devices = db.relationship('Device', backref='user', lazy=True)
     client_mqtt = db.relationship('ClientMqtt', backref='user', lazy='dynamic')
@@ -29,9 +29,6 @@ class User(db.Model, UserMixin):
     def validate_username(self, key, username):
         if not username:
             raise AssertionError('No username provided')
-
-        #if User.query.filter(User.username == username).first():
-        #    raise AssertionError('Username is already in use')
 
         if len(username) < 5 or len(username) > 30:
             raise AssertionError('Username must be between 5 and 30 characters')
@@ -51,3 +48,5 @@ class User(db.Model, UserMixin):
         if not password:
             raise AssertionError('No password provided')
         return password
+
+

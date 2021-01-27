@@ -4,7 +4,7 @@ $(function () {
         url: "/list/notifier/ajax",
         success: function (data) {
             if (data.length === 0) {
-                alert_error_noNotifier();
+                alert_no_notifier();
             }
             else {
                 $.confirm({
@@ -63,11 +63,10 @@ $(function () {
                                 if (max_limit === "" && min_limit === "") {
                                     alert_no_limits();
                                 }
-                                //else if(){}
                                 else {
                                     $.ajax({
                                         method: "POST",
-                                        url: "/register/limits",
+                                        url: "/register/limits/sensor",
                                         contentType: 'application/json;charset=UTF-8',
                                         data: JSON.stringify({ 'id': params['id'],
                                                                'max_limit': max_limit,
@@ -76,9 +75,7 @@ $(function () {
                                                                'level': level1.text
                                                              }),
                                         dataType: "json",
-                                        //success: function (data) {
-                                            //location.href = "/index";
-                                        //},
+                                    
                                         statusCode: {
                                             400: function () {
                                                 $.alert({

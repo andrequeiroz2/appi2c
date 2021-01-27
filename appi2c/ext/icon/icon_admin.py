@@ -8,5 +8,5 @@ class IconAdmin(ModelView):
     can_edit = False
     can_create = False
     page_size = 50
-    column_list = ('id', 'html_class')               
+    column_list = ('id', 'html_class')
     column_searchable_list = ['id', 'html_class']

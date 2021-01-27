@@ -42,8 +42,3 @@ def index():
                            total_user=total_user,
                            total_group=total_group,
                            total_broker=total_broker)
-
-
-@bp.route("/maps")
-def maps():
-    return render_template("testejs.html")

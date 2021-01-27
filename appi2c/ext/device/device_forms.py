@@ -11,7 +11,6 @@ from flask_login import current_user
 from wtforms.widgets import HiddenInput
 
 
-
 def validator_data_select(form, field):
     if field.data is None:
         raise ValidationError('Select an option')

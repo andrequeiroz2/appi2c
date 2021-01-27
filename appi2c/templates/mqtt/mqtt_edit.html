@@ -193,4 +193,9 @@
         </section>
     </div>
 </div>
+<script>
+    //return selected values from select tags
+    $("#last_will_qos").val("{{mqtt.last_will_qos}}").change();
+    $("#last_will_retain").val("{{mqtt.last_will_retain}}").change();   
+</script>
 {% endblock main %}

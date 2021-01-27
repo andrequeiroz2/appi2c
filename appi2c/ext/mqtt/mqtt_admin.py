@@ -3,6 +3,7 @@ from flask_admin.contrib.sqla import ModelView
 
 class MqttAdmin(ModelView):
     """Interface Mqtt Admin"""
+
     can_delete = False
     can_edit = False
     can_create = False

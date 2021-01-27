@@ -4,7 +4,7 @@ from appi2c.ext.device.device_models import Device, Data, DeviceType, Limit
 import datetime
 from appi2c.ext.mqtt.mqtt_connect import (handle_publish,
                                           handle_subscribe)
-from appi2c.ext.notifier.notifier_controller import notifier_sendtext
+from appi2c.ext.notifier.notifier_controller import notifier_sendtext, list_notifier_id
 
 
 def get_date():
@@ -150,6 +150,20 @@ def get_data(topic, payload):
             db.engine.execute(Data.__table__.insert(), device_list)
 
 
+def check_difference_date(limit):
+    date_bd = limit.date_time
+    if date_bd is None:
+        return True
+    else:
+        date_now = get_date()
+        x = date_now - date_bd
+        minutes = int(x.seconds / 60)
+        if minutes >= 5:
+            return True
+        else:
+            return False
+
+
 def check_data_limit(topic, payload):
     if not payload or not payload.strip():
         pass
@@ -159,15 +173,30 @@ def check_data_limit(topic, payload):
             for x in device:
                 device_limit = Limit.query.filter_by(device_id=x.id).first()
                 if device_limit:
-                    device_type = DeviceType.query.filter_by(id=x.type_id).first()
-                    if device_type.name == 'Sensor':
-                        payload_int = int(payload)
-                        if device_limit.limit_max != '' and device_limit.limit_max < payload_int:
-                            message = create_sendtext(x, payload)
-                            notifier_sendtext(message)
-                        elif device_limit.limit_min != '' and device_limit.limit_min > payload_int:
-                            message = create_sendtext(x, payload)
-                            notifier_sendtext(message)
+                    difference_date = check_difference_date(device_limit)
+                    if difference_date:
+                        device_type = DeviceType.query.filter_by(id=x.type_id).first()
+                        notifier = list_notifier_id(device_limit.notifier_id)
+                        if device_type.name == 'Sensor':
+                            payload_int = int(payload)
+                            if device_limit.limit_max != '' and device_limit.limit_max < payload_int:
+                                register_limits_date(device_limit)
+                                message = create_sendtext(x, payload)
+                                notifier_sendtext(notifier, message)
+                            elif device_limit.limit_min != '' and device_limit.limit_min > payload_int:
+                                register_limits_date(device_limit)
+                                message = create_sendtext(x, payload)
+                                notifier_sendtext(notifier, message)
+                            else:
+                                pass
+                        else:
+                            pass
+                    else:
+                        pass
+                else:
+                    pass
+        else:
+            pass
 
 
 def create_sendtext(device: Device, payload):
@@ -179,17 +208,21 @@ def create_sendtext(device: Device, payload):
     attention = 'Attention device with readings outside the appropriate limits.\n'
     space = '\n'
     level = 'Warning level: ' + limit.level + '\n'
-    device_details = 'Name: ' + device.name + '\n'\
-                     'Type: ' + type.name + '\n'\
-                     'Meassure: ' + device.measure + '\n'\
-                     'Group: ' + group.name + '\n'
+    device_details = 'Device Name: ' + device.name + '\n'\
+                     'Device Type: ' + type.name + '\n'\
+                     'Device Meassure: ' + device.measure + '\n'\
+                     'Device Group: ' + group.name + '\n'
 
     limit_details = 'Maximum limit: ' + str(limit.limit_max) + device.postfix + '\n'\
                     'Minimum limit: ' + str(limit.limit_min) + device.postfix + '\n'
 
-    last_data = 'Last reading: ' + payload + device.postfix + '\n'
+    last_data = 'Device Last Reading: ' + payload + device.postfix + '\n'
 
-    message = title+attention+space+level+space+device_details+limit_details+space+last_data
+    date = 'DateTime: ' + str(limit.date_time.strftime("%Y"+"/"+"%m"+"/"+"%d"+" "+"%H"+":"+"%M"))+ '\n'
+
+    end = 'If the values ​​remain outside the limits, you will be notified again in 5 minutes.'
+
+    message = title+attention+space+level+space+device_details+limit_details+space+last_data+space+date+space+end
 
     return message
 
@@ -319,6 +352,7 @@ def get_inf_all_device_sub():
 
 def delete_device_id(id: int):
     delete_data_id(id)
+    delete_limit_id(id)
     device = Device.query.filter_by(id=id).first()
     db.session.delete(device)
     db.session.commit()
@@ -326,6 +360,12 @@ def delete_device_id(id: int):
 
 def delete_data_id(id: int):
     delete = Data.__table__.delete().where(Data.device_id == id)
+    db.session.execute(delete)
+    db.session.commit()
+
+
+def delete_limit_id(id: int):
+    delete = Limit.__table__.delete().where(Limit.device_id == id)
     db.session.execute(delete)
     db.session.commit()
 
@@ -387,6 +427,11 @@ def register_limits_device(limit_max: int,
     db.session.commit()
 
 
+def register_limits_date(limits):
+    limits.date_time = get_date()
+    db.session.commit()
+
+
 def update_limits_device(limit_max: int,
                          limit_min: int,
                          level: str,
@@ -394,13 +439,18 @@ def update_limits_device(limit_max: int,
                          notifier_id: int):
 
     Limit.query.filter_by(device_id=device_id).update(dict(limit_max=limit_max,
-                                                            limit_min=limit_min,
-                                                            level=level,
-                                                            device_id=device_id,
-                                                            notifier_id=notifier_id))
+                                                           limit_min=limit_min,
+                                                           level=level,
+                                                           device_id=device_id,
+                                                           notifier_id=notifier_id))
     db.session.commit()
 
 
 def list_limit_device_id(id: int) -> Limit:
     limits = Limit.query.filter_by(device_id=id).first()
+    return limits
+
+
+def list_limit_notifier_id(id: int) -> Limit:
+    limits = Limit.query.filter_by(notifier_id=id).first()
     return limits

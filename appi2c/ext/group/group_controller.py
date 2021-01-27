@@ -54,7 +54,8 @@ def list_group_id(id: int) -> Group:
 
 
 def choice_query():
-    return Group.query
+    group = Group.query.filter_by(user_id=current_user.id).all()
+    return group
 
 
 def update_group(id: int, name: str, description: str, file: str):

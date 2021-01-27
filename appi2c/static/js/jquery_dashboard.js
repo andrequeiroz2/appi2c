@@ -41,6 +41,7 @@ $(function () {
       dataType: "json",
 
       success: function (data_json) {
+
         $.confirm({
           useBootstrap: false,
           scrollToPreviousElementAnimate: true,
@@ -63,9 +64,11 @@ $(function () {
               var options = {
                 series: [
                   {
+                    name: data_json['measure'],
                     data: data_json.data.data,
                   },
                 ],
+
                 chart: {
                   height: 350,
                   type: 'line',
@@ -78,8 +81,23 @@ $(function () {
                     opacity: 0.2
                   },
                   toolbar: {
-                    show: false
-                  }
+                    show: true,
+                    tools: {
+                      download: true,
+
+                    },
+                    export: {
+                      csv: {
+                        filename: undefined,
+                        columnDelimiter: ',',
+                        headerCategory: 'category',
+                        headerValue: 'value',
+                        dateFormatter(timestamp) {
+                          return new Date(timestamp).toDateString()
+                        }
+                      }
+                    },
+                  },
                 },
 
                 colors: ['#77B6EA'],
@@ -89,7 +107,10 @@ $(function () {
                 stroke: {
                   curve: 'smooth'
                 },
-
+                title: {
+                  text: 'Device: ' + data_json['name'] + ' / ' +'Measure: ' + data_json['measure'] + ' / ' + 'Scale: ' + data_json['postfix'],
+                  align: 'left'
+                },
                 grid: {
                   borderColor: '#e7e7e7',
                   row: {
@@ -107,6 +128,10 @@ $(function () {
                   }
                 },
                 yaxis: {
+                  type: 'Text',
+                  title: {
+                    text: data_json['measure']
+                  },
                   min: -60,
                   max: 120
                 },
@@ -120,57 +145,92 @@ $(function () {
               };
               var chart = new ApexCharts(document.querySelector("#chart"), options);
               chart.render();
-            }
+            };
+
+
             if (params['type'] === 'switch') {
+              var on_off = []
+              for (x in data_json.data.data) {
+                if (data_json.data.data[x] === "On") {
+                  on_off.push(100)
+                } else {
+                  on_off.push(-100)
+                }
+              }
+
               var options = {
-                series: [{
-                  data: [21, 22, 10, 28, 16, 21, 13, 30]
-                }],
-                chart: {
-                  height: 350,
-                  type: 'bar',
-                  events: {
-                    click: function (chart, w, e) {
-                      // console.log(chart, w, e)
-                    }
+                series: [
+                  {
+                    name: 'State',
+                    data: on_off,
                   }
+                ],
+
+                chart: {
+                  type: 'bar',
+                  height: 350
                 },
-                colors: colors,
+
+                title: {
+                  text: 'Device: ' + data_json['name'],
+                  align: 'left'
+                },
+
                 plotOptions: {
                   bar: {
-                    columnWidth: '45%',
-                    distributed: true
+                    colors: {
+                      ranges: [{
+                        from: -100,
+                        to: -46,
+                        color: '#F15B46'
+                      }, {
+                        from: -45,
+                        to: 0,
+                        color: '#FEB019'
+                      }]
+                    },
+                    columnWidth: '80%',
                   }
                 },
                 dataLabels: {
-                  enabled: false
+                  enabled: false,
                 },
-                legend: {
-                  show: false
+                yaxis: {
+                  title: {
+                    text: 'State',
+                  },
+                  labels: {
+                     formatter: function (y) {
+                       if (y === 100){
+                        return "On";      
+                       }else{
+                        return "Off";
+                       }
+                    }
+                  },
+                  axisTicks: {
+                    show: false,
+                    borderType: 'solid',
+                    color: '#78909C',
+                    width: 6,
+                    offsetX: 0,
+                    offsetY: 0
+                },
                 },
                 xaxis: {
-                  categories: [
-                    ['John', 'Doe'],
-                    ['Joe', 'Smith'],
-                    ['Jake', 'Williams'],
-                    'Amber',
-                    ['Peter', 'Brown'],
-                    ['Mary', 'Evans'],
-                    ['David', 'Wilson'],
-                    ['Lily', 'Roberts'],
-                  ],
+                  categories: data_json.data.date,
                   labels: {
-                    style: {
-                      colors: colors,
-                      fontSize: '12px'
-                    }
-                  }
+                    rotate: -90
+                  },
+                  title: {
+                    text: 'Date'
+                  },
                 }
               };
+         
 
               var chart = new ApexCharts(document.querySelector("#chart"), options);
               chart.render();
-
             };
           },
         });

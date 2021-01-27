@@ -44,9 +44,7 @@ def delete_notifier_id(id: int):
     db.session.commit()
 
 
-def notifier_sendtext(bot_message):
-    bot_token = '1472758838:AAE0QpH8DS3Vta6UfwwEc05lizkJZ5qxq9U'
-    bot_chatID = '897685119'
-    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+def notifier_sendtext(notifier: Notifier, message: str):
+    send_text = 'https://api.telegram.org/bot' + notifier.token + '/sendMessage?chat_id=' + notifier.chat_id + '&parse_mode=Markdown&text=' + message
     response = requests.get(send_text)
     return response.json()

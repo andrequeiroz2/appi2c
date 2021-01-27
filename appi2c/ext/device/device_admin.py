@@ -1,8 +1,11 @@
 from flask_admin.contrib.sqla import ModelView
+from flask import redirect, url_for
+from flask_security import current_user
 
 
 class DeviceAdmin(ModelView):
     """Interface Admin Device"""
+
     can_delete = False
     can_edit = False
     can_delete = False
@@ -14,6 +17,7 @@ class DeviceAdmin(ModelView):
 
 class DeviceTypeAdmin(ModelView):
     """Interface Admin DeviceType"""
+
     can_delete = False
     can_edit = False
     can_delete = False

@@ -10,6 +10,8 @@ from appi2c.ext.notifier.notifier_controller import (create_notifier,
                                                      list_notifier_serializable_user)
 
 
+
+
 bp = Blueprint('notifiers', __name__, template_folder='appi2c/templates/notifier')
 
 
@@ -26,7 +28,7 @@ def register_notifier():
                         chat_id=form.chat_id.data,
                         user_id=current_user.id)
         flash('Notifier has benn created!', 'success')
-        return redirect(url_for('site.index'))
+        return redirect(url_for('notifiers.notifier_opts'))
 
     return render_template('notifier/notifier_create.html', title='Register Notifier', form=form)
 
@@ -54,23 +56,23 @@ def list_notifier():
 @login_required
 def edit_notifier(id):
     form = EditNotifierForm()
-
     current_notifier = list_notifier_id(id)
-
     if form.validate_on_submit():
+        current_notifier.id = form.id.data
         current_notifier.name = form.name.data
         current_notifier.token = form.token.data
         current_notifier.chat_id = form.chat_id.data
 
-        update_notifier(current_notifier.id,
+        update_notifier(id,
                         current_notifier.name,
                         current_notifier.token,
                         current_notifier.chat_id)
 
         flash('Your changes have been saved.', 'success')
-        return redirect(url_for('notifiers.admin_notifier'))
+        return redirect(url_for('notifiers.notifier_admin'))
 
     elif request.method == 'GET':
+        form.id.data = current_notifier.id
         form.name.data = current_notifier.name
         form.token.data = current_notifier.token
         form.chat_id.data = current_notifier.chat_id
@@ -93,8 +95,13 @@ def notifier_admin():
 @bp.route('/delete/notifier/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delete_notifier(id):
-    delete_notifier_id(id)
-    return redirect(url_for('notifiers.notifier_opts'))
+    from appi2c.ext.device.device_controller import list_limit_notifier_id
+    if not list_limit_notifier_id(id):
+        delete_notifier_id(id)
+        return redirect(url_for('notifiers.notifier_opts'))
+    else:
+        flash('This notifier is associated with a device. Remove the association to delete the notifier.', 'error')
+        return redirect(url_for('notifiers.notifier_admin'))
 
 
 @bp.route('/list/notifier/ajax', methods=['GET', 'POST'])
