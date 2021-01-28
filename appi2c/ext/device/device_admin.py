@@ -1,6 +1,5 @@
 from flask_admin.contrib.sqla import ModelView
-from flask import redirect, url_for
-from flask_security import current_user
+
 
 
 class DeviceAdmin(ModelView):
